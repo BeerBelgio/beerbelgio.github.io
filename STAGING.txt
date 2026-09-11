@@ -1,0 +1,15 @@
+PUBLIC STAGING — BeerBelgio
+
+This repository is intentionally public for device testing.
+
+Current staging rules:
+- Search-engine indexing disabled via meta robots tags.
+- Remove the noindex / nofollow / noarchive tags from ALL HTML pages before the public 1.0 launch.
+- Current staging URL when deployed as the GitHub user site:
+  https://beerbelgio.github.io/
+
+Pages currently protected by noindex:
+- /
+- /lava/
+- /sonodgtl/
+- /sonodgtl/en/
