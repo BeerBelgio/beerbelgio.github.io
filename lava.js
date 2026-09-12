@@ -47,7 +47,7 @@
     const radiusBase = Math.min(width, height) * 0.19;
     const r = radiusBase * (0.925 + Math.random() * 0.15); // total spread ~15%
     const angle = Math.random() * Math.PI * 2;
-    const baseSpeed = (0.0025 + Math.random() * 0.0027) * 1.15; // V0.27: a little slower / more viscous
+    const baseSpeed = (0.0025 + Math.random() * 0.0027) * 0.98; // V0.27: a little slower / more viscous
 
     return {
       x: Math.random() * width,
@@ -181,7 +181,7 @@
     const standaloneLava = location.pathname.includes("/lava/");
     const immersiveMobile = coarse && (document.body.classList.contains("lava-mode") || standaloneLava);
     const edge = immersiveMobile
-      ? blob.r * (1.12 + Math.min(0.28, (blob.deformMag || 0) * 0.25))
+      ? blob.r * (1.58 + Math.min(0.24, (blob.deformMag || 0) * 0.18))
       : blob.r * 0.35;
     const bounce = 0.82;
 
@@ -233,8 +233,8 @@
     blob.vy += (desiredVy - blob.vy) * settle;
 
     // Gentle internal convection so the field lives even without interaction.
-    const currentFx = Math.sin(time * 0.00022 + blob.turnPhase + blob.y * 0.0042) * 0.000052 * dt;
-    const currentFy = Math.cos(time * 0.00018 + blob.turnPhase * 1.2 + blob.x * 0.0036) * 0.000045 * dt;
+    const currentFx = Math.sin(time * 0.00022 + blob.turnPhase + blob.y * 0.0042) * 0.000041 * dt;
+    const currentFy = Math.cos(time * 0.00018 + blob.turnPhase * 1.2 + blob.x * 0.0036) * 0.000036 * dt;
     blob.vx += currentFx;
     blob.vy += currentFy;
     blob.forceX += currentFx * 0.78;

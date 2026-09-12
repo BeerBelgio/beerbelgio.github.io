@@ -91,8 +91,28 @@
   }
 
   function fitHeroClaim() {
-    fitTextToBox(heroFunLabel, heroFunBox, 20, 260);
-    fitTextToBox(heroSeriousLabel, heroSeriousBox, 14, 120);
+    if (!heroFunLabel || !heroSeriousLabel || !heroFunBox || !heroSeriousBox) return;
+
+    // 1) FUN owns the system: fit it first and let it be dominant.
+    fitTextToBox(heroFunLabel, heroFunBox, 28, 320);
+    const funRect = heroFunLabel.getBoundingClientRect();
+    const targetHeight = Math.max(24, funRect.height * 0.98);
+
+    // 2) Serious block should fill roughly the same overall height as FUN,
+    //    while remaining fully contained in its own rectangle.
+    let low = 12;
+    let high = 180;
+    for (let i = 0; i < 18; i++) {
+      const mid = (low + high) / 2;
+      heroSeriousLabel.style.fontSize = `${mid}px`;
+      const r = heroSeriousLabel.getBoundingClientRect();
+      const fitsWidth = r.width <= heroSeriousBox.clientWidth * 0.98;
+      const fitsHeight = r.height <= heroSeriousBox.clientHeight * 0.96;
+      const meetsTarget = r.height <= targetHeight;
+      if (fitsWidth && fitsHeight && meetsTarget) low = mid;
+      else high = mid;
+    }
+    heroSeriousLabel.style.fontSize = `${Math.max(12, low - 0.25)}px`;
   }
 
   function drawHeroFunWindow() {

@@ -2455,3 +2455,251 @@ html.desktop-proportional .site-shell {
     height: 132px;
   }
 }
+
+/* =========================================================
+   V0.28 STAGING OVERRIDES
+   ========================================================= */
+
+:root {
+  --mobile-stage-width: 88vw;
+}
+
+.site-shell {
+  padding-bottom: max(24vh, 150px) !important;
+}
+
+/* Quick link icons */
+.platforms a {
+  position: relative;
+}
+.platform-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* Featured area icon polish */
+.play {
+  display: grid;
+  place-items: center;
+}
+.play img {
+  width: 26px;
+  height: 26px;
+  transform: translateX(1px);
+}
+.cta-row .inline-arrow {
+  margin-left: 9px;
+  width: 1.08em;
+  height: 1.08em;
+  filter: brightness(0) invert(1);
+}
+
+/* HERO: give the claim back its weight and breathing room */
+.hero {
+  min-height: 560px !important;
+  grid-template-rows: auto auto auto !important;
+}
+.hero-claim-grid {
+  align-self: center !important;
+  margin: 38px 0 42px !important;
+}
+.hero-claim-box {
+  height: 196px !important;
+}
+.hero-claim-box-serious {
+  align-content: center !important;
+}
+.hero .fun,
+.hero .serious {
+  letter-spacing: -.055em !important;
+}
+.hero .serious {
+  line-height: .84 !important;
+}
+
+.identity-card-link:first-child .identity-block {
+  text-align: right;
+}
+.identity-card-link:last-child .identity-block {
+  text-align: left;
+}
+.identity-stack {
+  gap: 20px !important;
+}
+.identity-block {
+  gap: 2px !important;
+  padding-top: 6px !important;
+}
+.identity-block h2 {
+  font-size: 56px !important;
+  margin: 0 0 4px !important;
+}
+.identity-tagline {
+  font-size: 27px !important;
+  line-height: 1.08 !important;
+}
+.identity-meta {
+  margin-top: 4px !important;
+  font-size: 18.5px !important;
+  line-height: 1.17 !important;
+}
+
+/* FULL LAVA slightly less shouty */
+.lava-toggle {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: .045em !important;
+}
+
+/* CONTACT card mobile safety */
+.contact {
+  min-height: 212px !important;
+}
+.contact h2 {
+  max-width: 70% !important;
+}
+.contact-smile {
+  right: 18px !important;
+  bottom: -54px !important;
+}
+
+/* MOBILE */
+@media (max-width: 719px) {
+  .site-stage {
+    width: var(--mobile-stage-width) !important;
+    margin: 0 auto !important;
+  }
+
+  .site-shell {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-top: 18px !important;
+    padding-bottom: 38vh !important; /* allow the final motto to travel upward visually */
+  }
+
+  .hero {
+    min-height: auto !important;
+    padding: 20px 18px 18px !important;
+  }
+
+  .hero-meta {
+    font-size: 10px !important;
+    letter-spacing: .03em !important;
+  }
+
+  .hero-claim-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin: 20px 0 24px !important;
+  }
+
+  .hero-claim-box {
+    height: 122px !important;
+  }
+
+  .identity-stack {
+    gap: 14px !important;
+  }
+
+  .identity-block {
+    gap: 2px !important;
+    padding-top: 3px !important;
+  }
+
+  .identity-block h2 {
+    font-size: 26px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .identity-tagline {
+    font-size: 14px !important;
+    line-height: 1.12 !important;
+  }
+
+  .identity-meta {
+    font-size: 11.5px !important;
+    line-height: 1.18 !important;
+  }
+
+  .quick-actions {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 10px 8px !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .platforms {
+    display: contents !important;
+  }
+
+  .platforms a {
+    width: 54px !important;
+    height: 54px !important;
+    justify-self: center !important;
+  }
+
+  .platform-icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  .lava-toggle {
+    grid-column: 1 / -1 !important;
+    justify-self: center !important;
+    width: min(100%, 190px) !important;
+    min-width: 0 !important;
+    height: 52px !important;
+    padding: 0 18px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+  }
+
+  .featured,
+  .links-card,
+  .contact {
+    padding: 18px !important;
+  }
+
+  .contact {
+    min-height: 184px !important;
+  }
+
+  .contact h2 {
+    max-width: 62% !important;
+    margin: 0 0 18px !important;
+    font-size: 28px !important;
+  }
+
+  .contact h2 span {
+    white-space: normal !important;
+  }
+
+  .write-button {
+    width: min(200px, 64%) !important;
+    min-height: 44px !important;
+  }
+
+  .contact-smile {
+    width: 128px !important;
+    right: 6px !important;
+    bottom: -26px !important;
+  }
+
+  .floating-motto {
+    margin-top: 24px !important;
+    padding-inline: 8px !important;
+  }
+}
+
+@media (max-width: 719px) and (orientation: landscape) {
+  .site-stage {
+    width: 80vw !important;
+  }
+
+  .hero-claim-box {
+    height: 112px !important;
+  }
+}
