@@ -9,5 +9,3 @@ Current staging rules:
 - sonoDGTL Italian alternate: /sonodgtl/it/
 - Remove noindex / nofollow / noarchive before public 1.0 launch.
 - Current staging URL: https://beerbelgio.github.io/
-
-V0.27 deployment trigger
