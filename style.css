@@ -2242,3 +2242,216 @@ html.desktop-proportional .site-shell {
     font-size: 17.5px !important;
   }
 }
+
+
+/* =========================================================
+   V0.27 PUBLIC STAGING OVERRIDES
+   ========================================================= */
+
+/* SVG icons: avoid platform emoji rendering. */
+.inline-arrow,
+.arrow img {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: -0.12em;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+}
+
+.play img {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+/* ---------------------------------------------------------
+   HERO CLAIM — two equal rectangles, then fit each text block.
+   FUN is a live window onto the lava canvas.
+   --------------------------------------------------------- */
+.hero-claim-grid {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 22px !important;
+  align-items: stretch !important;
+  margin: 46px 0 48px !important;
+}
+
+.hero-claim-box {
+  position: relative;
+  height: 184px;
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-claim-box-fun {
+  justify-items: center;
+}
+
+.hero-claim-box-serious {
+  justify-items: start;
+}
+
+.hero .fun,
+.hero .serious {
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  font-size: 20px !important; /* JS fits this into its rectangle */
+  line-height: .84 !important;
+}
+
+.hero .fun {
+  position: relative;
+  z-index: 2;
+  color: var(--orange);
+  white-space: nowrap;
+}
+
+.hero.fun-window-ready .fun {
+  color: transparent !important;
+}
+
+.hero-fun-window {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: none;
+  pointer-events: none;
+}
+
+.hero.fun-window-ready .hero-fun-window {
+  display: block;
+}
+
+.hero .serious > span {
+  display: block;
+  white-space: nowrap;
+}
+
+/* BeerBelgio mirrors sonoDGTL from the opposite side. */
+.identity-card-link:first-child .identity-block {
+  text-align: right;
+}
+
+.identity-block {
+  grid-template-rows: auto auto auto !important;
+  gap: 5px !important;
+  padding-top: 11px !important;
+}
+
+.identity-block h2 {
+  font-size: 46px !important;
+  margin: 0 0 6px !important;
+  line-height: .96 !important;
+}
+
+.identity-tagline {
+  font-size: 24px !important;
+  line-height: 1.15 !important;
+}
+
+.identity-meta {
+  margin-top: 3px !important;
+  font-size: 17px !important;
+  line-height: 1.22 !important;
+}
+
+/* ---------------------------------------------------------
+   MOBILE STAGE — always leave real lava around the content.
+   --------------------------------------------------------- */
+@media (max-width: 719px) {
+  .site-stage {
+    width: 92vw !important;
+    margin: 0 auto !important;
+  }
+
+  .site-shell {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-top: 16px !important;
+  }
+
+  .hero {
+    padding: 24px 22px 22px !important;
+    min-height: auto !important;
+  }
+
+  .hero-meta {
+    font-size: 12px !important;
+  }
+
+  .hero-claim-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    margin: 34px 0 36px !important;
+  }
+
+  .hero-claim-box {
+    height: 145px;
+  }
+
+  .identity-stack {
+    gap: 18px !important;
+  }
+
+  .identity-block h2 {
+    font-size: 34px !important;
+  }
+
+  .identity-tagline {
+    font-size: 19px !important;
+  }
+
+  .identity-meta {
+    font-size: 15px !important;
+  }
+
+  .quick-actions {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px 7px !important;
+    width: 100% !important;
+  }
+
+  .platforms {
+    display: contents !important;
+  }
+
+  .platforms a {
+    width: 58px !important;
+    height: 58px !important;
+    flex: none !important;
+    justify-self: center !important;
+    font-size: 11px !important;
+  }
+
+  .lava-toggle {
+    justify-self: center !important;
+    width: 82px !important;
+    min-width: 82px !important;
+    height: 58px !important;
+    padding: 0 8px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+  }
+}
+
+@media (max-width: 719px) and (orientation: landscape) {
+  .site-stage {
+    width: 84vw !important;
+  }
+
+  .hero-claim-box {
+    height: 132px;
+  }
+}

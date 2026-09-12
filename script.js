@@ -66,6 +66,99 @@
   }
 
   // ---------------------------------------------------------------
+  // HERO CLAIM — equal rectangles + live FUN cutout/window
+  // ---------------------------------------------------------------
+  const hero = document.querySelector(".hero");
+  const heroFunBox = document.querySelector(".hero-claim-box-fun");
+  const heroSeriousBox = document.querySelector(".hero-claim-box-serious");
+  const heroFunLabel = document.getElementById("hero-fun-label");
+  const heroSeriousLabel = document.getElementById("hero-serious-label");
+  const heroFunCanvas = document.getElementById("hero-fun-window");
+  const lavaCanvasForHero = document.getElementById("lava-canvas");
+
+  function fitTextToBox(el, box, min = 10, max = 260) {
+    if (!el || !box) return;
+    let low = min;
+    let high = max;
+    for (let i = 0; i < 18; i++) {
+      const mid = (low + high) / 2;
+      el.style.fontSize = `${mid}px`;
+      const r = el.getBoundingClientRect();
+      if (r.width <= box.clientWidth * 0.96 && r.height <= box.clientHeight * 0.92) low = mid;
+      else high = mid;
+    }
+    el.style.fontSize = `${Math.max(min, low - 0.25)}px`;
+  }
+
+  function fitHeroClaim() {
+    fitTextToBox(heroFunLabel, heroFunBox, 20, 260);
+    fitTextToBox(heroSeriousLabel, heroSeriousBox, 14, 120);
+  }
+
+  function drawHeroFunWindow() {
+    if (!heroFunCanvas || !heroFunBox || !heroFunLabel || !lavaCanvasForHero) return;
+
+    const boxRect = heroFunBox.getBoundingClientRect();
+    const labelRect = heroFunLabel.getBoundingClientRect();
+    const lavaRect = lavaCanvasForHero.getBoundingClientRect();
+    if (boxRect.width < 2 || boxRect.height < 2) return;
+
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.round(boxRect.width * dpr));
+    const h = Math.max(1, Math.round(boxRect.height * dpr));
+
+    if (heroFunCanvas.width !== w || heroFunCanvas.height !== h) {
+      heroFunCanvas.width = w;
+      heroFunCanvas.height = h;
+    }
+    heroFunCanvas.style.width = `${boxRect.width}px`;
+    heroFunCanvas.style.height = `${boxRect.height}px`;
+
+    const ctx = heroFunCanvas.getContext("2d");
+    const scaleX = lavaCanvasForHero.width / Math.max(1, lavaRect.width);
+    const scaleY = lavaCanvasForHero.height / Math.max(1, lavaRect.height);
+    const sx = Math.max(0, Math.round((boxRect.left - lavaRect.left) * scaleX));
+    const sy = Math.max(0, Math.round((boxRect.top - lavaRect.top) * scaleY));
+    const sw = Math.max(1, Math.min(lavaCanvasForHero.width - sx, Math.round(boxRect.width * scaleX)));
+    const sh = Math.max(1, Math.min(lavaCanvasForHero.height - sy, Math.round(boxRect.height * scaleY)));
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.drawImage(lavaCanvasForHero, sx, sy, sw, sh, 0, 0, w, h);
+
+    ctx.globalCompositeOperation = "destination-in";
+    const cs = getComputedStyle(heroFunLabel);
+    const fontSize = parseFloat(cs.fontSize) * dpr;
+    ctx.font = `${cs.fontWeight || 900} ${fontSize}px ${cs.fontFamily}`;
+    ctx.textBaseline = "alphabetic";
+    ctx.fillStyle = "#000";
+    const metrics = ctx.measureText("FUN");
+    const ascent = metrics.actualBoundingBoxAscent || fontSize * 0.78;
+    const descent = metrics.actualBoundingBoxDescent || fontSize * 0.18;
+    const glyphH = ascent + descent;
+    const labelX = (labelRect.left - boxRect.left) * dpr;
+    const labelY = ((labelRect.top - boxRect.top) * dpr) + ((labelRect.height * dpr - glyphH) / 2) + ascent;
+    ctx.fillText("FUN", labelX, labelY);
+    ctx.globalCompositeOperation = "source-over";
+
+    hero?.classList.add("fun-window-ready");
+  }
+
+  async function startHeroClaim() {
+    if (document.fonts?.ready) {
+      try { await document.fonts.ready; } catch {}
+    }
+    fitHeroClaim();
+    requestAnimationFrame(function loopHeroFun() {
+      drawHeroFunWindow();
+      requestAnimationFrame(loopHeroFun);
+    });
+  }
+
+  addEventListener("resize", fitHeroClaim, { passive: true });
+  if (window.visualViewport) visualViewport.addEventListener("resize", fitHeroClaim, { passive: true });
+  startHeroClaim();
+
+  // ---------------------------------------------------------------
   // VIDEO
   // ---------------------------------------------------------------
   const videoShell = document.getElementById("video-shell");

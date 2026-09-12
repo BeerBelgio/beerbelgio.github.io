@@ -47,7 +47,7 @@
     const radiusBase = Math.min(width, height) * 0.19;
     const r = radiusBase * (0.925 + Math.random() * 0.15); // total spread ~15%
     const angle = Math.random() * Math.PI * 2;
-    const baseSpeed = (0.0028 + Math.random() * 0.0030) * 1.18; // slightly calmer than V0.25 but still alive
+    const baseSpeed = (0.0025 + Math.random() * 0.0027) * 1.15; // V0.27: a little slower / more viscous
 
     return {
       x: Math.random() * width,
@@ -57,7 +57,7 @@
       baseSpeed,
       baseAngle: angle,
       turnPhase: Math.random() * Math.PI * 2,
-      turnSpeed: 0.000046 + Math.random() * 0.000036,
+      turnSpeed: 0.000041 + Math.random() * 0.000032,
       r,
       color: palette[i % palette.length],
       family: familyForColor(palette[i % palette.length]),
@@ -73,8 +73,10 @@
   }
 
   function resize() {
-    width = innerWidth;
-    height = innerHeight;
+    const vv = window.visualViewport;
+    const coarse = matchMedia("(pointer: coarse)").matches;
+    width = coarse && vv ? vv.width : innerWidth;
+    height = coarse && vv ? vv.height : innerHeight;
     dpr = Math.min(devicePixelRatio || 1, 2);
 
     canvas.width = Math.round(width * dpr);
@@ -111,12 +113,11 @@
   }
 
   function organicPath(blob, time) {
-    const points = 42;
-    const coords = [];
+    const points = 56;
+    let radii = [];
 
     for (let i = 0; i < points; i++) {
       const a = (i / points) * Math.PI * 2;
-
       const wobbleNow = blob.wobble;
       const deformMag = blob.deformMag || 0;
       const deformDir = blob.deformDir || 0;
@@ -129,58 +130,82 @@
         + ambientMorph * 0.08 * Math.sin(a * 2 + blob.phase2 * 0.6);
 
       const directional = Math.cos(a - deformDir);
-      const softStretch = 1
-        + ambientMorph * 0.22 * Math.sin((a - deformDir) * 2 + blob.phase * 0.55)
-        + ambientMorph * 0.16 * Math.sin((a - deformDir) * 3 - blob.phase2 * 0.42)
-        + deformMag * 0.46 * directional
-        - deformMag * 0.32 * Math.cos((a - deformDir) * 2)
-        + deformMag * 0.20 * Math.sin((a - deformDir) * 3 + blob.phase2 * 0.55)
-        + deformMag * 0.13 * Math.sin((a - deformDir) * 4 - blob.phase * 0.45)
-        + deformMag * 0.08 * Math.sin((a - deformDir) * 5 + blob.phase * 0.33);
+      const stretch = 1
+        + ambientMorph * 0.18 * Math.sin((a - deformDir) * 2 + blob.phase * 0.55)
+        + ambientMorph * 0.12 * Math.sin((a - deformDir) * 3 - blob.phase2 * 0.42)
+        + deformMag * 0.34 * directional
+        - deformMag * 0.20 * Math.cos((a - deformDir) * 2)
+        + deformMag * 0.12 * Math.sin((a - deformDir) * 3 + blob.phase2 * 0.55)
+        + deformMag * 0.07 * Math.sin((a - deformDir) * 4 - blob.phase * 0.45);
 
-      const rr = blob.r * breathing * softStretch;
+      radii.push(blob.r * Math.max(0.62, Math.min(1.46, breathing * stretch)));
+    }
 
+    // Low-pass the radial contour so deformation stays liquid instead of pointy/clipped.
+    for (let pass = 0; pass < 3; pass++) {
+      const next = [];
+      for (let i = 0; i < points; i++) {
+        const a = radii[(i - 2 + points) % points];
+        const b = radii[(i - 1 + points) % points];
+        const c = radii[i];
+        const d = radii[(i + 1) % points];
+        const e = radii[(i + 2) % points];
+        next[i] = (a + 2*b + 4*c + 2*d + e) / 10;
+      }
+      radii = next;
+    }
+
+    const coords = [];
+    for (let i = 0; i < points; i++) {
+      const a = (i / points) * Math.PI * 2;
       coords.push({
-        x: blob.x + Math.cos(a) * rr,
-        y: blob.y + Math.sin(a) * rr
+        x: blob.x + Math.cos(a) * radii[i],
+        y: blob.y + Math.sin(a) * radii[i]
       });
     }
 
     ctx.beginPath();
-
     const firstMid = midpoint(coords[coords.length - 1], coords[0]);
     ctx.moveTo(firstMid.x, firstMid.y);
-
     for (let i = 0; i < coords.length; i++) {
       const p = coords[i];
       const next = coords[(i + 1) % coords.length];
       const mid = midpoint(p, next);
       ctx.quadraticCurveTo(p.x, p.y, mid.x, mid.y);
     }
-
     ctx.closePath();
   }
 
   function contain(blob) {
-    const edge = blob.r * 0.35;
+    const coarse = matchMedia("(pointer: coarse)").matches;
+    const standaloneLava = location.pathname.includes("/lava/");
+    const immersiveMobile = coarse && (document.body.classList.contains("lava-mode") || standaloneLava);
+    const edge = immersiveMobile
+      ? blob.r * (1.12 + Math.min(0.28, (blob.deformMag || 0) * 0.25))
+      : blob.r * 0.35;
     const bounce = 0.82;
 
-    if (blob.x < -edge) {
-      blob.x = -edge;
+    const minX = immersiveMobile ? edge : -edge;
+    const maxX = immersiveMobile ? width - edge : width + edge;
+    const minY = immersiveMobile ? edge : -edge;
+    const maxY = immersiveMobile ? height - edge : height + edge;
+
+    if (blob.x < minX) {
+      blob.x = minX;
       blob.vx = Math.abs(blob.vx) * bounce;
       blob.baseAngle = Math.atan2(blob.vy, Math.abs(blob.vx));
-    } else if (blob.x > width + edge) {
-      blob.x = width + edge;
+    } else if (blob.x > maxX) {
+      blob.x = maxX;
       blob.vx = -Math.abs(blob.vx) * bounce;
       blob.baseAngle = Math.atan2(blob.vy, -Math.abs(blob.vx));
     }
 
-    if (blob.y < -edge) {
-      blob.y = -edge;
+    if (blob.y < minY) {
+      blob.y = minY;
       blob.vy = Math.abs(blob.vy) * bounce;
       blob.baseAngle = Math.atan2(Math.abs(blob.vy), blob.vx);
-    } else if (blob.y > height + edge) {
-      blob.y = height + edge;
+    } else if (blob.y > maxY) {
+      blob.y = maxY;
       blob.vy = -Math.abs(blob.vy) * bounce;
       blob.baseAngle = Math.atan2(-Math.abs(blob.vy), blob.vx);
     }
@@ -318,7 +343,7 @@
     }
     const morphFloor = blob.morphBase || 0.22;
     blob.deformMag = Math.min(
-      0.76,
+      0.62,
       Math.max(
         morphFloor,
         (blob.deformMag || morphFloor) * Math.pow(0.997, dt) + forceMag * 62
@@ -544,6 +569,8 @@
   }
 
   addEventListener("resize", resize);
+  addEventListener("orientationchange", resize);
+  if (window.visualViewport) visualViewport.addEventListener("resize", resize, { passive: true });
 
   addEventListener("pointermove", (e) => {
     pointer.x = e.clientX;

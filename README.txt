@@ -1,20 +1,31 @@
-BEERBELGIO.GITHUB.IO — V0.26
+BEERBELGIO.GITHUB.IO — V0.27 PUBLIC STAGING
 
-LAVA
-- Autonomous motion slightly calmed down from V0.25.
-- Stronger persistent liquid memory: blobs no longer return toward a near-round state.
-- Deformation now keeps wandering continuously through a morph base plus force-driven warping.
-- Internal forces still drive stronger deformations than pointer/scroll, which remain motion-only.
+REPO / LANGUAGE
+- English remains the primary language.
+- sonoDGTL base route is now English: /sonodgtl/
+- Italian alternate moved to: /sonodgtl/it/
+- .nojekyll added for direct static hosting.
+- noindex / nofollow / noarchive remains enabled during staging.
+
+MOBILE
+- Site stage is now narrower than the viewport so lava remains visible around the cards.
+- Portrait target: 92vw. Landscape mobile target: 84vw.
+- Hero claim stays as a 2-column composition on mobile.
+- Quick actions are now 2 rows of 4 items: 7 platforms + FULL LAVA.
+- GitHub quick link added.
+- Full Lava mobile containment keeps blobs inside the visible viewport more aggressively.
+- visualViewport resize/orientation changes now resize the lava canvas.
 
 HERO
-- More vertical breathing room around the main claim.
-- FUN slightly reduced and the right half slightly rebalanced.
-- BeerBelgio / sonoDGTL lower blocks enlarged again, while internal spacing was tightened.
+- Claim uses two equal rectangles and JS fits each text block independently.
+- FUN is an experimental live window/cutout showing the lava underneath the cream card.
+- BeerBelgio identity text is right-aligned; sonoDGTL stays left-aligned.
+- Identity typography enlarged slightly and internal spacing tightened.
 
-UI
-- FULL LAVA kept large but with a lighter weight.
+LAVA
+- Autonomous movement slowed slightly / made more viscous.
+- Organic contour is now low-pass smoothed to avoid clipped / pointy / unnatural extreme shapes.
+- Persistent liquid deformation remains, but with safer contour limits.
 
-PUBLIC STAGING — V0.26.1
-- Added noindex / nofollow / noarchive meta directives to all current HTML entry pages.
-- This lets the GitHub Pages version stay publicly reachable for device testing without being intended for search indexing.
-- IMPORTANT for 1.0: remove those staging meta directives before launch.
+ICONS
+- Main arrows and play control use local SVG assets to avoid Apple emoji rendering.
