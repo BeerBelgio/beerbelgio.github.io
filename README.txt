@@ -1,4 +1,4 @@
-BEERBELGIO.GITHUB.IO — V0.30 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.31 PUBLIC STAGING
 
 STAGING
 - Public GitHub Pages staging remains active.
@@ -7,46 +7,48 @@ STAGING
 - sonoDGTL base route: /sonodgtl/ (ENG)
 - Italian alternate: /sonodgtl/it/
 - .nojekyll remains enabled for direct static hosting.
-- V0.30 adds explicit cache-busting query strings (?v=030) to the main CSS, JS and local visual assets so mobile Safari cannot keep serving older build styling after a deploy.
+- Cache-busting advanced to ?v=031 for the main CSS/JS/local visual assets.
 
-HERO
-- Reworked claim sizing again using actual glyph metrics rather than CSS line-box height.
-- FUN remains the master block but now intentionally leaves breathing room instead of filling its entire half.
-- “IS A / SERIOUS / THING.” is fitted to the real visible height of FUN, so the three-line block should no longer appear taller than FUN.
-- FUN remains a live cutout/window onto the lava behind the card.
-- BeerBelgio remains right-aligned; sonoDGTL remains left-aligned.
-- Lower identity blocks have more separation between title / descriptor / metadata.
-- Descriptor is only slightly reduced and softened; metadata remains close to V0.29.
+HERO CLAIM
+- FUN returns to the solid BeerBelgio orange/red; the live lava cutout is disabled.
+- Mobile keeps the V0.30 proportions but enlarges both halves and moves them closer to the centre seam.
+- Desktop fitting is recalibrated: FUN remains the master, while the three-line phrase is intentionally a touch smaller in perceived mass.
+- Both hero claim halves now use the same flex-based optical centre line.
+- Claim boxes are slightly taller so desktop FUN can render fully without clipping the N.
+
+HERO IDENTITIES
+- More separation between title / descriptor / metadata.
+- On mobile the descriptor is slightly smaller and remains explicitly two lines.
+- In phone landscape, BeerBelgio and sonoDGTL switch to a desktop-like two-column arrangement instead of stacking vertically.
 
 QUICK LINKS
-- User-supplied platform SVGs retained.
-- Circular controls restored to 58px on desktop and mobile.
-- Each icon now occupies 40% of the button diameter, leaving ~30% margin on each side.
-- Email quick link now uses the exact same pre-filled mailto subject/body as WRITE ME.
-- Desktop remains one row with eight circular links plus FULL LAVA.
-- Mobile remains 4 + 4 icons, with FULL LAVA as a full-width third row.
-- Mobile FULL LAVA is taller and its label is larger.
+- Desktop buttons return to the more compact 52px V0.29 proportions.
+- Desktop FULL LAVA returns to an auto-width 52px-high pill rather than stretching across leftover space.
+- Mobile keeps 58px circular quick-link controls.
+- Email icon is reduced independently so its perceived size matches the other platform marks.
+- Mobile FULL LAVA remains full width, becomes 66px high and uses larger 23px text.
+- Email quick link continues to use the exact same pre-filled mailto as WRITE ME.
 
 FEATURED
-- Play icon is cache-busted and optically centered with one shared rule for desktop and mobile.
-- SPOTIFY / YOUTUBE typography remains enlarged.
-- Their arrows remain site-cream, match the text scale and keep extra spacing.
+- Mobile SPOTIFY / YOUTUBE labels are reduced slightly to restore proportion with the pills.
+- Their arrows scale with the label and keep a natural 9px separation.
+
+SONODGTL CARD / MOBILE
+- Mobile line breaks are now explicit:
+  Digital Strategies for / Real-World Projects
+  OPEN THE WEBSITE / LET’S WORK TOGETHER!
+- Desktop remains a single flowing line where space allows.
 
 CONTACT
-- WRITE ME arrow remains separated from its label.
-- Smiley uses the same vertical-centering rule on desktop and mobile: top: 50% + translateY(-50%).
-
-MOBILE
-- Main site stage is explicitly width + max-width 75vw, leaving 25% total viewport width as surrounding lava.
-- Main CSS/JS/icons are cache-busted to eliminate the stale-mobile-build behaviour observed between V0.28 and V0.29.
-- Quick actions use the same new SVG files and sizing rules as desktop.
+- Desktop contact remains unchanged.
+- WORKING + ON are now bound together so ON cannot become an orphan line on mobile.
+- Mobile smiley is slightly reduced to preserve enough title width while remaining vertically centred on the card midline.
 
 LAVA / MOBILE SAFARI
-- Removed the mobile-only “keep the whole blob inside the screen” fence introduced in V0.29.
-- Blobs can now travel partly beyond physical screen edges in normal and FULL LAVA modes.
-- Canvas dimensions no longer use visualViewport.width/height, which can be smaller than the actual layout viewport on iPhone Safari (especially landscape).
-- Canvas now sizes from the full layout viewport and only uses visualViewport as a resize signal.
-- Orientation changes trigger immediate + delayed resize passes to catch Safari after its UI/safe-area geometry settles.
+- The mobile lava canvas now uses an overscanned world larger than the visible viewport (extra space on all four sides).
+- The physical phone display is now the only crop boundary; the canvas itself extends beyond it.
+- Normal mode and FULL LAVA continue to share exactly the same lava field and edge behaviour.
+- Pointer/burst coordinates, heater position, colour sampling and final-motto blob coordinates are compensated for the overscan offset.
 
 DEFERRED
 - Final floating motto scroll-growth / center-screen transformation remains intentionally NOT implemented yet.

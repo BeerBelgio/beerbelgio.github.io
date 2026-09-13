@@ -3105,3 +3105,191 @@ html.desktop-proportional .site-shell {
     max-width: 75vw !important;
   }
 }
+
+
+/* =========================================================
+   V0.31 PUBLIC STAGING — authoritative overrides
+   ========================================================= */
+
+.desktop-only { display: inline; }
+.mobile-only { display: none; }
+
+/* HERO CLAIM — solid FUN again; both halves share one optical centre line. */
+.hero.fun-window-ready .fun,
+.hero .fun {
+  color: var(--orange) !important;
+}
+.hero-fun-window,
+.hero.fun-window-ready .hero-fun-window {
+  display: none !important;
+}
+.hero-claim-grid {
+  align-items: center !important;
+  column-gap: 18px !important;
+  margin: 30px 0 38px !important;
+}
+.hero-claim-box {
+  height: 184px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.hero-claim-box-fun {
+  justify-content: flex-end !important;
+  padding-right: 3px !important;
+}
+.hero-claim-box-serious {
+  justify-content: flex-start !important;
+  padding-left: 3px !important;
+}
+.hero .fun,
+.hero .serious {
+  line-height: .82 !important;
+}
+
+/* HERO IDENTITIES — larger gaps between title / descriptor / metadata. */
+.identity-block {
+  gap: 14px !important;
+}
+.identity-tagline {
+  font-weight: 500 !important;
+}
+
+/* QUICK LINKS — desktop returns to the compact V0.29 proportions. */
+.quick-actions {
+  grid-template-columns: repeat(8, 52px) auto !important;
+  gap: 10px !important;
+  justify-content: space-between !important;
+}
+.platforms a {
+  width: 52px !important;
+  height: 52px !important;
+  flex-basis: 52px !important;
+}
+.platform-icon {
+  width: 40% !important;
+  height: 40% !important;
+}
+.platforms a[aria-label="Email Matteo"] .platform-icon {
+  width: 34% !important;
+  height: 34% !important;
+}
+.lava-toggle {
+  width: auto !important;
+  min-width: 160px !important;
+  height: 52px !important;
+  padding: 0 19px !important;
+  font-size: 20px !important;
+}
+
+/* CONTACT — keep WORKING + ON together if the first line wraps on mobile. */
+.contact h2 span:first-child {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+@media (max-width: 719px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: initial !important; }
+
+  /* Hero claim: larger, closer to the centre seam. */
+  .hero-claim-grid {
+    gap: 3px !important;
+    margin: 16px 0 24px !important;
+  }
+  .hero-claim-box {
+    height: 128px !important;
+  }
+  .hero-claim-box-fun {
+    padding-right: 1px !important;
+  }
+  .hero-claim-box-serious {
+    padding-left: 1px !important;
+  }
+
+  /* Mobile identity descriptors stay explicitly on two lines and slightly smaller. */
+  .identity-block {
+    gap: 12px !important;
+  }
+  .identity-tagline {
+    font-size: 12.4px !important;
+    line-height: 1.15 !important;
+    font-weight: 500 !important;
+  }
+
+  /* 4 + 4 icons, then a full-width taller FULL LAVA control. */
+  .platforms a {
+    width: 58px !important;
+    height: 58px !important;
+  }
+  .platform-icon {
+    width: 40% !important;
+    height: 40% !important;
+  }
+  .platforms a[aria-label="Email Matteo"] .platform-icon {
+    width: 34% !important;
+    height: 34% !important;
+  }
+  .lava-toggle {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 66px !important;
+    font-size: 23px !important;
+  }
+
+  /* Featured CTA typography comes back into proportion with the pill. */
+  .cta-row a {
+    font-size: 13.5px !important;
+    min-height: 50px !important;
+  }
+  .cta-row .inline-arrow {
+    width: 1em !important;
+    height: 1em !important;
+    margin-left: 9px !important;
+  }
+
+  /* Exact mobile sonoDGTL line breaks requested in feedback. */
+  .sonodgtl-card > a > span:first-child {
+    line-height: 1.16 !important;
+  }
+  .sonodgtl-card small {
+    line-height: 1.18 !important;
+  }
+
+  /* Contact: do not leave ON orphaned. NBSP in HTML binds WORKING + ON. */
+  .contact h2 {
+    max-width: 74% !important;
+    font-size: clamp(20px, 6.4vw, 26px) !important;
+    line-height: .96 !important;
+  }
+  .contact-smile,
+  .contact-smile-full {
+    width: 116px !important;
+    right: 5px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+}
+
+/* Phone landscape: the two identity blocks switch to desktop-like side-by-side layout. */
+@media (max-width: 719px) and (orientation: landscape) {
+  .identity-stack {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+    align-items: start !important;
+  }
+  .identity-card-link:first-child .identity-block {
+    text-align: right !important;
+  }
+  .identity-card-link:last-child .identity-block {
+    text-align: left !important;
+  }
+  .identity-block h2 {
+    font-size: 24px !important;
+  }
+  .identity-tagline {
+    font-size: 12px !important;
+  }
+  .identity-meta {
+    font-size: 10.8px !important;
+  }
+}

@@ -97,14 +97,17 @@
   function fitHeroClaim() {
     if (!heroFunLabel || !heroSeriousLabel || !heroFunBox || !heroSeriousBox) return;
 
-    // FUN is the master block. We intentionally leave some breathing room
-    // instead of allowing it to consume the entire left rectangle.
-    let low = 24;
-    let high = 240;
-    const funMaxW = heroFunBox.clientWidth * 0.84;
-    const funMaxH = heroFunBox.clientHeight * 0.78;
+    const mobile = matchMedia("(max-width: 719px)").matches;
+    const landscapeMobile = mobile && matchMedia("(orientation: landscape)").matches;
 
-    for (let i = 0; i < 20; i++) {
+    // FUN remains the master block. On mobile both halves can grow a little
+    // more because the solid fill is much more legible than the old lava cutout.
+    let low = 24;
+    let high = 300;
+    const funMaxW = heroFunBox.clientWidth * (mobile ? 0.94 : 0.90);
+    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.90 : 0.86);
+
+    for (let i = 0; i < 22; i++) {
       const mid = (low + high) / 2;
       const m = visualMetrics(heroFunLabel, "FUN", mid);
       const visualH = m.ascent + m.descent;
@@ -115,23 +118,24 @@
     const funSize = Math.max(24, low - 0.2);
     heroFunLabel.style.setProperty("font-size", `${funSize}px`, "important");
     const fm = visualMetrics(heroFunLabel, "FUN", funSize);
-    const targetVisualHeight = fm.ascent + fm.descent;
+    const funVisualHeight = fm.ascent + fm.descent;
 
-    // Fit the three-line phrase to the ACTUAL visible glyph height of FUN,
-    // not to its CSS line box. This is the bit that fixes the V0.29 mismatch.
+    // The three-line block is deliberately a touch smaller in perceived mass
+    // than FUN, while sharing the same optical horizontal centre line.
+    const targetVisualHeight = funVisualHeight * (mobile ? 0.96 : 0.91);
     const lines = ["IS A", "SERIOUS", "THING."];
     low = 10;
-    high = 120;
-    const seriousMaxW = heroSeriousBox.clientWidth * 0.96;
+    high = 160;
+    const seriousMaxW = heroSeriousBox.clientWidth * (mobile ? 0.98 : 0.96);
+    const lineHeight = mobile ? 0.82 : 0.82;
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 22; i++) {
       const mid = (low + high) / 2;
       const ms = lines.map(line => visualMetrics(heroSeriousLabel, line, mid));
       const maxW = Math.max(...ms.map(m => m.width));
-      const lineAdvance = mid * 0.84;
+      const lineAdvance = mid * lineHeight;
       const totalVisualH = ms[0].ascent + (lineAdvance * 2) + ms[2].descent;
-      const fits = maxW <= seriousMaxW && totalVisualH <= targetVisualHeight;
-      if (fits) low = mid;
+      if (maxW <= seriousMaxW && totalVisualH <= targetVisualHeight) low = mid;
       else high = mid;
     }
 
@@ -191,10 +195,6 @@
       try { await document.fonts.ready; } catch {}
     }
     fitHeroClaim();
-    requestAnimationFrame(function loopHeroFun() {
-      drawHeroFunWindow();
-      requestAnimationFrame(loopHeroFun);
-    });
   }
 
   addEventListener("resize", fitHeroClaim, { passive: true });

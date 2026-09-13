@@ -34,6 +34,10 @@
     impulse: 0
   };
 
+  let viewWidth = innerWidth;
+  let viewHeight = innerHeight;
+  let padX = 0;
+  let padY = 0;
   let width = innerWidth;
   let height = innerHeight;
   let dpr = Math.min(devicePixelRatio || 1, 2);
@@ -73,20 +77,25 @@
   }
 
   function resize() {
-    // Safari mobile can report a smaller visualViewport (especially in landscape)
-    // because browser chrome / safe-area offsets are excluded. The canvas must
-    // instead cover the whole layout viewport; visualViewport is only used as a
-    // resize SIGNAL below, never as the canvas dimensions.
-    width = Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0);
-    height = Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0);
+    // V0.31: draw into an OVERSCANNED world, larger than the visible viewport.
+    // This removes the last internal canvas edge that iPhone Safari could reveal
+    // around the top/bottom/sides. Only the physical display clips the lava now.
+    viewWidth = Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0);
+    viewHeight = Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0);
+
+    const coarse = matchMedia("(pointer: coarse)").matches;
+    padX = coarse ? Math.max(80, viewWidth * 0.24) : 0;
+    padY = coarse ? Math.max(110, viewHeight * 0.18) : 0;
+    width = viewWidth + padX * 2;
+    height = viewHeight + padY * 2;
     dpr = Math.min(devicePixelRatio || 1, 2);
 
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     canvas.style.width = width + "px";
     canvas.style.height = height + "px";
-    canvas.style.left = "0px";
-    canvas.style.top = "0px";
+    canvas.style.left = -padX + "px";
+    canvas.style.top = -padY + "px";
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
@@ -102,10 +111,10 @@
       : width * 0.23;
 
     return {
-      cx: width * 0.5,
+      cx: padX + viewWidth * 0.5,
       halfW: baseWidth * 0.5,
-      y: height * 0.90,
-      h: height * 0.24
+      y: padY + viewHeight * 0.90,
+      h: viewHeight * 0.24
     };
   }
 
@@ -583,8 +592,8 @@
   }
 
   addEventListener("pointermove", (e) => {
-    pointer.x = e.clientX;
-    pointer.y = e.clientY;
+    pointer.x = e.clientX + padX;
+    pointer.y = e.clientY + padY;
     pointer.active = true;
     pointer.impulse = 1;
   }, { passive: true });
@@ -595,7 +604,7 @@
   });
 
   addEventListener("pointerdown", (e) => {
-    burst(e.clientX, e.clientY);
+    burst(e.clientX + padX, e.clientY + padY);
   }, { passive: true });
 
   addEventListener("wheel", (e) => {
@@ -642,8 +651,8 @@
 
     for (const fy of ys) {
       for (const fx of xs) {
-        const cssX = Math.max(0, Math.min(width - 1, rect.left + rect.width * fx));
-        const cssY = Math.max(0, Math.min(height - 1, rect.top + rect.height * fy));
+        const cssX = Math.max(0, Math.min(width - 1, padX + rect.left + rect.width * fx));
+        const cssY = Math.max(0, Math.min(height - 1, padY + rect.top + rect.height * fy));
 
         const x = Math.max(0, Math.min(canvas.width - 1, Math.round(cssX * dpr)));
         const y = Math.max(0, Math.min(canvas.height - 1, Math.round(cssY * dpr)));
@@ -662,8 +671,8 @@
     sampleRect,
     getBlobs() {
       return blobs.map((blob) => ({
-        x: blob.x,
-        y: blob.y,
+        x: blob.x - padX,
+        y: blob.y - padY,
         r: blob.r,
         color: blob.color,
         family: blob.family,
