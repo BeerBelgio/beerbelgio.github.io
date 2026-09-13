@@ -73,16 +73,20 @@
   }
 
   function resize() {
-    const vv = window.visualViewport;
-    const coarse = matchMedia("(pointer: coarse)").matches;
-    width = coarse && vv ? vv.width : innerWidth;
-    height = coarse && vv ? vv.height : innerHeight;
+    // Safari mobile can report a smaller visualViewport (especially in landscape)
+    // because browser chrome / safe-area offsets are excluded. The canvas must
+    // instead cover the whole layout viewport; visualViewport is only used as a
+    // resize SIGNAL below, never as the canvas dimensions.
+    width = Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0);
+    height = Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0);
     dpr = Math.min(devicePixelRatio || 1, 2);
 
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     canvas.style.width = width + "px";
     canvas.style.height = height + "px";
+    canvas.style.left = "0px";
+    canvas.style.top = "0px";
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
@@ -177,19 +181,17 @@
   }
 
   function contain(blob) {
-    const coarse = matchMedia("(pointer: coarse)").matches;
-    const standaloneLava = location.pathname.includes("/lava/");
-    const mobileKeepWhole = coarse;
-    const immersiveMobile = coarse && (document.body.classList.contains("lava-mode") || standaloneLava);
-    const edge = mobileKeepWhole
-      ? blob.r * (1.58 + Math.min(0.24, (blob.deformMag || 0) * 0.18))
-      : blob.r * 0.35;
+    // No hidden mobile "fence": blobs are allowed to travel naturally beyond
+    // the physical screen edges. The screen itself becomes the only crop.
+    // Keeping the centre within roughly half a radius outside the viewport
+    // prevents blobs from disappearing forever while preserving off-screen flow.
+    const overscan = blob.r * 0.58;
     const bounce = 0.82;
 
-    const minX = mobileKeepWhole ? edge : -edge;
-    const maxX = mobileKeepWhole ? width - edge : width + edge;
-    const minY = mobileKeepWhole ? edge : -edge;
-    const maxY = mobileKeepWhole ? height - edge : height + edge;
+    const minX = -overscan;
+    const maxX = width + overscan;
+    const minY = -overscan;
+    const maxY = height + overscan;
 
     if (blob.x < minX) {
       blob.x = minX;
@@ -211,6 +213,7 @@
       blob.baseAngle = Math.atan2(-Math.abs(blob.vy), blob.vx);
     }
   }
+
 
   function update(blob, dt, time) {
     const motionScale = prefersReducedMotion ? 0.18 : 1;
@@ -569,9 +572,15 @@
     requestAnimationFrame(draw);
   }
 
-  addEventListener("resize", resize);
-  addEventListener("orientationchange", resize);
-  if (window.visualViewport) visualViewport.addEventListener("resize", resize, { passive: true });
+  addEventListener("resize", resize, { passive: true });
+  addEventListener("orientationchange", () => {
+    resize();
+    setTimeout(resize, 120);
+    setTimeout(resize, 420);
+  }, { passive: true });
+  if (window.visualViewport) {
+    visualViewport.addEventListener("resize", () => requestAnimationFrame(resize), { passive: true });
+  }
 
   addEventListener("pointermove", (e) => {
     pointer.x = e.clientX;

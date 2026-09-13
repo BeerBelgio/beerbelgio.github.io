@@ -2896,3 +2896,212 @@ html.desktop-proportional .site-shell {
     width: 75vw !important;
   }
 }
+
+/* =========================================================
+   V0.30 PUBLIC STAGING — authoritative overrides
+   Cache-busted from HTML with ?v=030 so mobile Safari cannot keep
+   serving the older V0.28/V0.29 visual rules/assets.
+   ========================================================= */
+
+/* HERO CLAIM */
+.hero-claim-grid {
+  margin: 34px 0 40px !important;
+}
+.hero-claim-box {
+  height: 176px !important;
+}
+.hero-claim-box-fun {
+  justify-items: center !important;
+}
+.hero-claim-box-serious {
+  justify-items: start !important;
+  align-content: center !important;
+}
+.hero .fun,
+.hero .serious {
+  line-height: .84 !important;
+}
+
+/* HERO LOWER IDENTITIES */
+.identity-block {
+  gap: 12px !important;
+  padding-top: 6px !important;
+}
+.identity-block h2 {
+  font-size: 50px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+}
+.identity-tagline {
+  font-size: 21.5px !important;
+  font-weight: 500 !important;
+  line-height: 1.12 !important;
+}
+.identity-meta {
+  margin-top: 1px !important;
+  font-size: 17.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.20 !important;
+}
+
+/* QUICK LINKS — eight equal circles on desktop. */
+.quick-actions {
+  grid-template-columns: repeat(8, 58px) minmax(174px, 1fr) !important;
+  gap: 14px !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+}
+.platforms a {
+  width: 58px !important;
+  height: 58px !important;
+  flex: 0 0 58px !important;
+  justify-self: center !important;
+}
+/* 30% margin on each side = mark occupies 40% of the control. */
+.platform-icon {
+  width: 40% !important;
+  height: 40% !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+.lava-toggle {
+  width: 100% !important;
+  min-width: 174px !important;
+  height: 58px !important;
+  padding: 0 18px !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  letter-spacing: .025em !important;
+}
+
+/* FEATURED */
+.play {
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+}
+.play img {
+  width: 28px !important;
+  height: 28px !important;
+  transform: none !important;
+}
+.cta-row a {
+  min-height: 54px !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+}
+.cta-row .inline-arrow,
+.write-button .inline-arrow {
+  margin-left: 12px !important;
+}
+.cta-row .inline-arrow {
+  width: 1em !important;
+  height: 1em !important;
+  filter: none !important;
+}
+
+/* CONTACT */
+.contact-smile,
+.contact-smile-full {
+  top: 50% !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+}
+
+/* MOBILE — 75% card stage / 25% total lava around it. */
+@media (max-width: 719px) {
+  .site-stage {
+    width: 75vw !important;
+    max-width: 75vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .site-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .hero {
+    padding: 18px 15px 18px !important;
+  }
+  .hero-claim-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin: 20px 0 26px !important;
+  }
+  .hero-claim-box {
+    height: 116px !important;
+  }
+
+  .identity-stack {
+    gap: 16px !important;
+  }
+  .identity-block {
+    gap: 7px !important;
+    padding-top: 3px !important;
+  }
+  .identity-block h2 {
+    font-size: 25px !important;
+  }
+  .identity-tagline {
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+  }
+  .identity-meta {
+    font-size: 11.5px !important;
+  }
+
+  .quick-actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 10px 8px !important;
+    width: 100% !important;
+  }
+  .platforms {
+    display: contents !important;
+  }
+  .platforms a {
+    width: 58px !important;
+    height: 58px !important;
+    flex: none !important;
+    justify-self: center !important;
+  }
+  .platform-icon {
+    width: 40% !important;
+    height: 40% !important;
+  }
+  .lava-toggle {
+    grid-column: 1 / -1 !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 62px !important;
+    margin-top: 2px !important;
+    padding: 0 16px !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+  }
+
+  .cta-row a {
+    min-height: 50px !important;
+    font-size: 15px !important;
+  }
+  .play img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .contact-smile,
+  .contact-smile-full {
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+  }
+}
+
+@media (max-width: 719px) and (orientation: landscape) {
+  .site-stage {
+    width: 75vw !important;
+    max-width: 75vw !important;
+  }
+}
