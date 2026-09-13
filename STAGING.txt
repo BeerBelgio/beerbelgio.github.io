@@ -1,11 +1,21 @@
 PUBLIC STAGING — BeerBelgio
 
+Current build: V0.34
+
 This repository is intentionally public for device testing.
 
 Current staging rules:
 - Search-engine indexing disabled via meta robots tags.
-- English is the primary language.
-- sonoDGTL primary route: /sonodgtl/
-- sonoDGTL Italian alternate: /sonodgtl/it/
-- Remove noindex / nofollow / noarchive before public 1.0 launch.
-- Current staging URL: https://beerbelgio.github.io/
+- Remove the noindex / nofollow / noarchive tags from ALL HTML pages before the public 1.0 launch.
+- Current staging URL:
+  https://beerbelgio.github.io/
+
+Current licensing summary:
+- Non-commercial reuse with attribution is allowed under LICENSE.md.
+- Commercial / monetised reuse requires separate written permission and commercial terms.
+
+Pages currently protected by noindex:
+- /
+- /lava/
+- /sonodgtl/
+- /sonodgtl/it/

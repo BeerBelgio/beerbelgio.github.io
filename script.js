@@ -68,13 +68,10 @@
   // ---------------------------------------------------------------
   // HERO CLAIM — equal rectangles + live FUN cutout/window
   // ---------------------------------------------------------------
-  const hero = document.querySelector(".hero");
   const heroFunBox = document.querySelector(".hero-claim-box-fun");
   const heroSeriousBox = document.querySelector(".hero-claim-box-serious");
   const heroFunLabel = document.getElementById("hero-fun-label");
   const heroSeriousLabel = document.getElementById("hero-serious-label");
-  const heroFunCanvas = document.getElementById("hero-fun-window");
-  const lavaCanvasForHero = document.getElementById("lava-canvas");
 
   const claimMeasureCanvas = document.createElement("canvas");
   const claimMeasureCtx = claimMeasureCanvas.getContext("2d");
@@ -98,14 +95,12 @@
     if (!heroFunLabel || !heroSeriousLabel || !heroFunBox || !heroSeriousBox) return;
 
     const mobile = matchMedia("(max-width: 719px)").matches || matchMedia("(pointer: coarse)").matches;
-    const landscapeMobile = mobile && matchMedia("(orientation: landscape)").matches;
-
     // FUN remains the master block. On mobile both halves can grow a little
     // more because the solid fill is much more legible than the old lava cutout.
     let low = 24;
     let high = 300;
-    const funMaxW = heroFunBox.clientWidth * (mobile ? 0.95 : 0.995);
-    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.90 : 0.965);
+    const funMaxW = heroFunBox.clientWidth * (mobile ? 0.995 : 1.00);
+    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.98 : 0.985);
 
     for (let i = 0; i < 22; i++) {
       const mid = (low + high) / 2;
@@ -142,53 +137,6 @@
     heroSeriousLabel.style.setProperty("font-size", `${Math.max(10, low - 0.2)}px`, "important");
   }
 
-  function drawHeroFunWindow() {
-    if (!heroFunCanvas || !heroFunBox || !heroFunLabel || !lavaCanvasForHero) return;
-
-    const boxRect = heroFunBox.getBoundingClientRect();
-    const labelRect = heroFunLabel.getBoundingClientRect();
-    const lavaRect = lavaCanvasForHero.getBoundingClientRect();
-    if (boxRect.width < 2 || boxRect.height < 2) return;
-
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    const w = Math.max(1, Math.round(boxRect.width * dpr));
-    const h = Math.max(1, Math.round(boxRect.height * dpr));
-
-    if (heroFunCanvas.width !== w || heroFunCanvas.height !== h) {
-      heroFunCanvas.width = w;
-      heroFunCanvas.height = h;
-    }
-    heroFunCanvas.style.width = `${boxRect.width}px`;
-    heroFunCanvas.style.height = `${boxRect.height}px`;
-
-    const ctx = heroFunCanvas.getContext("2d");
-    const scaleX = lavaCanvasForHero.width / Math.max(1, lavaRect.width);
-    const scaleY = lavaCanvasForHero.height / Math.max(1, lavaRect.height);
-    const sx = Math.max(0, Math.round((boxRect.left - lavaRect.left) * scaleX));
-    const sy = Math.max(0, Math.round((boxRect.top - lavaRect.top) * scaleY));
-    const sw = Math.max(1, Math.min(lavaCanvasForHero.width - sx, Math.round(boxRect.width * scaleX)));
-    const sh = Math.max(1, Math.min(lavaCanvasForHero.height - sy, Math.round(boxRect.height * scaleY)));
-
-    ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(lavaCanvasForHero, sx, sy, sw, sh, 0, 0, w, h);
-
-    ctx.globalCompositeOperation = "destination-in";
-    const cs = getComputedStyle(heroFunLabel);
-    const fontSize = parseFloat(cs.fontSize) * dpr;
-    ctx.font = `${cs.fontWeight || 900} ${fontSize}px ${cs.fontFamily}`;
-    ctx.textBaseline = "alphabetic";
-    ctx.fillStyle = "#000";
-    const metrics = ctx.measureText("FUN");
-    const ascent = metrics.actualBoundingBoxAscent || fontSize * 0.78;
-    const descent = metrics.actualBoundingBoxDescent || fontSize * 0.18;
-    const glyphH = ascent + descent;
-    const labelX = (labelRect.left - boxRect.left) * dpr;
-    const labelY = ((labelRect.top - boxRect.top) * dpr) + ((labelRect.height * dpr - glyphH) / 2) + ascent;
-    ctx.fillText("FUN", labelX, labelY);
-    ctx.globalCompositeOperation = "source-over";
-
-    hero?.classList.add("fun-window-ready");
-  }
 
   async function startHeroClaim() {
     if (document.fonts?.ready) {

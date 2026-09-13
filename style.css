@@ -2244,19 +2244,30 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.33 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
-   This block REPLACES the previous staging block; version overrides are
-   not accumulated between builds.
+   V0.34 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   This block REPLACES V0.33. Never stack staging override blocks.
    ========================================================= */
 
-/* JS owns the canvas pixel size/overscan. Keep only fixed-layer behaviour here. */
+/* ---------------------------------------------------------
+   LAVA CANVAS / IOS SAFARI
+   Use the large viewport + safe-area overscan. JS only sizes the
+   backing bitmap to this CSS box and no longer reacts to visualViewport
+   changes while Safari's chrome animates during scroll.
+   --------------------------------------------------------- */
 #lava-canvas {
   position: fixed !important;
+  left: calc(-1 * env(safe-area-inset-left, 0px)) !important;
+  top: calc(-1 * env(safe-area-inset-top, 0px)) !important;
   right: auto !important;
   bottom: auto !important;
+  width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px)) !important;
+  height: calc(100vh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px)) !important;
+  height: calc(100lvh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px)) !important;
   max-width: none !important;
   max-height: none !important;
   display: block !important;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .site-stage,
@@ -2276,30 +2287,31 @@ html.desktop-proportional .site-shell {
 }
 .arrow { display: grid; place-items: center; }
 
-/* HERO CLAIM — solid FUN, symmetrical expansion, shared optical centre. */
-.hero.fun-window-ready .fun,
+/* ---------------------------------------------------------
+   HERO CLAIM
+   Each half is centred inside its own half of the card.
+   --------------------------------------------------------- */
 .hero .fun { color: var(--orange) !important; }
-.hero-fun-window,
-.hero.fun-window-ready .hero-fun-window { display: none !important; }
 
 .hero-claim-grid {
   display: grid !important;
-  width: calc(100% + 96px) !important;
-  margin: 30px -48px 42px !important;
+  width: calc(100% + 120px) !important;
+  margin: 26px -60px 38px !important;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-  column-gap: 72px !important;
+  column-gap: 64px !important;
   align-items: center !important;
   justify-content: center !important;
   align-self: center !important;
 }
 .hero-claim-box {
-  height: 218px !important;
+  height: 228px !important;
   display: flex !important;
   align-items: center !important;
+  justify-content: center !important;
   overflow: visible !important;
 }
-.hero-claim-box-fun { justify-content: flex-end !important; }
-.hero-claim-box-serious { justify-content: flex-start !important; }
+.hero-claim-box-fun,
+.hero-claim-box-serious { justify-content: center !important; }
 .hero .fun,
 .hero .serious {
   width: auto !important;
@@ -2316,13 +2328,15 @@ html.desktop-proportional .site-shell {
 }
 .hero .serious > span { display: block; white-space: nowrap !important; }
 
-/* HERO IDENTITIES */
+/* ---------------------------------------------------------
+   HERO IDENTITIES
+   --------------------------------------------------------- */
 .identity-card-link:first-child .identity-block { text-align: right; }
 .identity-card-link:last-child .identity-block { text-align: left; }
 .identity-block {
   grid-template-rows: auto auto auto !important;
   gap: 14px !important;
-  padding-top: 6px !important;
+  padding-top: 12px !important;
 }
 .identity-block h2 {
   font-size: 50px !important;
@@ -2336,38 +2350,45 @@ html.desktop-proportional .site-shell {
   line-height: 1.12 !important;
 }
 .identity-meta {
-  margin-top: 1px !important;
-  font-size: 17.5px !important;
+  margin-top: 0 !important;
+  font-size: 17px !important;
   font-weight: 600 !important;
-  line-height: 1.20 !important;
+  line-height: 1.18 !important;
 }
 
-/* QUICK LINKS — desktop: 4 + 4 circles, FULL LAVA spans both rows at right. */
+/* ---------------------------------------------------------
+   QUICK LINKS — desktop conceptual 6×2 grid = 12 circular cells.
+   Eight icons use the first 4 columns; FULL LAVA occupies the
+   remaining 2×2 cells (4-cell footprint + internal gaps).
+   --------------------------------------------------------- */
 .quick-actions {
   display: grid !important;
-  grid-template-columns: max-content 152px !important;
-  gap: 18px !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  grid-template-rows: repeat(2, auto) !important;
+  gap: 12px !important;
   align-items: stretch !important;
-  justify-content: space-between !important;
   width: 100% !important;
 }
-.platforms {
-  display: grid !important;
-  grid-template-columns: repeat(4, 68px) !important;
-  grid-template-rows: repeat(2, 68px) !important;
-  gap: 12px !important;
-  width: max-content !important;
-}
+.platforms { display: contents !important; }
 .platforms a {
-  width: 68px !important;
-  height: 68px !important;
-  min-width: 68px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
   display: grid !important;
   place-items: center !important;
-  justify-self: center !important;
-  align-self: center !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
   line-height: 0 !important;
 }
+.platforms a:nth-child(1) { grid-column: 1; grid-row: 1; }
+.platforms a:nth-child(2) { grid-column: 2; grid-row: 1; }
+.platforms a:nth-child(3) { grid-column: 3; grid-row: 1; }
+.platforms a:nth-child(4) { grid-column: 4; grid-row: 1; }
+.platforms a:nth-child(5) { grid-column: 1; grid-row: 2; }
+.platforms a:nth-child(6) { grid-column: 2; grid-row: 2; }
+.platforms a:nth-child(7) { grid-column: 3; grid-row: 2; }
+.platforms a:nth-child(8) { grid-column: 4; grid-row: 2; }
 .platform-icon {
   width: 40% !important;
   height: 40% !important;
@@ -2376,44 +2397,51 @@ html.desktop-proportional .site-shell {
   margin: 0 !important;
 }
 .lava-toggle {
-  width: 152px !important;
-  min-width: 152px !important;
-  height: 148px !important;
-  padding: 0 18px !important;
+  grid-column: 5 / 7 !important;
+  grid-row: 1 / 3 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  padding: 0 20px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 2px !important;
-  font-size: 23px !important;
-  line-height: .92 !important;
+  gap: 3px !important;
+  font-size: 34px !important;
+  line-height: .90 !important;
   font-weight: 700 !important;
-  letter-spacing: .02em !important;
+  letter-spacing: .015em !important;
 }
 .lava-toggle span { display: block; }
 
-/* FEATURED */
+/* ---------------------------------------------------------
+   FEATURED
+   --------------------------------------------------------- */
 .play { display: grid !important; place-items: center !important; padding: 0 !important; }
 .play img {
-  width: 28px !important;
-  height: 28px !important;
+  width: 34px !important;
+  height: 34px !important;
   display: block !important;
-  transform: none !important;
+  transform: translateX(1px) !important;
 }
+.video-note { display: none !important; }
 .cta-row a {
   min-height: 54px !important;
-  font-size: 16px !important;
+  font-size: 16.5px !important;
   font-weight: 800 !important;
 }
 .cta-row .inline-arrow,
-.write-button .inline-arrow { margin-left: 8px !important; }
+.write-button .inline-arrow { margin-left: 6px !important; }
 .cta-row .inline-arrow {
   width: 1em !important;
   height: 1em !important;
   filter: none !important;
 }
 
-/* BRAND / CONTACT */
+/* ---------------------------------------------------------
+   BRAND / CONTACT
+   --------------------------------------------------------- */
 .beerbelgio-card .brand-heading { text-transform: none !important; }
 .contact-smile,
 .contact-smile-full {
@@ -2421,14 +2449,18 @@ html.desktop-proportional .site-shell {
   bottom: auto !important;
   transform: translateY(-50%) !important;
 }
-.contact h2 span:first-child {
-  overflow-wrap: normal !important;
-  word-break: normal !important;
+.contact-main-line,
+.contact-weird-line { display: block !important; }
+.contact-main-line { white-space: nowrap !important; }
+.contact-main-line > span {
+  display: inline !important;
+  white-space: nowrap !important;
 }
-
 .mobile-only-break { display: none; }
 
-/* MOBILE EXPERIENCE */
+/* ---------------------------------------------------------
+   MOBILE EXPERIENCE
+   --------------------------------------------------------- */
 @media (max-width: 719px), (pointer: coarse) {
   .site-stage {
     width: 80vw !important;
@@ -2446,40 +2478,48 @@ html.desktop-proportional .site-shell {
   }
   .card { width: 100% !important; max-width: 100% !important; }
 
-  /* Never allow the claim to collapse into two rows. */
+  /* +~15% visual claim growth versus V0.33, still one 2-column row. */
   .hero { padding: 18px 15px 18px !important; }
   .hero-meta { font-size: 10px !important; }
   .hero-claim-grid {
     display: grid !important;
-    width: 100% !important;
-    margin: 18px 0 27px !important;
+    width: calc(100% + 28px) !important;
+    margin: 11px -14px 16px !important;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
     grid-template-rows: 1fr !important;
     column-gap: 12px !important;
     align-items: center !important;
+    justify-content: center !important;
   }
   .hero-claim-box {
     height: 132px !important;
     min-width: 0 !important;
+    justify-content: center !important;
   }
-  .hero-claim-box-fun { justify-content: flex-end !important; }
-  .hero-claim-box-serious { justify-content: flex-start !important; }
 
-  .identity-stack { gap: 17px !important; }
-  .identity-block { gap: 13px !important; padding-top: 3px !important; }
+  /* Same descriptor size for both identities; smaller meta block. */
+  .identity-stack { gap: 19px !important; }
+  .identity-block {
+    gap: 15px !important;
+    padding-top: 15px !important;
+  }
   .identity-block h2 { font-size: 25px !important; }
   .identity-tagline {
-    font-size: 11.4px !important;
-    line-height: 1.16 !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
     font-weight: 500 !important;
     white-space: nowrap !important;
   }
-  .identity-meta { font-size: 11.5px !important; line-height: 1.18 !important; }
+  .identity-meta {
+    font-size: 10.4px !important;
+    line-height: 1.16 !important;
+  }
 
-  /* 4 + 4, then FULL LAVA alone. */
+  /* Approved mobile 4 + 4, then FULL LAVA alone. */
   .quick-actions {
     display: grid !important;
     grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto !important;
     gap: 10px !important;
     width: 100% !important;
     overflow: visible !important;
@@ -2491,17 +2531,24 @@ html.desktop-proportional .site-shell {
     gap: 10px 8px !important;
     width: 100% !important;
   }
-  .platforms a {
+  .platforms a,
+  .platforms a:nth-child(n) {
+    grid-column: auto !important;
+    grid-row: auto !important;
     width: 54px !important;
-    height: 54px !important;
     min-width: 54px !important;
+    height: 54px !important;
+    aspect-ratio: 1 / 1 !important;
     justify-self: center !important;
+    align-self: center !important;
   }
   .platform-icon {
     width: 40% !important;
     height: 40% !important;
   }
   .lava-toggle {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
     width: 100% !important;
     min-width: 0 !important;
     height: 66px !important;
@@ -2518,8 +2565,9 @@ html.desktop-proportional .site-shell {
     height: 54px !important;
   }
   .play img {
-    width: 24px !important;
-    height: 24px !important;
+    width: 28px !important;
+    height: 28px !important;
+    transform: translateX(1px) !important;
   }
   .cta-row a {
     min-height: 50px !important;
@@ -2528,7 +2576,7 @@ html.desktop-proportional .site-shell {
   .cta-row .inline-arrow {
     width: 1em !important;
     height: 1em !important;
-    margin-left: 7px !important;
+    margin-left: 5px !important;
   }
 
   .sonodgtl-card > a > span:first-child,
@@ -2540,25 +2588,34 @@ html.desktop-proportional .site-shell {
   .mobile-only-break { display: block !important; }
 
   .contact h2 {
-    max-width: 74% !important;
-    font-size: clamp(20px, 6.4vw, 26px) !important;
+    max-width: 76% !important;
+    font-size: clamp(20px, 6.1vw, 25px) !important;
     line-height: .96 !important;
+  }
+  .contact-main-line { white-space: normal !important; }
+  .contact-main-line > span {
+    display: block !important;
+    white-space: nowrap !important;
+  }
+  .contact-weird-line {
+    display: block !important;
+    white-space: nowrap !important;
   }
   .contact-smile,
   .contact-smile-full {
-    width: 116px !important;
+    width: 112px !important;
     right: 5px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
   }
 }
 
-/* Phone landscape: wider stage and side-by-side hero identities. */
+/* Phone landscape: same 80% stage; identities stay side-by-side. */
 @media (orientation: landscape) and (pointer: coarse),
        (max-width: 719px) and (orientation: landscape) {
   .site-stage {
-    width: 84vw !important;
-    max-width: 84vw !important;
+    width: 80vw !important;
+    max-width: 80vw !important;
   }
   .identity-stack {
     grid-template-columns: 1fr 1fr !important;
@@ -2568,6 +2625,6 @@ html.desktop-proportional .site-shell {
   .identity-card-link:first-child .identity-block { text-align: right !important; }
   .identity-card-link:last-child .identity-block { text-align: left !important; }
   .identity-block h2 { font-size: 24px !important; }
-  .identity-tagline { font-size: 10.7px !important; }
-  .identity-meta { font-size: 10.8px !important; }
+  .identity-tagline { font-size: 11px !important; }
+  .identity-meta { font-size: 10.4px !important; }
 }

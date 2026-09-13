@@ -76,39 +76,39 @@
     };
   }
 
-  function resize() {
-    // V0.33: keep blob/world coordinates in page-viewport space, but on
-    // portrait touch devices give the canvas extra hidden vertical runway.
-    // The visible screen sits inside this larger canvas, so the top/bottom
-    // of the phone are no longer also the internal canvas boundaries.
+  function resize(force = false) {
+    // V0.34: CSS defines an iOS-safe canvas that extends into safe areas and
+    // uses the LARGE viewport height. JS only mirrors that CSS rectangle into
+    // the backing bitmap. This avoids tying canvas height to Safari's animated
+    // visual viewport / toolbar during scroll.
     const oldPadX = padX;
     const oldPadY = padY;
+    const oldWidth = width;
+    const oldHeight = height;
 
     const doc = document.documentElement;
     viewWidth = Math.max(1, window.innerWidth || doc.clientWidth || 1);
     viewHeight = Math.max(1, window.innerHeight || doc.clientHeight || 1);
 
-    const coarse = matchMedia("(pointer: coarse)").matches;
-    const portrait = matchMedia("(orientation: portrait)").matches;
-
-    padX = 0;
-    padY = coarse && portrait ? Math.max(110, viewHeight * 0.20) : 0;
-
-    width = viewWidth + padX * 2;
-    height = viewHeight + padY * 2;
+    const rect = canvas.getBoundingClientRect();
+    padX = Math.max(0, -rect.left);
+    padY = Math.max(0, -rect.top);
+    width = Math.max(1, rect.width);
+    height = Math.max(1, rect.height);
     dpr = Math.min(devicePixelRatio || 1, 2);
 
-    canvas.style.left = `${-padX}px`;
-    canvas.style.top = `${-padY}px`;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
+    const pixelW = Math.round(width * dpr);
+    const pixelH = Math.round(height * dpr);
+    const bitmapChanged = canvas.width !== pixelW || canvas.height !== pixelH;
 
-    canvas.width = Math.round(width * dpr);
-    canvas.height = Math.round(height * dpr);
+    if (bitmapChanged) {
+      canvas.width = pixelW;
+      canvas.height = pixelH;
+    }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // Keep the current visible blob positions stable when the hidden runway
-    // appears/disappears after rotation or Safari viewport changes.
+    // Preserve each blob's visible viewport position when safe-area geometry
+    // changes after rotation.
     const dx = padX - oldPadX;
     const dy = padY - oldPadY;
     if (dx || dy) {
@@ -117,6 +117,11 @@
         blob.y += dy;
       });
     }
+
+    // If Safari fired a resize only because browser chrome animated but the
+    // actual large-viewport canvas box did not change, we deliberately avoid
+    // recreating/clearing the bitmap. That removes scroll flicker.
+    return force || bitmapChanged || oldWidth !== width || oldHeight !== height;
   }
 
   function getHeaterZone() {
@@ -602,9 +607,6 @@
     setTimeout(resize, 120);
     setTimeout(resize, 420);
   }, { passive: true });
-  if (window.visualViewport) {
-    visualViewport.addEventListener("resize", () => requestAnimationFrame(resize), { passive: true });
-  }
 
   addEventListener("pointermove", (e) => {
     pointer.x = e.clientX + padX;

@@ -1,45 +1,41 @@
 # Licensing
 
-Copyright © 2026 Matteo Belgiovine.
+Copyright © 2026 Matteo Belgiovine / BeerBelgio.
 
-This repository uses a **dual licence** so the original work may be reused as long as Matteo Belgiovine is credited.
+This repository intentionally allows **non-commercial reuse with attribution**.
+Commercial use is **not granted by this repository** and requires a separate written agreement with Matteo Belgiovine.
 
-## 1. Website code — MIT License
+## 1. Original website code — PolyForm Noncommercial 1.0.0
 
-The original HTML, CSS and JavaScript code in this repository is licensed under the MIT License:
+The original HTML, CSS and JavaScript code authored for this project is licensed under the **PolyForm Noncommercial License 1.0.0**.
 
-MIT License
+Canonical licence terms:
+https://polyformproject.org/licenses/noncommercial/1.0.0/
 
-Copyright (c) 2026 Matteo Belgiovine
+Required Notice: Copyright © 2026 Matteo Belgiovine / BeerBelgio — https://beerbelgio.github.io/
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+In practical terms: non-commercial use, modification and redistribution are permitted under the PolyForm terms. Commercial use is not licensed here.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## 2. Original creative material — CC BY-NC 4.0
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Original text, visual design, original artwork, original graphics and other original creative material in this repository are licensed under **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**, to the extent Matteo Belgiovine owns the applicable rights.
 
-## 2. Original creative material — CC BY 4.0
+Canonical licence:
+https://creativecommons.org/licenses/by-nc/4.0/
 
-Original text, visual design, original artwork, original graphics and other original creative material in this repository are licensed under the **Creative Commons Attribution 4.0 International licence (CC BY 4.0)**, to the extent that Matteo Belgiovine owns the applicable rights.
-
-You may share and adapt that material, including commercially, provided you give appropriate credit to:
-
+Preferred attribution:
 **Matteo Belgiovine / BeerBelgio — https://beerbelgio.github.io/**
 
-Licence: https://creativecommons.org/licenses/by/4.0/
+If modified, the reuse should also indicate that changes were made, as required by CC BY-NC 4.0.
 
-## 3. Third-party material
+## 3. Commercial use
+
+Commercial use, monetised reuse, resale, paid client work, incorporation into commercial products/services, or other use primarily intended for commercial advantage or monetary compensation is **not authorised under the repository licences above**.
+
+For commercial licensing, contact Matteo Belgiovine to discuss permission and commercial terms, including compensation / revenue participation where applicable:
+
+matteo.sonodgtl@gmail.com
+
+## 4. Third-party material
 
 These licences do **not** relicense third-party fonts, platform names, trademarks, logos, or other third-party material. Those remain subject to their respective owners' terms and licences. See `THIRD_PARTY_NOTICES.md`.

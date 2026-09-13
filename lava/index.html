@@ -8,8 +8,8 @@
   <meta name="googlebot" content="noindex, nofollow, noarchive">
   <meta name="theme-color" content="#973320">
   <title>Lava — BeerBelgio</title>
-  <link rel="icon" href="../assets/favicon.svg?v=033" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/fonts/m-plus-rounded-1c/font.css?v=033">
+  <link rel="icon" href="../assets/favicon.svg?v=034" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/fonts/m-plus-rounded-1c/font.css?v=034">
   <style>
     * { box-sizing: border-box; }
     html, body {
@@ -23,10 +23,14 @@
 
     #lava-canvas {
       position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      left: calc(-1 * env(safe-area-inset-left, 0px));
+      top: calc(-1 * env(safe-area-inset-top, 0px));
+      width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+      height: calc(100vh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
+      height: calc(100lvh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
       display: block;
+      transform: translateZ(0);
+      will-change: transform;
     }
 
     .hud {
@@ -61,10 +65,10 @@
   <canvas id="lava-canvas" aria-label="Interactive BeerBelgio lava"></canvas>
 
   <div class="hud">
-    <a href="../"><img src="../assets/icon-arrow-left.svg?v=033" alt=""> HUB</a>
+    <a href="../"><img src="../assets/icon-arrow-left.svg?v=034" alt=""> HUB</a>
     <span>MOVE / CLICK / WHEEL</span>
   </div>
 
-  <script src="../lava.js?v=033"></script>
+  <script src="../lava.js?v=034"></script>
 </body>
 </html>

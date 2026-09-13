@@ -1,4 +1,4 @@
-BEERBELGIO.GITHUB.IO — V0.33 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.34 PUBLIC STAGING
 
 STAGING
 - Public GitHub Pages staging remains active.
@@ -7,58 +7,69 @@ STAGING
 - sonoDGTL base route: /sonodgtl/ (ENG)
 - Italian alternate: /sonodgtl/it/
 - .nojekyll remains enabled for direct static hosting.
-- Cache-busting advanced to ?v=033 for main CSS/JS/local visual assets.
-- Build rule: each new staging build REPLACES the previous authoritative version override block instead of stacking a new override layer on top.
+- Cache-busting advanced to ?v=034 for main CSS/JS/local visual assets.
+- Build rule confirmed: every staging build REPLACES the previous authoritative override block. V0.34 contains one staging block only; V0.33 is not stacked underneath it.
 
 RIGHTS / LICENSING
-- Licensing changed from All Rights Reserved to attribution-friendly reuse, as requested.
-- Original website code: MIT License.
-- Original creative material: CC BY 4.0.
-- Reuse is allowed, including adaptation/commercial reuse, with the attribution/licence conditions stated in LICENSE.md.
+- Commercial reuse is NO LONGER granted by the repository licence.
+- Original website code: PolyForm Noncommercial 1.0.0.
+- Original creative material: CC BY-NC 4.0.
+- Non-commercial reuse/adaptation is allowed under those licence terms with attribution / required notices.
 - Preferred attribution: Matteo Belgiovine / BeerBelgio — https://beerbelgio.github.io/
+- Any commercial / monetised use requires a separate written agreement with Matteo Belgiovine; commercial terms and compensation/revenue participation are to be discussed separately.
 - Third-party font/platform names/logos remain excluded and are documented in THIRD_PARTY_NOTICES.md.
 
 MOBILE STAGE
-- Portrait stage widened from 75vw to 80vw: slightly more card width while still leaving visible lava on both sides.
-- Landscape touch stage uses 84vw.
+- Portrait remains at the approved 80vw.
+- Landscape is now also 80vw: no additional widening on rotation.
 
 HERO CLAIM
-- V0.32 equal-height relationship remains the basis.
-- Desktop claim expands symmetrically outside the normal content width, keeping the whole claim centred in the card.
-- Desktop centre gap increased to 72px and the fitting area is slightly larger so both halves can grow toward the outer edges.
-- Mobile is explicitly locked to one two-column row; FUN and IS A / SERIOUS / THING. cannot collapse into stacked rows.
-- JS phone detection now matches CSS: coarse-pointer phones remain in the mobile fitting logic even in landscape.
-- The obsolete live-FUN canvas-copy loop is disabled because FUN is now a solid colour again.
+- Obsolete live-FUN canvas element and canvas-copy JavaScript have been physically removed from HTML/JS, not merely hidden.
+- Desktop: each half of the claim is centred inside its own equal half of the hero, instead of being pulled toward the central gap.
+- Desktop fitting area is slightly larger so the paired claim can grow while remaining symmetrically centred.
+- Mobile: same two-column layout retained; fitting area expanded and spacing above/below reduced by roughly 40% compared with V0.33.
+- Mobile claim gains approximately 15% more usable fitting room while preserving FUN / three-line proportionality.
 
 HERO IDENTITIES
-- Portrait descriptor text is reduced to 11.4px and each explicit descriptor line is kept intact, preventing an orphaned FOR in sonoDGTL.
-- Spacing between title / descriptor / categories remains deliberately generous.
-- Landscape mobile keeps BeerBelgio / sonoDGTL side-by-side.
+- Mobile BeerBelgio and sonoDGTL descriptors are both exactly 11px.
+- Mobile category/meta blocks reduced to 10.4px.
+- Divider-to-title and title/descriptor/category spacing increased to a consistent 15px rhythm.
+- Landscape still places BeerBelgio and sonoDGTL side-by-side.
 
 QUICK LINKS
-- Mobile remains the approved 4 + 4 icon layout followed by FULL LAVA alone.
-- Desktop changes to 4 + 4 larger 68px circles.
-- Desktop FULL LAVA stays at the right and spans the visual height of both icon rows; FULL / LAVA are split over two lines.
-- Mobile FULL LAVA remains one horizontal line.
-- Email icon was rebuilt as a filled 24×24 mark so the same 40% CSS scaling now produces an optical size comparable to the other platform icons.
+- Mobile approved layout remains 4 + 4 icons, then FULL LAVA alone.
+- Desktop is rebuilt as a conceptual 6×2 / 12-cell grid.
+- Eight circular platform links occupy 8 cells (4 + 4).
+- FULL LAVA occupies the remaining 2 columns × 2 rows = the footprint of four circular cells plus their internal gaps.
+- Desktop circles are therefore substantially larger and evenly distributed across the available width.
+- Email icon keeps the same scale as every other icon; its upper flap incision is now heavier/more visible.
 
 FEATURED
-- Mobile play circle reduced to 54px with a 24px play mark.
-- Mobile Spotify / YouTube labels set to 15px.
-- CTA arrows move slightly closer to their labels everywhere: 8px desktop / 7px mobile.
+- Video title overlay removed completely.
+- Play triangle enlarged inside the existing circle (desktop 34px; mobile 28px).
+- Desktop Spotify / YouTube labels increased by 0.5px to 16.5px.
+- Mobile Spotify / YouTube remain 15px.
+- CTA arrows moved slightly closer to text everywhere (6px desktop / 5px mobile).
 
 SONODGTL CARD
-- Main title wraps naturally.
-- On mobile only, the CTA is deliberately split into:
-  OPEN THE WEBSITE
-  LET’S WORK TOGETHER!
-- Desktop keeps the single-line version with the em dash.
+- Mobile title now deliberately breaks before REAL-WORLD PROJECTS.
+- Mobile CTA still breaks between OPEN THE WEBSITE / LET’S WORK TOGETHER!
+- Desktop keeps natural single-line flow where space allows.
+
+CONTACT
+- Desktop remains visually unchanged.
+- Mobile headline is explicitly structured as three safe lines:
+  WORKING ON
+  SOMETHING
+  WEIRD AND COOL?
+- This avoids short orphan words while preserving the approved smile placement.
 
 LAVA / IPHONE
-- Landscape safe-area fix from V0.32 is retained.
-- Portrait touch mode now gives the canvas a hidden vertical runway above and below the visible viewport while keeping blob coordinates aligned with the page.
-- This specifically targets the remaining portrait-only top/bottom crop without reintroducing the horizontal crop that V0.32 fixed.
-- BASIC MODE and FULL LAVA still use the same lava field and edge behaviour.
+- Why cards and bubbles behave differently: cards are normal DOM/document elements; the lava is one fixed canvas compositor layer. Safari can resize/clip that fixed visual layer differently when its top/bottom browser chrome and safe areas animate.
+- V0.34 uses viewport-fit=cover + safe-area overscan + the CSS LARGE viewport height (100lvh) for the lava canvas.
+- JS now sizes the canvas backing bitmap from the canvas' actual CSS bounding box instead of inventing portrait padding/runways.
+- visualViewport resize handling has been removed from lava.js. Safari used to fire it continuously as browser chrome moved during scrolling, repeatedly recreating/clearing the canvas and causing visible flicker.
+- BASIC and FULL LAVA still share exactly the same lava field and geometry.
 
 DEFERRED
 - Final floating motto scroll-growth / centre-screen transformation remains intentionally NOT implemented yet.
