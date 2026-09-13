@@ -2703,3 +2703,196 @@ html.desktop-proportional .site-shell {
     height: 112px !important;
   }
 }
+
+/* =========================================================
+   V0.29 PUBLIC STAGING OVERRIDES
+   ========================================================= */
+
+/* HERO CLAIM — JS owns font sizing. The inline !important values now
+   override the legacy fixed-size rules, so FUN can again dominate and
+   the three-line phrase can match its total visual height. */
+.hero-claim-grid {
+  margin: 42px 0 46px !important;
+}
+.hero-claim-box {
+  height: 210px !important;
+}
+
+/* Lower hero identities: slightly calmer than V0.28, with more air
+   between title / descriptor / metadata. */
+.identity-block {
+  gap: 9px !important;
+  padding-top: 7px !important;
+}
+.identity-block h2 {
+  font-size: 52px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+}
+.identity-tagline {
+  font-size: 23px !important;
+  font-weight: 600 !important;
+  line-height: 1.12 !important;
+}
+.identity-meta {
+  margin-top: 2px !important;
+  font-size: 17.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.20 !important;
+}
+
+/* QUICK ACTIONS — 8 icons + FULL LAVA, one row on desktop. */
+.quick-actions {
+  grid-template-columns: repeat(8, 52px) auto !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0 !important;
+}
+.platforms a {
+  width: 52px !important;
+  height: 52px !important;
+  flex: 0 0 52px !important;
+}
+.platform-icon {
+  width: 70% !important;
+  height: 70% !important;
+  object-fit: contain;
+  display: block;
+}
+.lava-toggle {
+  height: 52px !important;
+  min-width: 160px !important;
+  padding: 0 19px !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  letter-spacing: .025em !important;
+}
+
+/* FEATURED — stronger labels, site-cream arrows, optical play centering. */
+.play {
+  padding-left: 0 !important;
+}
+.play img {
+  width: 28px !important;
+  height: 28px !important;
+  transform: none !important;
+}
+.cta-row a {
+  min-height: 54px !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  letter-spacing: .025em !important;
+}
+.cta-row .inline-arrow {
+  margin-left: 12px !important;
+  width: 1em !important;
+  height: 1em !important;
+  filter: none !important;
+}
+
+/* All non-featured inline arrows keep their original ink SVG, just breathe. */
+.write-button .inline-arrow {
+  margin-left: 11px !important;
+}
+
+/* CONTACT — center the smile on the card's horizontal midline. */
+.contact-smile {
+  top: 50% !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+}
+
+/* MOBILE */
+@media (max-width: 719px) {
+  .site-stage {
+    width: 75vw !important;
+    margin: 0 auto !important;
+  }
+
+  .hero {
+    padding: 18px 16px 18px !important;
+  }
+
+  .hero-claim-grid {
+    gap: 8px !important;
+    margin: 22px 0 28px !important;
+  }
+
+  .hero-claim-box {
+    height: 122px !important;
+  }
+
+  .identity-stack {
+    gap: 16px !important;
+  }
+
+  .identity-block {
+    gap: 7px !important;
+    padding-top: 3px !important;
+  }
+
+  .identity-block h2 {
+    font-size: 25px !important;
+    font-weight: 700 !important;
+  }
+
+  .identity-tagline {
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    line-height: 1.13 !important;
+  }
+
+  .identity-meta {
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    line-height: 1.20 !important;
+  }
+
+  .quick-actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 10px 6px !important;
+  }
+
+  .platforms a {
+    width: 48px !important;
+    height: 48px !important;
+    flex: none !important;
+    justify-self: center !important;
+  }
+
+  .platform-icon {
+    width: 70% !important;
+    height: 70% !important;
+  }
+
+  .lava-toggle {
+    grid-column: 1 / -1 !important;
+    justify-self: end !important;
+    width: 58% !important;
+    min-width: 0 !important;
+    height: 48px !important;
+    padding: 0 12px !important;
+    font-size: 17px !important;
+  }
+
+  .cta-row a {
+    min-height: 48px !important;
+    font-size: 14px !important;
+  }
+
+  .cta-row .inline-arrow {
+    margin-left: 9px !important;
+  }
+
+  .contact-smile {
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+  }
+}
+
+@media (max-width: 719px) and (orientation: landscape) {
+  .site-stage {
+    width: 75vw !important;
+  }
+}

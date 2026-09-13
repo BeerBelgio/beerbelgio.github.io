@@ -179,16 +179,17 @@
   function contain(blob) {
     const coarse = matchMedia("(pointer: coarse)").matches;
     const standaloneLava = location.pathname.includes("/lava/");
+    const mobileKeepWhole = coarse;
     const immersiveMobile = coarse && (document.body.classList.contains("lava-mode") || standaloneLava);
-    const edge = immersiveMobile
+    const edge = mobileKeepWhole
       ? blob.r * (1.58 + Math.min(0.24, (blob.deformMag || 0) * 0.18))
       : blob.r * 0.35;
     const bounce = 0.82;
 
-    const minX = immersiveMobile ? edge : -edge;
-    const maxX = immersiveMobile ? width - edge : width + edge;
-    const minY = immersiveMobile ? edge : -edge;
-    const maxY = immersiveMobile ? height - edge : height + edge;
+    const minX = mobileKeepWhole ? edge : -edge;
+    const maxX = mobileKeepWhole ? width - edge : width + edge;
+    const minY = mobileKeepWhole ? edge : -edge;
+    const maxY = mobileKeepWhole ? height - edge : height + edge;
 
     if (blob.x < minX) {
       blob.x = minX;

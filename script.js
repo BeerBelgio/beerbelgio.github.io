@@ -82,12 +82,12 @@
     let high = max;
     for (let i = 0; i < 18; i++) {
       const mid = (low + high) / 2;
-      el.style.fontSize = `${mid}px`;
+      el.style.setProperty("font-size", `${mid}px`, "important");
       const r = el.getBoundingClientRect();
       if (r.width <= box.clientWidth * 0.96 && r.height <= box.clientHeight * 0.92) low = mid;
       else high = mid;
     }
-    el.style.fontSize = `${Math.max(min, low - 0.25)}px`;
+    el.style.setProperty("font-size", `${Math.max(min, low - 0.25)}px`, "important");
   }
 
   function fitHeroClaim() {
@@ -104,7 +104,7 @@
     let high = 180;
     for (let i = 0; i < 18; i++) {
       const mid = (low + high) / 2;
-      heroSeriousLabel.style.fontSize = `${mid}px`;
+      heroSeriousLabel.style.setProperty("font-size", `${mid}px`, "important");
       const r = heroSeriousLabel.getBoundingClientRect();
       const fitsWidth = r.width <= heroSeriousBox.clientWidth * 0.98;
       const fitsHeight = r.height <= heroSeriousBox.clientHeight * 0.96;
@@ -112,7 +112,7 @@
       if (fitsWidth && fitsHeight && meetsTarget) low = mid;
       else high = mid;
     }
-    heroSeriousLabel.style.fontSize = `${Math.max(12, low - 0.25)}px`;
+    heroSeriousLabel.style.setProperty("font-size", `${Math.max(12, low - 0.25)}px`, "important");
   }
 
   function drawHeroFunWindow() {
