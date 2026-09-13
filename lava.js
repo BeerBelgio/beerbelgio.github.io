@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.35
+/* BeerBelgio Lava Engine — V0.36
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -99,7 +99,7 @@
 
   function resize(force = false) {
     syncPortraitCanvasPosition();
-    // V0.35: portrait iPhone can use an absolute document-layer canvas;
+    // V0.36: portrait iPhone can use an absolute document-layer canvas;
     // desktop/landscape keep the fixed canvas. JS mirrors the CSS rectangle into
     // the backing bitmap. We never resize from visualViewport while Safari chrome animates.
     const oldPadX = padX;

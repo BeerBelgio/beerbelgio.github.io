@@ -1,23 +1,22 @@
-BEERBELGIO.GITHUB.IO — V0.35 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.36 PUBLIC STAGING
 
 STATUS
 Public staging for the BeerBelgio / Matteo Belgiovine digital hub.
 Search indexing remains disabled until the public 1.0 launch.
 
-V0.35 CHANGELOG
-- Build hygiene: V0.35 REPLACES the V0.34 staging override block. Staging overrides are not stacked from build to build.
-- Hero claim: FUN + IS A / SERIOUS / THING. are treated as one centred group. The group itself is centred in the hero instead of pushing each half independently toward the card edges.
-- Hero claim mobile: reduced vertical breathing and kept a compact two-column group; both halves remain fitted proportionally by JavaScript.
-- Hero landscape mobile: removed inherited minimum-height/dead-space behaviour below the identity copy.
-- Hero identity blocks: retained the approved mobile typography and landscape side-by-side behaviour.
-- Quick links desktop: circles reduced to 58 px (roughly half the V0.34 visual scale). Eight icons remain mapped to the first 4 cells of the 6x2 conceptual grid.
-- FULL LAVA desktop: still occupies the footprint of four conceptual grid cells, but uses a squarer 30 px corner radius, larger two-line type, and larger separation between FULL / LAVA.
-- Quick links mobile: unchanged approved 4 + 4 + FULL LAVA arrangement.
-- Featured play: replaced the play SVG with a much tighter/larger triangle shape and sizes it proportionally inside the red circle.
-- Contact mobile: forced four clean lines: WORKING ON / SOMETHING / WEIRD / AND COOL?.
-- Lava iPhone portrait: experimental structural fix. The canvas is no longer a fixed compositor layer in portrait touch mode; it becomes an absolute document-layer canvas and JavaScript counter-translates it with scroll. This is specifically intended to test Safari's persistent top/bottom clipping while preserving the no-flicker behaviour.
-- Lava iPhone landscape: keeps the V0.34 fixed-canvas behaviour that already resolved lateral clipping.
-- Cache busting updated to ?v=035.
+V0.36 CHANGELOG
+- Build hygiene: V0.36 REPLACES the V0.35 staging override block. Staging overrides are not stacked from build to build.
+- Hero BeerBelgio anchor: clicking the BeerBelgio block in the hero now scrolls the BeerBelgio links card to the centre of the viewport instead of pinning it near the top.
+- Hero claim desktop: reduced the gap logic to a fixed 50 px group spacing, enlarged the overall claim area, and let both halves scale up again inside a single centred group.
+- Hero claim mobile: tighter vertical spacing, slightly larger claim boxes, reduced dead space above / below, and kept the two halves as one centred group.
+- Hero identity blocks: slight spacing rebalance only; content structure unchanged.
+- Quick links desktop: removed the stacked 4+4 columns. The eight icon circles now sit on a single row and FULL LAVA sits as a pill on the right.
+- FULL LAVA desktop: one-line label again, 50 px corner radius, and larger type.
+- Quick links mobile: preserved the approved 4 + 4 + FULL LAVA layout.
+- Featured play: re-centred the triangle by removing the positional nudge so the icon sits optically in the middle of the red play circle again.
+- Contact mobile: kept the broken lines stable while slightly widening the text area to avoid awkward wrapping.
+- Lava iPhone portrait: added deliberate vertical overscan to the canvas layer (top and bottom) on top of the V0.35 document-layer workaround, to try to finally kill the persistent top/bottom blob clipping in portrait.
+- Cache busting updated to ?v=036.
 
 RIGHTS / LICENSING
 - Original website code: PolyForm Noncommercial 1.0.0.

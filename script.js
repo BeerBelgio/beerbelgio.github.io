@@ -95,12 +95,10 @@
     if (!heroFunLabel || !heroSeriousLabel || !heroFunBox || !heroSeriousBox) return;
 
     const mobile = matchMedia("(max-width: 719px)").matches || matchMedia("(pointer: coarse)").matches;
-    // FUN remains the master block. On mobile both halves can grow a little
-    // more because the solid fill is much more legible than the old lava cutout.
     let low = 24;
-    let high = 300;
-    const funMaxW = heroFunBox.clientWidth * (mobile ? 0.995 : 1.00);
-    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.98 : 0.985);
+    let high = 320;
+    const funMaxW = heroFunBox.clientWidth * (mobile ? 1.00 : 1.02);
+    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.99 : 1.00);
 
     for (let i = 0; i < 22; i++) {
       const mid = (low + high) / 2;
@@ -117,7 +115,7 @@
 
     // The three-line block is deliberately a touch smaller in perceived mass
     // than FUN, while sharing the same optical horizontal centre line.
-    const targetVisualHeight = funVisualHeight * (mobile ? 0.98 : 0.99);
+    const targetVisualHeight = funVisualHeight * (mobile ? 0.985 : 0.99);
     const lines = ["IS A", "SERIOUS", "THING."];
     low = 10;
     high = 160;
@@ -148,6 +146,28 @@
   addEventListener("resize", fitHeroClaim, { passive: true });
   if (window.visualViewport) visualViewport.addEventListener("resize", fitHeroClaim, { passive: true });
   startHeroClaim();
+
+
+  // ---------------------------------------------------------------
+  // HERO BEERBELGIO ANCHOR — centre target card on screen
+  // ---------------------------------------------------------------
+  const beerbelgioHeroAnchor = document.querySelector('.identity-card-link[href="#beerbelgio-links"]');
+  const beerbelgioTarget = document.getElementById('beerbelgio-links');
+
+  function scrollCardToCenter(target) {
+    if (!target) return;
+    const rect = target.getBoundingClientRect();
+    const targetTop = window.scrollY + rect.top - ((window.innerHeight - rect.height) / 2);
+    window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+  }
+
+  if (beerbelgioHeroAnchor && beerbelgioTarget) {
+    beerbelgioHeroAnchor.addEventListener('click', (event) => {
+      event.preventDefault();
+      scrollCardToCenter(beerbelgioTarget);
+      history.replaceState(null, '', '#beerbelgio-links');
+    });
+  }
 
   // ---------------------------------------------------------------
   // VIDEO

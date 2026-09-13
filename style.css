@@ -2244,7 +2244,7 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.35 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   V0.36 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
    Replaces V0.34 completely. Never stack staging override blocks.
    ========================================================= */
 
@@ -2292,20 +2292,20 @@ html.desktop-proportional .site-shell {
    --------------------------------------------------------- */
 .hero .fun { color: var(--orange) !important; }
 .hero-claim-grid {
-  width: 88% !important;
-  max-width: 660px !important;
+  width: 92% !important;
+  max-width: 700px !important;
   margin: 0 auto !important;
   align-self: center !important;
   justify-self: center !important;
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-  column-gap: 42px !important;
+  column-gap: 50px !important;
   align-items: center !important;
   justify-items: center !important;
 }
 .hero-claim-box {
   width: 100% !important;
-  height: 218px !important;
+  height: 272px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2335,8 +2335,8 @@ html.desktop-proportional .site-shell {
 .identity-card-link:last-child .identity-block { text-align: left; }
 .identity-block {
   grid-template-rows: auto auto auto !important;
-  gap: 14px !important;
-  padding-top: 14px !important;
+  gap: 16px !important;
+  padding-top: 16px !important;
 }
 .identity-block h2 {
   font-size: 50px !important;
@@ -2357,21 +2357,27 @@ html.desktop-proportional .site-shell {
 }
 
 /* ---------------------------------------------------------
-   QUICK LINKS DESKTOP — 12-cell concept, but icon circles back
-   to ~half V0.34 size. FULL LAVA spans the footprint of four
-   cells and keeps slightly squared rounded corners.
+   QUICK LINKS DESKTOP — one row, eight circles + FULL LAVA pill.
+   Keeps the approved icon scale while removing the stacked empty columns.
    --------------------------------------------------------- */
 .quick-actions {
-  display: grid !important;
-  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-  grid-template-rows: repeat(2, 58px) !important;
-  row-gap: 12px !important;
-  column-gap: 10px !important;
+  display: flex !important;
   align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
   width: 100% !important;
 }
-.platforms { display: contents !important; }
-.platforms a {
+.platforms {
+  display: grid !important;
+  grid-template-columns: repeat(8, 58px) !important;
+  grid-auto-rows: 58px !important;
+  gap: 10px !important;
+  flex: 1 1 auto !important;
+  justify-content: start !important;
+  align-items: center !important;
+}
+.platforms a,
+.platforms a:nth-child(n) {
   width: 58px !important;
   min-width: 58px !important;
   height: 58px !important;
@@ -2381,15 +2387,9 @@ html.desktop-proportional .site-shell {
   justify-self: center !important;
   align-self: center !important;
   line-height: 0 !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
 }
-.platforms a:nth-child(1) { grid-column: 1; grid-row: 1; }
-.platforms a:nth-child(2) { grid-column: 2; grid-row: 1; }
-.platforms a:nth-child(3) { grid-column: 3; grid-row: 1; }
-.platforms a:nth-child(4) { grid-column: 4; grid-row: 1; }
-.platforms a:nth-child(5) { grid-column: 1; grid-row: 2; }
-.platforms a:nth-child(6) { grid-column: 2; grid-row: 2; }
-.platforms a:nth-child(7) { grid-column: 3; grid-row: 2; }
-.platforms a:nth-child(8) { grid-column: 4; grid-row: 2; }
 .platform-icon {
   width: 40% !important;
   height: 40% !important;
@@ -2398,24 +2398,24 @@ html.desktop-proportional .site-shell {
   margin: 0 !important;
 }
 .lava-toggle {
-  grid-column: 5 / 7 !important;
-  grid-row: 1 / 3 !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 128px !important;
+  flex: 0 0 206px !important;
+  width: 206px !important;
+  min-width: 206px !important;
+  height: 58px !important;
   padding: 0 18px !important;
-  border-radius: 30px !important;
-  display: flex !important;
-  flex-direction: column !important;
+  border-radius: 50px !important;
+  display: inline-flex !important;
+  flex-direction: row !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 12px !important;
-  font-size: 26px !important;
-  line-height: .82 !important;
+  gap: 9px !important;
+  font-size: 33px !important;
+  line-height: .9 !important;
   font-weight: 700 !important;
-  letter-spacing: .015em !important;
+  letter-spacing: .01em !important;
+  text-align: center !important;
 }
-.lava-toggle span { display: block; }
+.lava-toggle span { display: inline !important; }
 
 /* ---------------------------------------------------------
    FEATURED
@@ -2425,7 +2425,7 @@ html.desktop-proportional .site-shell {
   width: 42% !important;
   height: 42% !important;
   display: block !important;
-  transform: translateX(2px) !important;
+  transform: none !important;
 }
 .video-note { display: none !important; }
 .cta-row a {
@@ -2460,8 +2460,8 @@ html.desktop-proportional .site-shell {
    --------------------------------------------------------- */
 @media (max-width: 719px), (pointer: coarse) {
   .site-stage {
-    width: 80vw !important;
-    max-width: 80vw !important;
+    width: 82vw !important;
+    max-width: 82vw !important;
     min-width: 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -2471,36 +2471,36 @@ html.desktop-proportional .site-shell {
     max-width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
-    padding-top: 16px !important;
+    padding-top: 12px !important;
   }
   .card { width: 100% !important; max-width: 100% !important; }
 
   /* One centred claim group, compact vertically. */
   .hero {
-    padding: 18px 15px 18px !important;
+    padding: 14px 15px 14px !important;
     min-height: 0 !important;
     height: auto !important;
     grid-template-rows: auto auto auto !important;
   }
   .hero-meta { font-size: 10px !important; }
   .hero-claim-grid {
-    width: 96% !important;
+    width: 94% !important;
     max-width: none !important;
-    margin: 7px auto 9px !important;
+    margin: 2px auto 4px !important;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    column-gap: 12px !important;
+    column-gap: 14px !important;
     align-items: center !important;
     justify-items: center !important;
   }
   .hero-claim-box {
-    height: 108px !important;
+    height: 118px !important;
     min-width: 0 !important;
   }
 
   .identity-stack { gap: 19px !important; }
   .identity-block {
-    gap: 15px !important;
-    padding-top: 15px !important;
+    gap: 14px !important;
+    padding-top: 14px !important;
   }
   .identity-block h2 { font-size: 25px !important; }
   .identity-tagline {
@@ -2560,7 +2560,7 @@ html.desktop-proportional .site-shell {
   .play img {
     width: 44% !important;
     height: 44% !important;
-    transform: translateX(2px) !important;
+    transform: none !important;
   }
   .cta-row a {
     min-height: 50px !important;
@@ -2581,8 +2581,8 @@ html.desktop-proportional .site-shell {
   .mobile-only-break { display: block !important; }
 
   .contact h2 {
-    max-width: 72% !important;
-    font-size: clamp(19px, 5.8vw, 24px) !important;
+    max-width: 74% !important;
+    font-size: clamp(18px, 5.5vw, 23px) !important;
     line-height: .94 !important;
   }
   .contact-line > span {
@@ -2604,12 +2604,12 @@ html.desktop-proportional .site-shell {
   body { position: relative !important; }
   #lava-canvas {
     position: absolute !important;
-    top: 0 !important;
+    top: -20svh !important;
     left: 0 !important;
     right: auto !important;
     bottom: auto !important;
     width: 100vw !important;
-    height: 100lvh !important;
+    height: calc(100lvh + 40svh) !important;
     z-index: 0 !important;
     pointer-events: none !important;
   }
