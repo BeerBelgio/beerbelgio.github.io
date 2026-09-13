@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.4
+/* BeerBelgio Lava Engine — V0.35
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -44,6 +44,27 @@
   let wheelImpulse = 0;
   let lastFrame = performance.now();
   let hiddenAt = null;
+  let portraitScrollRAF = 0;
+
+  function usesPortraitDocumentCanvas() {
+    return matchMedia("(pointer: coarse) and (orientation: portrait)").matches;
+  }
+
+  function syncPortraitCanvasPosition() {
+    if (usesPortraitDocumentCanvas()) {
+      canvas.style.setProperty("transform", `translate3d(0, ${window.scrollY || 0}px, 0)`, "important");
+    } else {
+      canvas.style.removeProperty("transform");
+    }
+  }
+
+  function schedulePortraitCanvasPosition() {
+    if (portraitScrollRAF) return;
+    portraitScrollRAF = requestAnimationFrame(() => {
+      portraitScrollRAF = 0;
+      syncPortraitCanvasPosition();
+    });
+  }
 
   const blobs = Array.from({ length: 10 }, (_, i) => makeBlob(i));
 
@@ -77,10 +98,10 @@
   }
 
   function resize(force = false) {
-    // V0.34: CSS defines an iOS-safe canvas that extends into safe areas and
-    // uses the LARGE viewport height. JS only mirrors that CSS rectangle into
-    // the backing bitmap. This avoids tying canvas height to Safari's animated
-    // visual viewport / toolbar during scroll.
+    syncPortraitCanvasPosition();
+    // V0.35: portrait iPhone can use an absolute document-layer canvas;
+    // desktop/landscape keep the fixed canvas. JS mirrors the CSS rectangle into
+    // the backing bitmap. We never resize from visualViewport while Safari chrome animates.
     const oldPadX = padX;
     const oldPadY = padY;
     const oldWidth = width;
@@ -601,8 +622,13 @@
     requestAnimationFrame(draw);
   }
 
-  addEventListener("resize", resize, { passive: true });
+  addEventListener("scroll", schedulePortraitCanvasPosition, { passive: true });
+  addEventListener("resize", () => {
+    syncPortraitCanvasPosition();
+    resize();
+  }, { passive: true });
   addEventListener("orientationchange", () => {
+    syncPortraitCanvasPosition();
     resize();
     setTimeout(resize, 120);
     setTimeout(resize, 420);
@@ -656,6 +682,7 @@
     }
   });
 
+  syncPortraitCanvasPosition();
   resize();
   requestAnimationFrame(draw);
 

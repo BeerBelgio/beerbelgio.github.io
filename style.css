@@ -2244,31 +2244,9 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.34 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
-   This block REPLACES V0.33. Never stack staging override blocks.
+   V0.35 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   Replaces V0.34 completely. Never stack staging override blocks.
    ========================================================= */
-
-/* ---------------------------------------------------------
-   LAVA CANVAS / IOS SAFARI
-   Use the large viewport + safe-area overscan. JS only sizes the
-   backing bitmap to this CSS box and no longer reacts to visualViewport
-   changes while Safari's chrome animates during scroll.
-   --------------------------------------------------------- */
-#lava-canvas {
-  position: fixed !important;
-  left: calc(-1 * env(safe-area-inset-left, 0px)) !important;
-  top: calc(-1 * env(safe-area-inset-top, 0px)) !important;
-  right: auto !important;
-  bottom: auto !important;
-  width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px)) !important;
-  height: calc(100vh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px)) !important;
-  height: calc(100lvh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px)) !important;
-  max-width: none !important;
-  max-height: none !important;
-  display: block !important;
-  transform: translateZ(0);
-  will-change: transform;
-}
 
 .site-stage,
 .site-shell,
@@ -2288,30 +2266,51 @@ html.desktop-proportional .site-shell {
 .arrow { display: grid; place-items: center; }
 
 /* ---------------------------------------------------------
-   HERO CLAIM
-   Each half is centred inside its own half of the card.
+   LAVA CANVAS
+   Desktop + phone landscape keep the fixed canvas that solved
+   the horizontal crop. Phone portrait uses an absolute canvas
+   counter-translated with scroll so Safari treats it like page
+   content rather than clipping a fixed compositor layer.
+   --------------------------------------------------------- */
+#lava-canvas {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100lvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  display: block !important;
+  background: var(--brick) !important;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------
+   HERO CLAIM — ONE GROUP, centred as one unit.
+   Both halves are centred inside the group rather than pushed
+   independently toward card edges.
    --------------------------------------------------------- */
 .hero .fun { color: var(--orange) !important; }
-
 .hero-claim-grid {
-  display: grid !important;
-  width: calc(100% + 120px) !important;
-  margin: 26px -60px 38px !important;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-  column-gap: 64px !important;
-  align-items: center !important;
-  justify-content: center !important;
+  width: 88% !important;
+  max-width: 660px !important;
+  margin: 0 auto !important;
   align-self: center !important;
+  justify-self: center !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  column-gap: 42px !important;
+  align-items: center !important;
+  justify-items: center !important;
 }
 .hero-claim-box {
-  height: 228px !important;
+  width: 100% !important;
+  height: 218px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   overflow: visible !important;
 }
-.hero-claim-box-fun,
-.hero-claim-box-serious { justify-content: center !important; }
 .hero .fun,
 .hero .serious {
   width: auto !important;
@@ -2325,6 +2324,7 @@ html.desktop-proportional .site-shell {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
+  align-items: flex-start !important;
 }
 .hero .serious > span { display: block; white-space: nowrap !important; }
 
@@ -2336,7 +2336,7 @@ html.desktop-proportional .site-shell {
 .identity-block {
   grid-template-rows: auto auto auto !important;
   gap: 14px !important;
-  padding-top: 12px !important;
+  padding-top: 14px !important;
 }
 .identity-block h2 {
   font-size: 50px !important;
@@ -2357,28 +2357,29 @@ html.desktop-proportional .site-shell {
 }
 
 /* ---------------------------------------------------------
-   QUICK LINKS — desktop conceptual 6×2 grid = 12 circular cells.
-   Eight icons use the first 4 columns; FULL LAVA occupies the
-   remaining 2×2 cells (4-cell footprint + internal gaps).
+   QUICK LINKS DESKTOP — 12-cell concept, but icon circles back
+   to ~half V0.34 size. FULL LAVA spans the footprint of four
+   cells and keeps slightly squared rounded corners.
    --------------------------------------------------------- */
 .quick-actions {
   display: grid !important;
   grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-  grid-template-rows: repeat(2, auto) !important;
-  gap: 12px !important;
-  align-items: stretch !important;
+  grid-template-rows: repeat(2, 58px) !important;
+  row-gap: 12px !important;
+  column-gap: 10px !important;
+  align-items: center !important;
   width: 100% !important;
 }
 .platforms { display: contents !important; }
 .platforms a {
-  width: 100% !important;
-  min-width: 0 !important;
+  width: 58px !important;
+  min-width: 58px !important;
+  height: 58px !important;
   aspect-ratio: 1 / 1 !important;
-  height: auto !important;
   display: grid !important;
   place-items: center !important;
-  align-self: stretch !important;
-  justify-self: stretch !important;
+  justify-self: center !important;
+  align-self: center !important;
   line-height: 0 !important;
 }
 .platforms a:nth-child(1) { grid-column: 1; grid-row: 1; }
@@ -2401,15 +2402,16 @@ html.desktop-proportional .site-shell {
   grid-row: 1 / 3 !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 100% !important;
-  padding: 0 20px !important;
+  height: 128px !important;
+  padding: 0 18px !important;
+  border-radius: 30px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 3px !important;
-  font-size: 34px !important;
-  line-height: .90 !important;
+  gap: 12px !important;
+  font-size: 26px !important;
+  line-height: .82 !important;
   font-weight: 700 !important;
   letter-spacing: .015em !important;
 }
@@ -2420,10 +2422,10 @@ html.desktop-proportional .site-shell {
    --------------------------------------------------------- */
 .play { display: grid !important; place-items: center !important; padding: 0 !important; }
 .play img {
-  width: 34px !important;
-  height: 34px !important;
+  width: 42% !important;
+  height: 42% !important;
   display: block !important;
-  transform: translateX(1px) !important;
+  transform: translateX(2px) !important;
 }
 .video-note { display: none !important; }
 .cta-row a {
@@ -2432,7 +2434,7 @@ html.desktop-proportional .site-shell {
   font-weight: 800 !important;
 }
 .cta-row .inline-arrow,
-.write-button .inline-arrow { margin-left: 6px !important; }
+.write-button .inline-arrow { margin-left: 5px !important; }
 .cta-row .inline-arrow {
   width: 1em !important;
   height: 1em !important;
@@ -2449,13 +2451,8 @@ html.desktop-proportional .site-shell {
   bottom: auto !important;
   transform: translateY(-50%) !important;
 }
-.contact-main-line,
-.contact-weird-line { display: block !important; }
-.contact-main-line { white-space: nowrap !important; }
-.contact-main-line > span {
-  display: inline !important;
-  white-space: nowrap !important;
-}
+.contact-line { display: block !important; }
+.contact-line > span { display: inline !important; white-space: nowrap !important; }
 .mobile-only-break { display: none; }
 
 /* ---------------------------------------------------------
@@ -2478,26 +2475,28 @@ html.desktop-proportional .site-shell {
   }
   .card { width: 100% !important; max-width: 100% !important; }
 
-  /* +~15% visual claim growth versus V0.33, still one 2-column row. */
-  .hero { padding: 18px 15px 18px !important; }
+  /* One centred claim group, compact vertically. */
+  .hero {
+    padding: 18px 15px 18px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    grid-template-rows: auto auto auto !important;
+  }
   .hero-meta { font-size: 10px !important; }
   .hero-claim-grid {
-    display: grid !important;
-    width: calc(100% + 28px) !important;
-    margin: 11px -14px 16px !important;
+    width: 96% !important;
+    max-width: none !important;
+    margin: 7px auto 9px !important;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    grid-template-rows: 1fr !important;
     column-gap: 12px !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-items: center !important;
   }
   .hero-claim-box {
-    height: 132px !important;
+    height: 108px !important;
     min-width: 0 !important;
-    justify-content: center !important;
   }
 
-  /* Same descriptor size for both identities; smaller meta block. */
   .identity-stack { gap: 19px !important; }
   .identity-block {
     gap: 15px !important;
@@ -2538,14 +2537,10 @@ html.desktop-proportional .site-shell {
     width: 54px !important;
     min-width: 54px !important;
     height: 54px !important;
-    aspect-ratio: 1 / 1 !important;
     justify-self: center !important;
     align-self: center !important;
   }
-  .platform-icon {
-    width: 40% !important;
-    height: 40% !important;
-  }
+  .platform-icon { width: 40% !important; height: 40% !important; }
   .lava-toggle {
     grid-column: 1 !important;
     grid-row: 2 !important;
@@ -2554,20 +2549,18 @@ html.desktop-proportional .site-shell {
     height: 66px !important;
     margin-top: 2px !important;
     padding: 0 16px !important;
+    border-radius: 999px !important;
     flex-direction: row !important;
     gap: .30em !important;
     font-size: 23px !important;
     line-height: 1 !important;
   }
 
-  .play {
-    width: 54px !important;
-    height: 54px !important;
-  }
+  .play { width: 54px !important; height: 54px !important; }
   .play img {
-    width: 28px !important;
-    height: 28px !important;
-    transform: translateX(1px) !important;
+    width: 44% !important;
+    height: 44% !important;
+    transform: translateX(2px) !important;
   }
   .cta-row a {
     min-height: 50px !important;
@@ -2588,35 +2581,56 @@ html.desktop-proportional .site-shell {
   .mobile-only-break { display: block !important; }
 
   .contact h2 {
-    max-width: 76% !important;
-    font-size: clamp(20px, 6.1vw, 25px) !important;
-    line-height: .96 !important;
+    max-width: 72% !important;
+    font-size: clamp(19px, 5.8vw, 24px) !important;
+    line-height: .94 !important;
   }
-  .contact-main-line { white-space: normal !important; }
-  .contact-main-line > span {
-    display: block !important;
-    white-space: nowrap !important;
-  }
-  .contact-weird-line {
+  .contact-line > span {
     display: block !important;
     white-space: nowrap !important;
   }
   .contact-smile,
   .contact-smile-full {
-    width: 112px !important;
+    width: 106px !important;
     right: 5px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
   }
 }
 
-/* Phone landscape: same 80% stage; identities stay side-by-side. */
+/* Phone portrait: avoid Safari's fixed-layer top/bottom clip by using
+   a normal document-layer canvas that JS counter-translates with scroll. */
+@media (orientation: portrait) and (pointer: coarse) {
+  body { position: relative !important; }
+  #lava-canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100vw !important;
+    height: 100lvh !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+  }
+  .site-stage {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+}
+
+/* Phone landscape: same 80% stage; identities stay side-by-side and
+   the hero sheds any inherited minimum height / dead bottom space. */
 @media (orientation: landscape) and (pointer: coarse),
        (max-width: 719px) and (orientation: landscape) {
-  .site-stage {
-    width: 80vw !important;
-    max-width: 80vw !important;
+  .site-stage { width: 80vw !important; max-width: 80vw !important; }
+  .hero {
+    min-height: 0 !important;
+    height: auto !important;
+    grid-template-rows: auto auto auto !important;
   }
+  .hero-claim-grid { margin-top: 5px !important; margin-bottom: 7px !important; }
+  .hero-claim-box { height: 96px !important; }
   .identity-stack {
     grid-template-columns: 1fr 1fr !important;
     gap: 20px !important;
