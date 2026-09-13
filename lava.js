@@ -77,26 +77,46 @@
   }
 
   function resize() {
-    // V0.32: the canvas itself matches the full CSS viewport. With
-    // viewport-fit=cover in HTML this includes iPhone safe-area gutters.
-    // Blobs may travel beyond these bounds; only the physical display clips them.
-    canvas.style.left = "0px";
-    canvas.style.top = "0px";
-    canvas.style.width = "100vw";
-    canvas.style.height = "100dvh";
+    // V0.33: keep blob/world coordinates in page-viewport space, but on
+    // portrait touch devices give the canvas extra hidden vertical runway.
+    // The visible screen sits inside this larger canvas, so the top/bottom
+    // of the phone are no longer also the internal canvas boundaries.
+    const oldPadX = padX;
+    const oldPadY = padY;
 
-    const rect = canvas.getBoundingClientRect();
-    viewWidth = Math.max(1, rect.width || window.innerWidth || document.documentElement.clientWidth || 1);
-    viewHeight = Math.max(1, rect.height || window.innerHeight || document.documentElement.clientHeight || 1);
+    const doc = document.documentElement;
+    viewWidth = Math.max(1, window.innerWidth || doc.clientWidth || 1);
+    viewHeight = Math.max(1, window.innerHeight || doc.clientHeight || 1);
+
+    const coarse = matchMedia("(pointer: coarse)").matches;
+    const portrait = matchMedia("(orientation: portrait)").matches;
+
     padX = 0;
-    padY = 0;
-    width = viewWidth;
-    height = viewHeight;
+    padY = coarse && portrait ? Math.max(110, viewHeight * 0.20) : 0;
+
+    width = viewWidth + padX * 2;
+    height = viewHeight + padY * 2;
     dpr = Math.min(devicePixelRatio || 1, 2);
+
+    canvas.style.left = `${-padX}px`;
+    canvas.style.top = `${-padY}px`;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
 
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // Keep the current visible blob positions stable when the hidden runway
+    // appears/disappears after rotation or Safari viewport changes.
+    const dx = padX - oldPadX;
+    const dy = padY - oldPadY;
+    if (dx || dy) {
+      blobs.forEach((blob) => {
+        blob.x += dx;
+        blob.y += dy;
+      });
+    }
   }
 
   function getHeaterZone() {
@@ -666,8 +686,8 @@
     sampleRect,
     getBlobs() {
       return blobs.map((blob) => ({
-        x: blob.x,
-        y: blob.y,
+        x: blob.x - padX,
+        y: blob.y - padY,
         r: blob.r,
         color: blob.color,
         family: blob.family,

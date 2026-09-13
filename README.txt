@@ -1,4 +1,4 @@
-BEERBELGIO.GITHUB.IO — V0.32 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.33 PUBLIC STAGING
 
 STAGING
 - Public GitHub Pages staging remains active.
@@ -7,52 +7,58 @@ STAGING
 - sonoDGTL base route: /sonodgtl/ (ENG)
 - Italian alternate: /sonodgtl/it/
 - .nojekyll remains enabled for direct static hosting.
-- Cache-busting advanced to ?v=032 for main CSS/JS/local visual assets.
+- Cache-busting advanced to ?v=033 for main CSS/JS/local visual assets.
+- Build rule: each new staging build REPLACES the previous authoritative version override block instead of stacking a new override layer on top.
 
 RIGHTS / LICENSING
-- Added LICENSE.md with an explicit © 2026 Matteo Belgiovine / All Rights Reserved notice.
-- The public repository is NOT declared open source.
-- Any expressly authorised reuse must retain attribution to Matteo Belgiovine / BeerBelgio.
-- Added THIRD_PARTY_NOTICES.md for M PLUS Rounded 1c and platform names/logos.
-- Platform trademarks/logos are explicitly excluded from the project's original-content ownership claim.
+- Licensing changed from All Rights Reserved to attribution-friendly reuse, as requested.
+- Original website code: MIT License.
+- Original creative material: CC BY 4.0.
+- Reuse is allowed, including adaptation/commercial reuse, with the attribution/licence conditions stated in LICENSE.md.
+- Preferred attribution: Matteo Belgiovine / BeerBelgio — https://beerbelgio.github.io/
+- Third-party font/platform names/logos remain excluded and are documented in THIRD_PARTY_NOTICES.md.
 
-MOBILE STRUCTURE
-- Restored the V0.30 75vw stage rule as the authoritative phone width.
-- Phone rules now trigger by either viewport width OR coarse pointer, so they remain active more reliably on iPhone, including landscape.
-- Added min-width:0 / max-width guards to prevent wide internal grids from forcing the page wider than the intended stage.
+MOBILE STAGE
+- Portrait stage widened from 75vw to 80vw: slightly more card width while still leaving visible lava on both sides.
+- Landscape touch stage uses 84vw.
 
 HERO CLAIM
-- The V0.31 equal-height relationship between FUN and IS A / SERIOUS / THING. is preserved.
-- Desktop separation between the two halves is doubled from 18px to 36px.
-- The desktop claim grid gains a small amount of extra outer width, allowing both halves to grow outward rather than crowding the centre.
-- Desktop fitting allows both halves to grow slightly while preserving their visual-height relationship.
-- Mobile uses a smaller 8px centre gap and dimensions appropriate to the narrower stage.
+- V0.32 equal-height relationship remains the basis.
+- Desktop claim expands symmetrically outside the normal content width, keeping the whole claim centred in the card.
+- Desktop centre gap increased to 72px and the fitting area is slightly larger so both halves can grow toward the outer edges.
+- Mobile is explicitly locked to one two-column row; FUN and IS A / SERIOUS / THING. cannot collapse into stacked rows.
+- JS phone detection now matches CSS: coarse-pointer phones remain in the mobile fitting logic even in landscape.
+- The obsolete live-FUN canvas-copy loop is disabled because FUN is now a solid colour again.
 
 HERO IDENTITIES
-- Existing mobile descriptor sizing / spacing retained.
-- Phone landscape continues to switch BeerBelgio and sonoDGTL to two side-by-side columns.
+- Portrait descriptor text is reduced to 11.4px and each explicit descriptor line is kept intact, preventing an orphaned FOR in sonoDGTL.
+- Spacing between title / descriptor / categories remains deliberately generous.
+- Landscape mobile keeps BeerBelgio / sonoDGTL side-by-side.
 
 QUICK LINKS
-- Mobile is explicitly restored to 4 + 4 icons, followed by FULL LAVA alone on a third row.
-- Desktop round controls increased from 52px to 58px.
-- Every icon, including Email, now uses the exact same 40% mark size inside its circle.
-- Icon wrappers use grid centring and zero line-height to remove optical baseline drift.
-- Email keeps the exact same pre-filled mailto action as WRITE ME.
+- Mobile remains the approved 4 + 4 icon layout followed by FULL LAVA alone.
+- Desktop changes to 4 + 4 larger 68px circles.
+- Desktop FULL LAVA stays at the right and spans the visual height of both icon rows; FULL / LAVA are split over two lines.
+- Mobile FULL LAVA remains one horizontal line.
+- Email icon was rebuilt as a filled 24×24 mark so the same 40% CSS scaling now produces an optical size comparable to the other platform icons.
 
 FEATURED
-- Mobile Spotify / YouTube labels increased to 15.5px after being too small in V0.31.
-- Arrows remain proportional to the label and naturally separated.
+- Mobile play circle reduced to 54px with a 24px play mark.
+- Mobile Spotify / YouTube labels set to 15px.
+- CTA arrows move slightly closer to their labels everywhere: 8px desktop / 7px mobile.
 
 SONODGTL CARD
-- Removed the forced mobile line breaks introduced in V0.31.
-- Mobile wrapping is natural again so it can be reassessed after the stage-width fix.
+- Main title wraps naturally.
+- On mobile only, the CTA is deliberately split into:
+  OPEN THE WEBSITE
+  LET’S WORK TOGETHER!
+- Desktop keeps the single-line version with the em dash.
 
 LAVA / IPHONE
-- Added viewport-fit=cover to all current HTML entry pages to allow the page/canvas into iPhone safe-area gutters.
-- Removed the oversized internal canvas-world workaround from V0.31.
-- The lava canvas now maps directly to 100vw × 100dvh.
-- Blob centres are allowed to travel up to 1.45 radii beyond each physical viewport edge, so the screen itself is the only intended crop boundary.
-- Basic Mode and FULL LAVA continue to use exactly the same lava field and edge rules.
+- Landscape safe-area fix from V0.32 is retained.
+- Portrait touch mode now gives the canvas a hidden vertical runway above and below the visible viewport while keeping blob coordinates aligned with the page.
+- This specifically targets the remaining portrait-only top/bottom crop without reintroducing the horizontal crop that V0.32 fixed.
+- BASIC MODE and FULL LAVA still use the same lava field and edge behaviour.
 
 DEFERRED
 - Final floating motto scroll-growth / centre-screen transformation remains intentionally NOT implemented yet.

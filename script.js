@@ -97,15 +97,15 @@
   function fitHeroClaim() {
     if (!heroFunLabel || !heroSeriousLabel || !heroFunBox || !heroSeriousBox) return;
 
-    const mobile = matchMedia("(max-width: 719px)").matches;
+    const mobile = matchMedia("(max-width: 719px)").matches || matchMedia("(pointer: coarse)").matches;
     const landscapeMobile = mobile && matchMedia("(orientation: landscape)").matches;
 
     // FUN remains the master block. On mobile both halves can grow a little
     // more because the solid fill is much more legible than the old lava cutout.
     let low = 24;
     let high = 300;
-    const funMaxW = heroFunBox.clientWidth * (mobile ? 0.96 : 0.97);
-    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.92 : 0.93);
+    const funMaxW = heroFunBox.clientWidth * (mobile ? 0.95 : 0.995);
+    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.90 : 0.965);
 
     for (let i = 0; i < 22; i++) {
       const mid = (low + high) / 2;
@@ -122,7 +122,7 @@
 
     // The three-line block is deliberately a touch smaller in perceived mass
     // than FUN, while sharing the same optical horizontal centre line.
-    const targetVisualHeight = funVisualHeight * (mobile ? 0.98 : 0.98);
+    const targetVisualHeight = funVisualHeight * (mobile ? 0.98 : 0.99);
     const lines = ["IS A", "SERIOUS", "THING."];
     low = 10;
     high = 160;
