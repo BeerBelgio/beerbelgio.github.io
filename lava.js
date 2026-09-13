@@ -77,29 +77,27 @@
   }
 
   function resize() {
-    // V0.31: draw into an OVERSCANNED world, larger than the visible viewport.
-    // This removes the last internal canvas edge that iPhone Safari could reveal
-    // around the top/bottom/sides. Only the physical display clips the lava now.
-    viewWidth = Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0);
-    viewHeight = Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0);
+    // V0.32: the canvas itself matches the full CSS viewport. With
+    // viewport-fit=cover in HTML this includes iPhone safe-area gutters.
+    // Blobs may travel beyond these bounds; only the physical display clips them.
+    canvas.style.left = "0px";
+    canvas.style.top = "0px";
+    canvas.style.width = "100vw";
+    canvas.style.height = "100dvh";
 
-    const coarse = matchMedia("(pointer: coarse)").matches;
-    padX = coarse ? Math.max(80, viewWidth * 0.24) : 0;
-    padY = coarse ? Math.max(110, viewHeight * 0.18) : 0;
-    width = viewWidth + padX * 2;
-    height = viewHeight + padY * 2;
+    const rect = canvas.getBoundingClientRect();
+    viewWidth = Math.max(1, rect.width || window.innerWidth || document.documentElement.clientWidth || 1);
+    viewHeight = Math.max(1, rect.height || window.innerHeight || document.documentElement.clientHeight || 1);
+    padX = 0;
+    padY = 0;
+    width = viewWidth;
+    height = viewHeight;
     dpr = Math.min(devicePixelRatio || 1, 2);
 
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
-    canvas.style.left = -padX + "px";
-    canvas.style.top = -padY + "px";
-
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
-
 
   function getHeaterZone() {
     const stage = document.getElementById("site-stage");
@@ -111,7 +109,7 @@
       : width * 0.23;
 
     return {
-      cx: padX + viewWidth * 0.5,
+      cx: viewWidth * 0.5,
       halfW: baseWidth * 0.5,
       y: padY + viewHeight * 0.90,
       h: viewHeight * 0.24
@@ -190,17 +188,15 @@
   }
 
   function contain(blob) {
-    // No hidden mobile "fence": blobs are allowed to travel naturally beyond
-    // the physical screen edges. The screen itself becomes the only crop.
-    // Keeping the centre within roughly half a radius outside the viewport
-    // prevents blobs from disappearing forever while preserving off-screen flow.
-    const overscan = blob.r * 0.58;
+    // The blob centre can move well beyond the physical screen edge.
+    // This prevents any visible "fence" while still keeping blobs in circulation.
+    const travel = blob.r * 1.45;
     const bounce = 0.82;
 
-    const minX = -overscan;
-    const maxX = width + overscan;
-    const minY = -overscan;
-    const maxY = height + overscan;
+    const minX = -travel;
+    const maxX = width + travel;
+    const minY = -travel;
+    const maxY = height + travel;
 
     if (blob.x < minX) {
       blob.x = minX;
@@ -222,7 +218,6 @@
       blob.baseAngle = Math.atan2(-Math.abs(blob.vy), blob.vx);
     }
   }
-
 
   function update(blob, dt, time) {
     const motionScale = prefersReducedMotion ? 0.18 : 1;
@@ -671,8 +666,8 @@
     sampleRect,
     getBlobs() {
       return blobs.map((blob) => ({
-        x: blob.x - padX,
-        y: blob.y - padY,
+        x: blob.x,
+        y: blob.y,
         r: blob.r,
         color: blob.color,
         family: blob.family,

@@ -104,8 +104,8 @@
     // more because the solid fill is much more legible than the old lava cutout.
     let low = 24;
     let high = 300;
-    const funMaxW = heroFunBox.clientWidth * (mobile ? 0.94 : 0.90);
-    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.90 : 0.86);
+    const funMaxW = heroFunBox.clientWidth * (mobile ? 0.96 : 0.97);
+    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.92 : 0.93);
 
     for (let i = 0; i < 22; i++) {
       const mid = (low + high) / 2;
@@ -122,11 +122,11 @@
 
     // The three-line block is deliberately a touch smaller in perceived mass
     // than FUN, while sharing the same optical horizontal centre line.
-    const targetVisualHeight = funVisualHeight * (mobile ? 0.96 : 0.91);
+    const targetVisualHeight = funVisualHeight * (mobile ? 0.98 : 0.98);
     const lines = ["IS A", "SERIOUS", "THING."];
     low = 10;
     high = 160;
-    const seriousMaxW = heroSeriousBox.clientWidth * (mobile ? 0.98 : 0.96);
+    const seriousMaxW = heroSeriousBox.clientWidth * (mobile ? 0.98 : 0.98);
     const lineHeight = mobile ? 0.82 : 0.82;
 
     for (let i = 0; i < 22; i++) {
