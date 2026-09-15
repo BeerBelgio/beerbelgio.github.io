@@ -1,25 +1,26 @@
-BEERBELGIO.GITHUB.IO — V0.38 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.39 PUBLIC STAGING
 
 STATUS
 Public staging for the BeerBelgio / Matteo Belgiovine digital hub.
 Search indexing remains disabled until the public 1.0 launch.
 
-V0.38 CHANGELOG
-- Build hygiene: V0.38 REPLACES the V0.37 staging override block. Staging overrides are not stacked from build to build.
-- Hero claim temporary HTML test: gap reduced to 5 px, both halves treated as one centred group, and the complete group enlarged proportionally by ~15%. This is the last HTML-text pass before evaluating Matteo's vector claim.
-- Hero claim orientation robustness: delayed refits plus ResizeObserver prevent portrait → landscape → portrait from keeping stale type sizes from the previous orientation.
-- Hero mobile: reduced dead space above and below the claim again.
-- Hero metadata: MATTEO BELGIOVINE / TORINO, ITALY enlarged and given consistent inset margins.
-- Hero identity copy: added consistent horizontal inset from card edges and tightened the vertical rhythm.
-- Narrow desktop windows: desktop-proportional mode now explicitly reapplies the internal 760 px desktop design rules, so shrinking a desktop browser window does not fall back to mobile/base proportions.
-- Desktop quick links: kept the slightly oval direction, enlarged platform icons by ~15%, restored even distribution, and reduced FULL LAVA type.
-- Touch landscape quick links: restored a compact 4 + 4 block on the left with FULL LAVA spanning both rows on the right.
-- Touch landscape sonoDGTL card: removed mobile forced line breaks and restored the desktop separator.
-- Contact smile: moved left in portrait; landscape smile moved substantially left and enlarged by ~25%.
-- Lava interaction: scrolling is now directional in both axes. Trackpads use WheelEvent deltaX/deltaY; touch gestures derive X/Y scroll direction from finger motion; traditional mouse wheels naturally remain vertical.
-- iPhone portrait canvas workaround retained from V0.37.
-- Android scroll-flicker fix from V0.37 retained pending re-test on the affected devices.
-- Cache busting updated to ?v=038.
+V0.39 CHANGELOG
+- Build hygiene: V0.39 REPLACES the V0.38 staging override block. Staging overrides are not stacked from build to build.
+- Hero claim: replaced the responsive HTML/text-fitting system with Matteo's supplied vector artwork (`assets/claim.svg`). The claim is now one SVG object, centred and proportionally scaled on desktop/mobile/rotation with no font-metric JS.
+- Hero landing: refresh / page load now always returns to the top Hero. Clicking the Hero BeerBelgio block still centres the BeerBelgio links card, but no URL hash is left behind to be restored on refresh.
+- Hero mobile: larger name/location text, larger coherent card margins, more bottom breathing, and a single SVG claim that no longer changes construction after orientation changes.
+- Hero landscape mobile: reduced empty vertical space while preserving side-by-side BeerBelgio / sonoDGTL identity blocks.
+- Lower BeerBelgio / sonoDGTL cards: typography enlarged substantially to echo the hierarchy of the Hero identity blocks.
+- Desktop proportional layout: narrow desktop windows explicitly retain the full 760 px desktop composition (two identity columns, desktop typography, cards and quick links) and scale the whole shell as one unit.
+- Quick links desktop: restored true 58x58 circles, icons enlarged, equidistant distribution retained, and extra breathing added between Hero / Quick Links / Featured.
+- Quick links mobile portrait: keeps the approved 4 + 4 + FULL LAVA layout.
+- Quick links mobile landscape: changed to one compact row, scaled to fit the available width.
+- Mobile page end: restored desktop-like bottom spacing instead of leaving excessive scroll after the final motto.
+- Lava direct manipulation: mouse/pen can click-drag a visible blob from the background. Touch drag is enabled in FULL LAVA and /lava/ so normal page scrolling remains usable.
+- Lava deformation: deformation direction now interpolates instead of snapping to a new force angle, specifically to prevent occasional sudden blob rotations.
+- Lava touch warping: scroll/touch impulses now feed the deformation system as well as position, so mobile scrolling produces liquid warping closer to the desktop wheel/trackpad behaviour.
+- Lava iOS portrait: retired the scroll-follow document-canvas transform; portrait now uses a fixed vertically overscanned canvas, avoiding the extra document scroll range caused by translating an absolute canvas with scrollY.
+- Cache busting updated to ?v=039.
 
 RIGHTS / LICENSING
 - Original website code: PolyForm Noncommercial 1.0.0.

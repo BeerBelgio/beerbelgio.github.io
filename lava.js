@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.38
+/* BeerBelgio Lava Engine — V0.39
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -53,8 +53,17 @@
   let hiddenAt = null;
   let portraitScrollRAF = 0;
 
+  let draggedBlob = null;
+  let dragPointerId = null;
+  let dragLastX = 0;
+  let dragLastY = 0;
+  let dragLastT = 0;
+  let dragVx = 0;
+  let dragVy = 0;
+
   function usesPortraitDocumentCanvas() {
-    return isIOS && matchMedia("(pointer: coarse) and (orientation: portrait)").matches;
+    // V0.39: retired. iOS portrait now uses a fixed overscanned canvas.
+    return false;
   }
 
   function syncPortraitCanvasPosition() {
@@ -99,6 +108,8 @@
       morphBase: 0.20 + Math.random() * 0.07,
       deformMag: 0.24 + Math.random() * 0.05,
       deformDir: angle,
+      deformTargetDir: angle,
+      dragging: false,
       forceX: 0,
       forceY: 0
     };
@@ -285,6 +296,13 @@
     blob.forceX = 0;
     blob.forceY = 0;
 
+    if (blob.dragging) {
+      blob.deformTargetDir = Math.atan2(dragVy || blob.vy, dragVx || blob.vx);
+      blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * Math.min(0.22, 0.006 * dt);
+      blob.deformMag = Math.max(blob.morphBase || 0.22, Math.min(0.52, 0.27 + Math.hypot(dragVx, dragVy) * 4));
+      return;
+    }
+
     // The direction evolves very slowly, like an autonomous lava lamp.
     const desiredAngle =
       blob.baseAngle +
@@ -309,7 +327,7 @@
     // Persistent liquid memory: the shape keeps wandering instead of snapping back to round.
     blob.morphBase += Math.sin(time * 0.00011 + blob.turnPhase * 1.7) * 0.000010 * dt;
     blob.morphBase = Math.max(0.18, Math.min(0.34, blob.morphBase));
-    blob.deformDir += Math.sin(time * 0.00016 + blob.phase2 * 0.8) * 0.00012 * dt;
+    blob.deformTargetDir += Math.sin(time * 0.00016 + blob.phase2 * 0.8) * 0.000075 * dt;
 
     if (pointer.strength > 0.001) {
       const dx = pointer.x - blob.x;
@@ -334,6 +352,10 @@
     const scrollFy = scrollNormY * 0.00054 * dt;
     blob.vx += scrollFx;
     blob.vy += scrollFy;
+    // Feed a controlled fraction of scroll energy into the deformation system.
+    // This gives touch scrolling the same liquid warping visible with a wheel/trackpad.
+    blob.forceX += scrollFx * 0.085;
+    blob.forceY += scrollFy * 0.085;
     blob.phase += (scrollNormY + scrollNormX * 0.45) * 0.00030 * dt;
     blob.phase2 -= (scrollNormY - scrollNormX * 0.35) * 0.00026 * dt;
 
@@ -408,8 +430,12 @@
 
     const forceMag = Math.hypot(blob.forceX, blob.forceY);
     if (forceMag > 1e-6) {
-      blob.deformDir = Math.atan2(blob.forceY, blob.forceX);
+      blob.deformTargetDir = Math.atan2(blob.forceY, blob.forceX);
     }
+    // Never snap the deformation direction. The old direct atan2 assignment could
+    // visually rotate a whole blob in one frame when the dominant force changed.
+    const turnBlend = Math.min(0.16, 0.0038 * dt);
+    blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * turnBlend;
     const morphFloor = blob.morphBase || 0.22;
     blob.deformMag = Math.min(
       0.62,
@@ -613,6 +639,78 @@
     }
   }
 
+  function blobAt(x, y) {
+    // Later blobs are painted on top, so search from the end first.
+    for (let i = blobs.length - 1; i >= 0; i--) {
+      const blob = blobs[i];
+      if (Math.hypot(x - blob.x, y - blob.y) <= blob.r * 1.08) return blob;
+    }
+    return null;
+  }
+
+  function canDragWithPointer(e) {
+    if (e.target && e.target.closest && e.target.closest("a, button, input, textarea, select, .card")) return false;
+    if (e.pointerType !== "touch") return true;
+    // On touch, direct dragging is limited to immersive lava so normal page
+    // scrolling remains effortless. Mouse/pen can drag bubbles everywhere.
+    return document.body.classList.contains("lava-mode") || location.pathname.includes("/lava/");
+  }
+
+  function startBlobDrag(e) {
+    const x = e.clientX + padX;
+    const y = e.clientY + padY;
+    const hit = blobAt(x, y);
+    if (!hit || !canDragWithPointer(e)) return false;
+
+    draggedBlob = hit;
+    draggedBlob.dragging = true;
+    dragPointerId = e.pointerId;
+    dragLastX = x;
+    dragLastY = y;
+    dragLastT = performance.now();
+    dragVx = 0;
+    dragVy = 0;
+
+    // Bring the selected blob visually to the front without changing its identity.
+    const idx = blobs.indexOf(hit);
+    if (idx >= 0 && idx !== blobs.length - 1) {
+      blobs.splice(idx, 1);
+      blobs.push(hit);
+    }
+    return true;
+  }
+
+  function moveBlobDrag(e) {
+    if (!draggedBlob || e.pointerId !== dragPointerId) return false;
+    const x = e.clientX + padX;
+    const y = e.clientY + padY;
+    const now = performance.now();
+    const dt = Math.max(1, now - dragLastT);
+    dragVx = (x - dragLastX) / dt;
+    dragVy = (y - dragLastY) / dt;
+    draggedBlob.x = x;
+    draggedBlob.y = y;
+    draggedBlob.deformTargetDir = Math.atan2(dragVy || 0.0001, dragVx || 0.0001);
+    dragLastX = x;
+    dragLastY = y;
+    dragLastT = now;
+    return true;
+  }
+
+  function endBlobDrag(e) {
+    if (!draggedBlob || (e && e.pointerId !== dragPointerId)) return false;
+    const maxRelease = 0.045;
+    const scale = 0.055;
+    draggedBlob.vx = Math.max(-maxRelease, Math.min(maxRelease, dragVx * scale));
+    draggedBlob.vy = Math.max(-maxRelease, Math.min(maxRelease, dragVy * scale));
+    draggedBlob.baseAngle = Math.atan2(draggedBlob.vy || 0.0001, draggedBlob.vx || 0.0001);
+    draggedBlob.dragging = false;
+    contain(draggedBlob);
+    draggedBlob = null;
+    dragPointerId = null;
+    return true;
+  }
+
   function draw(time) {
     const dt = Math.min(40, time - lastFrame);
     lastFrame = time;
@@ -638,7 +736,6 @@
     requestAnimationFrame(draw);
   }
 
-  if (isIOS) addEventListener("scroll", schedulePortraitCanvasPosition, { passive: true });
   addEventListener("resize", () => {
     syncPortraitCanvasPosition();
     resize();
@@ -655,16 +752,26 @@
     pointer.y = e.clientY + padY;
     pointer.active = true;
     pointer.impulse = 1;
-  }, { passive: true });
+    if (moveBlobDrag(e) && e.cancelable) e.preventDefault();
+  }, { passive: false });
 
-  addEventListener("pointerleave", () => {
+  addEventListener("pointerleave", (e) => {
     pointer.active = false;
     pointer.impulse = 0;
+    if (e.pointerType !== "touch") endBlobDrag(e);
   });
 
   addEventListener("pointerdown", (e) => {
+    if (startBlobDrag(e)) {
+      if (e.cancelable) e.preventDefault();
+      return;
+    }
+    if (e.target && e.target.closest && e.target.closest("a, button, input, textarea, select, .card")) return;
     burst(e.clientX + padX, e.clientY + padY);
-  }, { passive: true });
+  }, { passive: false });
+
+  addEventListener("pointerup", (e) => { endBlobDrag(e); }, { passive: true });
+  addEventListener("pointercancel", (e) => { endBlobDrag(e); }, { passive: true });
 
   addEventListener("wheel", (e) => {
     const dx = Math.max(-34, Math.min(34, e.deltaX * 0.24));
