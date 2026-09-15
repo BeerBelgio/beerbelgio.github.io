@@ -1,22 +1,22 @@
-BEERBELGIO.GITHUB.IO — V0.36 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.37 PUBLIC STAGING
 
 STATUS
 Public staging for the BeerBelgio / Matteo Belgiovine digital hub.
 Search indexing remains disabled until the public 1.0 launch.
 
-V0.36 CHANGELOG
-- Build hygiene: V0.36 REPLACES the V0.35 staging override block. Staging overrides are not stacked from build to build.
-- Hero BeerBelgio anchor: clicking the BeerBelgio block in the hero now scrolls the BeerBelgio links card to the centre of the viewport instead of pinning it near the top.
-- Hero claim desktop: reduced the gap logic to a fixed 50 px group spacing, enlarged the overall claim area, and let both halves scale up again inside a single centred group.
-- Hero claim mobile: tighter vertical spacing, slightly larger claim boxes, reduced dead space above / below, and kept the two halves as one centred group.
-- Hero identity blocks: slight spacing rebalance only; content structure unchanged.
-- Quick links desktop: removed the stacked 4+4 columns. The eight icon circles now sit on a single row and FULL LAVA sits as a pill on the right.
-- FULL LAVA desktop: one-line label again, 50 px corner radius, and larger type.
-- Quick links mobile: preserved the approved 4 + 4 + FULL LAVA layout.
-- Featured play: re-centred the triangle by removing the positional nudge so the icon sits optically in the middle of the red play circle again.
-- Contact mobile: kept the broken lines stable while slightly widening the text area to avoid awkward wrapping.
-- Lava iPhone portrait: added deliberate vertical overscan to the canvas layer (top and bottom) on top of the V0.35 document-layer workaround, to try to finally kill the persistent top/bottom blob clipping in portrait.
-- Cache busting updated to ?v=036.
+V0.37 CHANGELOG
+- Build hygiene: V0.37 replaces the V0.36 staging override block; staging overrides are not stacked.
+- Android lava scroll: the iPhone portrait document-canvas workaround is now iOS-only. Android stays on the stable fixed canvas and no longer runs the scroll counter-translation path, specifically to remove the heavy Android flicker reported during scrolling.
+- Lava visibility: blob containment now follows the visible viewport rather than the oversized backing canvas. Blobs may still travel partially beyond an edge, but interaction / FULL LAVA cannot push the whole population into the invisible overscan area.
+- iPhone portrait lava: keeps the vertical overscan experiment, now with blob coordinates explicitly anchored to the visible viewport.
+- Desktop resize: phone layout is no longer selected merely because a desktop browser window becomes narrow. Mobile-specific layout is keyed to coarse/touch pointer; fine-pointer desktop windows retain desktop proportions.
+- Hero claim: desktop gap reduced from 50 px to 25 px; the overall claim group is wider and both halves receive more fitting room, while remaining centred as a single group.
+- Hero claim mobile: group widened, gap reduced, and vertical space above/below cut again.
+- Quick links desktop: eight icon buttons are evenly distributed across the available row; FULL LAVA remains at right with slightly smaller type.
+- Quick links phone landscape: switches to a desktop-like single-row arrangement (scaled to fit landscape phone width).
+- Contact phone landscape: restores the desktop two-line headline instead of the portrait multi-line treatment.
+- Featured play: new geometrically centred triangle SVG; same centred scaling is used desktop and mobile.
+- Cache busting updated to ?v=037.
 
 RIGHTS / LICENSING
 - Original website code: PolyForm Noncommercial 1.0.0.

@@ -97,7 +97,7 @@
     const mobile = matchMedia("(max-width: 719px)").matches || matchMedia("(pointer: coarse)").matches;
     let low = 24;
     let high = 320;
-    const funMaxW = heroFunBox.clientWidth * (mobile ? 1.00 : 1.02);
+    const funMaxW = heroFunBox.clientWidth * (mobile ? 1.00 : 1.00);
     const funMaxH = heroFunBox.clientHeight * (mobile ? 0.99 : 1.00);
 
     for (let i = 0; i < 22; i++) {
@@ -144,7 +144,6 @@
   }
 
   addEventListener("resize", fitHeroClaim, { passive: true });
-  if (window.visualViewport) visualViewport.addEventListener("resize", fitHeroClaim, { passive: true });
   startHeroClaim();
 
 

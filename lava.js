@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.36
+/* BeerBelgio Lava Engine — V0.37
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -9,6 +9,10 @@
 
   const ctx = canvas.getContext("2d", { alpha: false });
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  document.documentElement.classList.toggle("ios-device", isIOS);
 
   const palette = [
     "#d1442d",
@@ -47,7 +51,7 @@
   let portraitScrollRAF = 0;
 
   function usesPortraitDocumentCanvas() {
-    return matchMedia("(pointer: coarse) and (orientation: portrait)").matches;
+    return isIOS && matchMedia("(pointer: coarse) and (orientation: portrait)").matches;
   }
 
   function syncPortraitCanvasPosition() {
@@ -99,7 +103,7 @@
 
   function resize(force = false) {
     syncPortraitCanvasPosition();
-    // V0.36: portrait iPhone can use an absolute document-layer canvas;
+    // V0.37: portrait iPhone can use an absolute document-layer canvas;
     // desktop/landscape keep the fixed canvas. JS mirrors the CSS rectangle into
     // the backing bitmap. We never resize from visualViewport while Safari chrome animates.
     const oldPadX = padX;
@@ -234,15 +238,20 @@
   }
 
   function contain(blob) {
-    // The blob centre can move well beyond the physical screen edge.
-    // This prevents any visible "fence" while still keeping blobs in circulation.
-    const travel = blob.r * 1.45;
+    // Keep every blob tied to the VISIBLE viewport, even when the backing canvas
+    // is larger than the screen (iOS portrait overscan). Centres may travel
+    // beyond an edge, but never far enough for every blob to disappear.
+    const visibleLeft = padX;
+    const visibleTop = padY;
+    const visibleRight = padX + viewWidth;
+    const visibleBottom = padY + viewHeight;
+    const travel = blob.r * 0.78;
     const bounce = 0.82;
 
-    const minX = -travel;
-    const maxX = width + travel;
-    const minY = -travel;
-    const maxY = height + travel;
+    const minX = visibleLeft - travel;
+    const maxX = visibleRight + travel;
+    const minY = visibleTop - travel;
+    const maxY = visibleBottom + travel;
 
     if (blob.x < minX) {
       blob.x = minX;
@@ -622,7 +631,7 @@
     requestAnimationFrame(draw);
   }
 
-  addEventListener("scroll", schedulePortraitCanvasPosition, { passive: true });
+  if (isIOS) addEventListener("scroll", schedulePortraitCanvasPosition, { passive: true });
   addEventListener("resize", () => {
     syncPortraitCanvasPosition();
     resize();
