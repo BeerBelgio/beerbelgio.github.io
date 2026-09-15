@@ -1,6 +1,6 @@
 PUBLIC STAGING — BeerBelgio
 
-Current build: V0.40
+Current build: V0.41
 
 This repository is intentionally public for device testing.
 
@@ -8,6 +8,6 @@ Current staging rules:
 - Search-engine indexing disabled via meta robots tags.
 - Remove the noindex / nofollow / noarchive tags from ALL HTML pages before the public 1.0 launch.
 - Current staging URL: https://beerbelgio.github.io/
-- Cache-busting query strings currently use ?v=040.
+- Cache-busting query strings currently use ?v=041.
 - /sonodgtl/ is English primary; /sonodgtl/it/ is Italian.
 - /lava/ is the standalone lava route.
