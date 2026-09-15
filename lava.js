@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.42
+/* BeerBelgio Lava Engine — V0.43
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -62,6 +62,8 @@
   let dragVx = 0;
   let dragVy = 0;
   let dragHistory = [];
+  let blankClickCount = 0;
+  let blankClickMode = "repel";
 
   function usesPortraitDocumentCanvas() {
     // V0.39: retired. iOS portrait now uses a fixed overscanned canvas.
@@ -106,9 +108,9 @@
       family: familyForColor(palette[i % palette.length]),
       phase: Math.random() * Math.PI * 2,
       phase2: Math.random() * Math.PI * 2,
-      wobble: 0.062 + Math.random() * 0.072,
-      morphBase: 0.24 + Math.random() * 0.09,
-      deformMag: 0.30 + Math.random() * 0.08,
+      wobble: 0.095 + Math.random() * 0.085,
+      morphBase: 0.30 + Math.random() * 0.12,
+      deformMag: 0.38 + Math.random() * 0.12,
       deformDir: Math.random() * Math.PI * 2,
       dragging: false,
       manualMomentumUntil: 0,
@@ -130,7 +132,7 @@
 
   function resize(force = false) {
     syncPortraitCanvasPosition();
-    // V0.42: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
+    // V0.43: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
     // desktop/landscape keep the fixed canvas. JS mirrors the CSS rectangle into
     // the backing bitmap. We never resize from visualViewport while Safari chrome animates.
     const oldPadX = padX;
@@ -230,7 +232,7 @@
     }
 
     // Low-pass the radial contour so deformation stays liquid instead of pointy/clipped.
-    for (let pass = 0; pass < 3; pass++) {
+    for (let pass = 0; pass < 2; pass++) {
       const next = [];
       for (let i = 0; i < points; i++) {
         const a = radii[(i - 2 + points) % points];
@@ -304,14 +306,14 @@
   function update(blob, dt, time) {
     const motionScale = prefersReducedMotion ? 0.18 : 1;
 
-    blob.phase += dt * 0.000070 * motionScale;
-    blob.phase2 -= dt * 0.000052 * motionScale;
+    blob.phase += dt * 0.000095 * motionScale;
+    blob.phase2 -= dt * 0.000074 * motionScale;
     blob.forceX = 0;
     blob.forceY = 0;
 
     if (blob.dragging) {
       const dragSpeed = Math.hypot(dragVx, dragVy);
-      const dragWarp = Math.min(0.58, dragSpeed * 0.46);
+      const dragWarp = Math.min(0.88, dragSpeed * 0.70);
       // Manual motion deforms the contour, but never rotates the blob's shape axis.
       blob.deformMag = Math.max(blob.morphBase || 0.22, (blob.morphBase || 0.22) + dragWarp);
       blob.phase += dragVx * 0.0026 * dt;
@@ -351,7 +353,7 @@
 
     // Persistent liquid memory: the shape keeps wandering instead of snapping back to round.
     blob.morphBase += Math.sin(time * 0.00011 + blob.turnPhase * 1.7) * 0.000010 * dt;
-    blob.morphBase = Math.max(0.22, Math.min(0.42, blob.morphBase));
+    blob.morphBase = Math.max(0.28, Math.min(0.50, blob.morphBase));
 
     if (pointer.strength > 0.001) {
       const dx = pointer.x - blob.x;
@@ -486,10 +488,10 @@
 
     const morphFloor = blob.morphBase || 0.22;
     blob.deformMag = Math.min(
-      0.86,
+      1.02,
       Math.max(
         morphFloor + manualWarp,
-        (blob.deformMag || morphFloor) * Math.pow(0.9987, dt) + forceMag * 102
+        (blob.deformMag || morphFloor) * Math.pow(0.9990, dt) + forceMag * 138
       )
     );
 
@@ -503,23 +505,33 @@
     contain(blob);
   }
 
-  // Still an impulse only. True fragmentation/re-forming comes later.
-  function burst(x, y) {
+  // Non-blob clicks alternate in five-click blocks: five repulsive impulses,
+  // then five attractive impulses, then back again.
+  function pointImpulse(x, y, mode = "repel") {
+    const polarity = mode === "attract" ? -1 : 1;
     blobs.forEach((blob) => {
       const dx = blob.x - x;
       const dy = blob.y - y;
       const dist = Math.hypot(dx, dy) || 1;
       const force = Math.max(0, 1 - dist / Math.max(width, height));
 
-      const fx = (dx / dist) * force * 0.15;
-      const fy = (dy / dist) * force * 0.15;
+      const fx = (dx / dist) * force * 0.15 * polarity;
+      const fy = (dy / dist) * force * 0.15 * polarity;
       blob.vx += fx;
       blob.vy += fy;
       blob.forceX += fx;
       blob.forceY += fy;
-      blob.phase += force * 0.8;
-      blob.phase2 -= force * 0.5;
+      blob.phase += force * 1.05;
+      blob.phase2 -= force * 0.72;
     });
+  }
+
+  function handleBlankClick(x, y) {
+    pointImpulse(x, y, blankClickMode);
+    blankClickCount += 1;
+    if (blankClickCount % 5 === 0) {
+      blankClickMode = blankClickMode === "repel" ? "attract" : "repel";
+    }
   }
 
 
@@ -763,7 +775,7 @@
     const now = performance.now();
     const dragSpeed = Math.hypot(dragVx, dragVy);
     // Release momentum is genuinely proportional to the user's final gesture.
-    // Slow release = slow drift; energetic release = faster drift, with a safety cap.
+    // Slow release = slow drift; energetic release = faster drift, without an artificial speed cap.
     const releaseGain = 0.095;
     draggedBlob.vx = dragVx * releaseGain;
     draggedBlob.vy = dragVy * releaseGain;
@@ -775,7 +787,7 @@
     const blendMs = 2200 + gesture * 2600;
     draggedBlob.manualMomentumUntil = now + holdMs;
     draggedBlob.manualBlendUntil = now + holdMs + blendMs;
-    draggedBlob.manualWarpMag = 0.16 + gesture * 0.36;
+    draggedBlob.manualWarpMag = 0.24 + gesture * 0.54;
     draggedBlob.manualWarpUntil = now + holdMs;
     draggedBlob.manualWarpBlendUntil = now + holdMs + blendMs;
     draggedBlob.dragging = false;
@@ -848,7 +860,7 @@
       return;
     }
     if (e.target && e.target.closest && e.target.closest("a, button, input, textarea, select, .card")) return;
-    burst(e.clientX + padX, e.clientY + padY);
+    handleBlankClick(e.clientX + padX, e.clientY + padY);
   }, { passive: false });
 
   addEventListener("pointerup", (e) => { endBlobDrag(e); }, { passive: true });
@@ -857,12 +869,12 @@
   addEventListener("wheel", (e) => {
     if (draggedBlob) return;
     const immersive = document.body.classList.contains("lava-mode") || location.pathname.includes("/lava/");
-    const modeScale = immersive ? 0.48 : 1;
-    const dx = Math.max(-34, Math.min(34, e.deltaX * 0.24 * modeScale));
-    const dy = Math.max(-34, Math.min(34, e.deltaY * 0.24 * modeScale));
-    scrollImpulseX = Math.max(-40, Math.min(40, scrollImpulseX + dx));
-    scrollImpulseY = Math.max(-40, Math.min(40, scrollImpulseY + dy));
-    scrollWarpBoost = immersive ? 1.0 : 1.05;
+    const modeScale = immersive ? 0.34 : 0.62;
+    const dx = Math.max(-28, Math.min(28, e.deltaX * 0.20 * modeScale));
+    const dy = Math.max(-28, Math.min(28, e.deltaY * 0.20 * modeScale));
+    scrollImpulseX = Math.max(-34, Math.min(34, scrollImpulseX + dx));
+    scrollImpulseY = Math.max(-34, Math.min(34, scrollImpulseY + dy));
+    scrollWarpBoost = immersive ? 1.45 : 1.75;
   }, { passive: true });
 
   addEventListener("touchstart", (e) => {
@@ -881,12 +893,12 @@
       return;
     }
     const immersive = document.body.classList.contains("lava-mode") || location.pathname.includes("/lava/");
-    const modeScale = immersive ? 0.52 : 1;
-    const dx = Math.max(-34, Math.min(34, (lastTouchX - t.clientX) * 0.38 * modeScale));
-    const dy = Math.max(-34, Math.min(34, (lastTouchY - t.clientY) * 0.38 * modeScale));
-    scrollImpulseX = Math.max(-40, Math.min(40, scrollImpulseX + dx));
-    scrollImpulseY = Math.max(-40, Math.min(40, scrollImpulseY + dy));
-    scrollWarpBoost = immersive ? 1.25 : 1.9;
+    const modeScale = immersive ? 0.38 : 0.68;
+    const dx = Math.max(-28, Math.min(28, (lastTouchX - t.clientX) * 0.31 * modeScale));
+    const dy = Math.max(-28, Math.min(28, (lastTouchY - t.clientY) * 0.31 * modeScale));
+    scrollImpulseX = Math.max(-34, Math.min(34, scrollImpulseX + dx));
+    scrollImpulseY = Math.max(-34, Math.min(34, scrollImpulseY + dy));
+    scrollWarpBoost = immersive ? 1.65 : 2.35;
     lastTouchX = t.clientX;
     lastTouchY = t.clientY;
   }, { passive: true });

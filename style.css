@@ -2244,7 +2244,7 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.42 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   V0.43 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
    Replaces V0.40 completely. Never stack staging override blocks.
    ========================================================= */
 
@@ -2303,7 +2303,7 @@ html.ios-device #lava-canvas {
 .hero-claim-art-wrap {
   width: 100% !important;
   max-width: 704px !important;
-  margin: 4px auto 8px !important;
+  margin: 5px auto 5px !important;
   display: grid !important;
   grid-template-columns: 1fr !important;
   place-items: center !important;
@@ -2313,7 +2313,7 @@ html.ios-device #lava-canvas {
 }
 .hero-claim-art {
   display: block !important;
-  width: 102% !important;
+  width: 100% !important;
   height: auto !important;
   max-width: none !important;
 }
@@ -2460,24 +2460,23 @@ html.ios-device #lava-canvas {
   position: relative !important;
   display: grid !important;
   grid-template-rows: auto 1fr !important;
-  min-height: 245px !important;
-  padding: 24px !important;
+  min-height: 286px !important;
+  padding: 26px !important;
   overflow: hidden !important;
 }
 .contact h2 {
   width: 68% !important;
   max-width: none !important;
   margin: 0 !important;
-  font-size: 48px !important;
+  font-size: 58px !important;
   line-height: .93 !important;
 }
 .contact-a .contact-lower {
   position: relative !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 205px !important;
+  display: flex !important;
   align-items: center !important;
-  gap: 18px !important;
   min-height: 0 !important;
+  padding-right: 230px !important;
 }
 .write-button {
   justify-self: start !important;
@@ -2489,12 +2488,12 @@ html.ios-device #lava-canvas {
 }
 .contact-smile,
 .contact-smile-full {
-  position: static !important;
+  position: absolute !important;
   width: 205px !important;
   max-height: none !important;
-  justify-self: center !important;
-  align-self: center !important;
-  transform: translateY(-10px) !important;
+  right: 24px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
   object-fit: contain !important;
   pointer-events: none !important;
 }
@@ -2524,8 +2523,8 @@ html.desktop-proportional .site-shell {
 html.desktop-proportional .card { width: 100% !important; max-width: none !important; }
 html.desktop-proportional .hero { min-height: 570px !important; padding: 28px !important; grid-template-rows: auto 1fr auto !important; }
 html.desktop-proportional .hero-meta { display: flex !important; font-size: 18px !important; padding-inline: 8px !important; }
-html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; margin: 4px auto 8px !important; }
-html.desktop-proportional .hero-claim-art { width: 102% !important; max-width: none !important; }
+html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; margin: 5px auto 5px !important; }
+html.desktop-proportional .hero-claim-art { width: 100% !important; max-width: none !important; }
 html.desktop-proportional .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 26px !important; }
 html.desktop-proportional .identity-block { gap: 14px !important; padding-top: 15px !important; }
 html.desktop-proportional .identity-block h2,
@@ -2544,10 +2543,10 @@ html.desktop-proportional .contact { padding: 24px !important; }
 html.desktop-proportional .brand-heading { font-size: 50px !important; }
 html.desktop-proportional .links-card > a { font-size: 21.5px !important; }
 html.desktop-proportional .links-card small { font-size: 16px !important; }
-html.desktop-proportional .contact { min-height: 245px !important; }
-html.desktop-proportional .contact h2 { font-size: 48px !important; width: 68% !important; }
-html.desktop-proportional .contact-a .contact-lower { grid-template-columns: minmax(0,1fr) 205px !important; }
-html.desktop-proportional .contact-smile-full { width: 205px !important; transform: translateY(-10px) !important; }
+html.desktop-proportional .contact { min-height: 286px !important; }
+html.desktop-proportional .contact h2 { font-size: 58px !important; width: 68% !important; }
+html.desktop-proportional .contact-a .contact-lower { display:flex !important; padding-right:230px !important; }
+html.desktop-proportional .contact-smile-full { width:205px !important; right:24px !important; top:50% !important; transform:translateY(-50%) !important; }
 html.desktop-proportional .mobile-only-break { display: none !important; }
 html.desktop-proportional .sonodgtl-cta-separator { display: inline !important; }
 html.desktop-proportional .contact-line > span { display: inline !important; }
@@ -2572,7 +2571,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .card { width: 100% !important; max-width: 100% !important; }
 
   .hero {
-    padding: 18px 22px 18px !important;
+    padding: 18px 22px 20px !important;
     min-height: 0 !important;
     height: auto !important;
     grid-template-rows: auto auto auto !important;
@@ -2591,12 +2590,12 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .hero-claim-art-wrap {
     width: 100% !important;
     max-width: none !important;
-    margin: 2px auto 4px !important;
+    margin: 5px 0 5px !important;
     grid-template-columns: 1fr !important;
   }
-  .hero-claim-art { width: 112% !important; height: auto !important; max-width: none !important; }
+  .hero-claim-art { width: 100% !important; height: auto !important; max-width: none !important; justify-self: start !important; transform-origin: left center !important; }
 
-  .identity-stack { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .identity-stack { grid-template-columns: 1fr !important; gap: 14px !important; }
   .identity-block { gap: 13px !important; padding-top: 15px !important; }
   .identity-block h2,
   .identity-block p { padding-inline: 14px !important; }
@@ -2610,7 +2609,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     grid-auto-rows: 54px !important;
     justify-content: space-between !important;
     align-items: center !important;
-    row-gap: 14px !important;
+    row-gap: 12px !important;
     width: 100% !important;
     margin: 14px 0 !important;
   }
@@ -2638,7 +2637,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     border-radius: 999px !important;
     flex-direction: row !important;
     gap: .30em !important;
-    font-size: 24px !important;
+    font-size: 25px !important;
     line-height: 1 !important;
   }
 
@@ -2659,7 +2658,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
 
   .contact,
   .contact-a {
-    min-height: 225px !important;
+    min-height: 235px !important;
     padding: 20px !important;
     grid-template-rows: auto 1fr !important;
   }
@@ -2670,8 +2669,10 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     line-height: .94 !important;
   }
   .contact-a .contact-lower {
-    grid-template-columns: minmax(0, 1fr) 112px !important;
-    gap: 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding-right: 118px !important;
+    min-height: 0 !important;
   }
   .write-button {
     width: min(205px, 96%) !important;
@@ -2681,11 +2682,11 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .contact-line > span { display: block !important; white-space: nowrap !important; }
   .contact-smile,
   .contact-smile-full {
-    position: static !important;
+    position: absolute !important;
     width: 104px !important;
-    justify-self: center !important;
-    align-self: center !important;
-    transform: translateY(-8px) translateX(-4px) !important;
+    right: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
   }
 
   .floating-motto { margin-bottom: 0 !important; }
@@ -2707,8 +2708,8 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     font-size: 14px !important;
     padding-inline: 16px !important;
   }
-  .hero-claim-art-wrap { width: 100% !important; margin: 4px auto 6px !important; grid-template-columns: 1fr !important; }
-  .hero-claim-art { width: 82% !important; max-width: none !important; }
+  .hero-claim-art-wrap { width: 100% !important; margin: 5px auto 5px !important; grid-template-columns: 1fr !important; }
+  .hero-claim-art { width: 72% !important; max-width: none !important; }
   .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 20px !important; align-items: start !important; }
   .identity-card-link:first-child .identity-block { text-align: right !important; }
   .identity-card-link:last-child .identity-block { text-align: left !important; }
@@ -2736,9 +2737,13 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     min-width: 42px !important;
     height: 42px !important;
     border-radius: 50% !important;
+    grid-row: 1 !important;
+    grid-column: auto !important;
   }
   .platform-icon { width: 50% !important; height: 50% !important; }
   .lava-toggle {
+    grid-column: 9 !important;
+    grid-row: 1 !important;
     width: 112px !important;
     min-width: 112px !important;
     height: 42px !important;
@@ -2750,12 +2755,12 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
 
   .contact,
   .contact-a { min-height: 230px !important; }
-  .contact h2 { width: 100% !important; font-size: 38px !important; }
+  .contact h2 { width: 72% !important; font-size: 46px !important; }
   .contact-line { display: block !important; }
   .contact-line > span { display: inline !important; white-space: nowrap !important; }
-  .contact-a .contact-lower { grid-template-columns: minmax(0,1fr) 160px !important; gap: 18px !important; }
+  .contact-a .contact-lower { display:flex !important; padding-right:180px !important; min-height:0 !important; }
   .contact-smile,
-  .contact-smile-full { width: 160px !important; justify-self: center !important; transform: translateY(-4px) translateX(-18px) !important; }
+  .contact-smile-full { position:absolute !important; width:160px !important; right:20px !important; top:50% !important; transform:translateY(-50%) !important; }
 
   .mobile-only-break { display: none !important; }
   .sonodgtl-cta-separator { display: inline !important; }
@@ -2767,10 +2772,20 @@ body.lava-mode { touch-action: none; }
 
 @media (pointer: coarse) {
   #lava-canvas {
-    left: -12vw !important;
-    top: -12svh !important;
-    width: calc(100vw + 24vw) !important;
-    height: calc(100dvh + 24svh) !important;
+    left: -18vw !important;
+    top: -18svh !important;
+    width: calc(100vw + 36vw) !important;
+    height: calc(100dvh + 36svh) !important;
+    inset: auto !important;
+  }
+}
+
+@media (pointer: coarse) {
+  html.ios-device #lava-canvas {
+    left: -18vw !important;
+    top: -20svh !important;
+    width: calc(100vw + 36vw) !important;
+    height: calc(100dvh + 40svh) !important;
     inset: auto !important;
   }
 }
