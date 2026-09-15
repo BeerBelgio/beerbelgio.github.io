@@ -2244,8 +2244,8 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.39 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
-   Replaces V0.38 completely. Never stack staging override blocks.
+   V0.40 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   Replaces V0.39 completely. Never stack staging override blocks.
    ========================================================= */
 
 .site-stage,
@@ -2263,9 +2263,7 @@ html.desktop-proportional .site-shell {
 }
 .arrow { display: grid; place-items: center; }
 
-/* LAVA: fixed oversized canvas on iOS portrait too.
-   This removes the V0.38 scroll-follow transform, which could enlarge
-   the document scroll range. The backing field still overscans top/bottom. */
+/* LAVA */
 #lava-canvas {
   position: fixed !important;
   inset: 0 !important;
@@ -2284,14 +2282,14 @@ html.ios-device #lava-canvas {
   height: calc(100lvh + 40svh) !important;
 }
 
-/* HERO */
+/* HERO DESKTOP */
 .hero {
   min-height: 570px !important;
   padding: 28px !important;
-  grid-template-rows: auto auto auto !important;
+  grid-template-rows: auto 1fr auto !important;
 }
 .hero-meta {
-  padding-inline: 4px !important;
+  padding-inline: 6px !important;
   font-size: 18px !important;
   line-height: 1.1 !important;
   font-weight: 500 !important;
@@ -2300,16 +2298,19 @@ html.ios-device #lava-canvas {
 .hero-claim-art-wrap {
   width: 100% !important;
   max-width: 704px !important;
-  margin: 14px auto 18px !important;
+  margin: 10px auto 14px !important;
   display: grid !important;
+  grid-template-columns: 1fr !important;
   place-items: center !important;
   align-self: center !important;
+  justify-self: center !important;
+  overflow: visible !important;
 }
 .hero-claim-art {
   display: block !important;
-  width: 100% !important;
+  width: 145% !important;
   height: auto !important;
-  max-width: 100% !important;
+  max-width: none !important;
 }
 
 .identity-stack {
@@ -2324,7 +2325,7 @@ html.ios-device #lava-canvas {
   padding-top: 15px !important;
 }
 .identity-block h2,
-.identity-block p { padding-inline: 10px !important; }
+.identity-block p { padding-inline: 12px !important; }
 .identity-block h2 {
   font-size: 50px !important;
   font-weight: 700 !important;
@@ -2350,7 +2351,7 @@ html.ios-device #lava-canvas {
   justify-content: space-between !important;
   gap: 18px !important;
   width: 100% !important;
-  margin: 9px 0 !important;
+  margin: 12px 0 !important;
 }
 .platforms {
   display: flex !important;
@@ -2361,7 +2362,9 @@ html.ios-device #lava-canvas {
   min-width: 0 !important;
 }
 .platforms a,
-.platforms a:nth-child(n) {
+.platforms button,
+.platforms a:nth-child(n),
+.platforms button:nth-child(n) {
   flex: 0 0 58px !important;
   width: 58px !important;
   min-width: 58px !important;
@@ -2373,6 +2376,10 @@ html.ios-device #lava-canvas {
   line-height: 0 !important;
   grid-column: auto !important;
   grid-row: auto !important;
+  border: 0 !important;
+  padding: 0 !important;
+  background: var(--ink) !important;
+  cursor: pointer;
 }
 .platform-icon {
   width: 53% !important;
@@ -2393,28 +2400,42 @@ html.ios-device #lava-canvas {
   justify-content: center !important;
   align-items: center !important;
   gap: 7px !important;
-  font-size: 21px !important;
+  font-size: 20px !important;
   line-height: .92 !important;
   font-weight: 700 !important;
   letter-spacing: .01em !important;
 }
 .lava-toggle span { display: inline !important; }
 
+.share-toast {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  transform: translate(-50%, 14px);
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.share-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
 /* FEATURED */
 .play { display: grid !important; place-items: center !important; padding: 0 !important; }
-.play img {
-  width: 46% !important;
-  height: 46% !important;
-  display: block !important;
-  transform: none !important;
-}
+.play img { width: 46% !important; height: 46% !important; display: block !important; transform: none !important; }
 .video-note { display: none !important; }
 .cta-row a { min-height: 54px !important; font-size: 16.5px !important; font-weight: 800 !important; }
 .cta-row .inline-arrow,
 .write-button .inline-arrow { margin-left: 5px !important; }
 .cta-row .inline-arrow { width: 1em !important; height: 1em !important; filter: none !important; }
 
-/* LOWER BRAND CARDS: same hierarchy family as the Hero identities. */
+/* LOWER BRAND CARDS */
 .links-card { padding: 24px !important; }
 .brand-heading {
   margin: 0 0 22px !important;
@@ -2432,11 +2453,23 @@ html.ios-device #lava-canvas {
 }
 .links-card small {
   margin-top: 8px !important;
-  font-size: 13.5px !important;
+  font-size: 16px !important;
   line-height: 1.18 !important;
 }
 
 /* CONTACT */
+.contact,
+.contact-a {
+  display: grid !important;
+  grid-template-rows: auto minmax(88px, 1fr) !important;
+}
+.contact h2 { margin-bottom: 0 !important; }
+.contact-a .contact-lower {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 88px !important;
+}
+.write-button { align-self: center !important; }
 .contact-smile,
 .contact-smile-full {
   top: 50% !important;
@@ -2447,14 +2480,17 @@ html.ios-device #lava-canvas {
 .contact-line > span { display: inline !important; white-space: nowrap !important; }
 .mobile-only-break { display: none; }
 
-/* DESKTOP PROPORTIONAL: lock the complete 760px design regardless of
-   browser-window width, then scale the whole shell as one object. */
+/* DESKTOP PROPORTIONAL — canonical 760px composition, even in a narrow browser window. */
 html.desktop-proportional .site-stage {
+  position: relative !important;
   width: 45vw !important;
   max-width: none !important;
   margin: 0 auto !important;
 }
 html.desktop-proportional .site-shell {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
   width: 760px !important;
   max-width: none !important;
   margin: 0 !important;
@@ -2462,21 +2498,30 @@ html.desktop-proportional .site-shell {
   padding-top: 24px !important;
   padding-bottom: 60px !important;
 }
-html.desktop-proportional .hero { min-height: 570px !important; padding: 28px !important; }
-html.desktop-proportional .hero-meta { font-size: 18px !important; }
-html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; }
+html.desktop-proportional .card { width: 100% !important; max-width: none !important; }
+html.desktop-proportional .hero { min-height: 570px !important; padding: 28px !important; grid-template-rows: auto 1fr auto !important; }
+html.desktop-proportional .hero-meta { font-size: 18px !important; padding-inline: 6px !important; }
+html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; grid-template-columns: 1fr !important; }
+html.desktop-proportional .hero-claim-art { width: 145% !important; max-width: none !important; }
 html.desktop-proportional .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 26px !important; }
+html.desktop-proportional .identity-block { gap: 14px !important; padding-top: 15px !important; }
 html.desktop-proportional .identity-block h2 { font-size: 50px !important; }
 html.desktop-proportional .identity-tagline { font-size: 21.5px !important; }
 html.desktop-proportional .identity-meta { font-size: 17px !important; }
+html.desktop-proportional .quick-actions { display: flex !important; margin: 12px 0 !important; }
+html.desktop-proportional .platforms { display: flex !important; justify-content: space-between !important; }
+html.desktop-proportional .platforms a,
+html.desktop-proportional .platforms button { width: 58px !important; min-width: 58px !important; height: 58px !important; flex: 0 0 58px !important; border-radius: 50% !important; }
+html.desktop-proportional .lava-toggle { width: 174px !important; min-width: 174px !important; height: 58px !important; flex: 0 0 174px !important; font-size: 20px !important; }
 html.desktop-proportional .featured,
 html.desktop-proportional .links-card,
 html.desktop-proportional .contact { padding: 24px !important; }
 html.desktop-proportional .brand-heading { font-size: 50px !important; }
 html.desktop-proportional .links-card > a { font-size: 21.5px !important; }
-html.desktop-proportional .links-card small { font-size: 13.5px !important; }
+html.desktop-proportional .links-card small { font-size: 16px !important; }
 html.desktop-proportional .contact { min-height: 245px !important; }
 html.desktop-proportional .contact h2 { font-size: 38px !important; max-width: 100% !important; }
+html.desktop-proportional .floating-motto { width: 100% !important; margin-bottom: 0 !important; }
 
 /* TOUCH / PHONE PORTRAIT */
 @media (pointer: coarse) {
@@ -2492,40 +2537,36 @@ html.desktop-proportional .contact h2 { font-size: 38px !important; max-width: 1
     min-width: 0 !important;
     margin: 0 !important;
     padding-top: 10px !important;
-    padding-bottom: 60px !important;
+    padding-bottom: 24px !important;
   }
   .card { width: 100% !important; max-width: 100% !important; }
 
   .hero {
-    padding: 18px 20px 23px !important;
+    padding: 20px 22px 30px !important;
     min-height: 0 !important;
     height: auto !important;
     grid-template-rows: auto auto auto !important;
   }
   .hero-meta {
-    padding-inline: 2px !important;
-    font-size: 14px !important;
+    padding-inline: 8px !important;
+    font-size: 15px !important;
     line-height: 1.12 !important;
     letter-spacing: .025em !important;
   }
   .hero-claim-art-wrap {
     width: 100% !important;
     max-width: none !important;
-    margin: 11px auto 14px !important;
+    margin: 8px auto 10px !important;
+    grid-template-columns: 1fr !important;
   }
-  .hero-claim-art { width: 100% !important; height: auto !important; }
+  .hero-claim-art { width: 125% !important; height: auto !important; max-width: none !important; }
 
-  .identity-stack { grid-template-columns: 1fr !important; gap: 19px !important; }
-  .identity-block { gap: 13px !important; padding-top: 14px !important; }
+  .identity-stack { grid-template-columns: 1fr !important; gap: 20px !important; }
+  .identity-block { gap: 13px !important; padding-top: 15px !important; }
   .identity-block h2,
-  .identity-block p { padding-inline: 10px !important; }
+  .identity-block p { padding-inline: 14px !important; }
   .identity-block h2 { font-size: 25px !important; }
-  .identity-tagline {
-    font-size: 11px !important;
-    line-height: 1.15 !important;
-    font-weight: 500 !important;
-    white-space: nowrap !important;
-  }
+  .identity-tagline { font-size: 11px !important; line-height: 1.15 !important; font-weight: 500 !important; white-space: nowrap !important; }
   .identity-meta { font-size: 10.4px !important; line-height: 1.16 !important; }
 
   .quick-actions {
@@ -2544,21 +2585,33 @@ html.desktop-proportional .contact h2 { font-size: 38px !important; max-width: 1
     width: 100% !important;
   }
   .platforms a,
-  .platforms a:nth-child(n) {
-    width: 54px !important; min-width: 54px !important; height: 54px !important;
+  .platforms button,
+  .platforms a:nth-child(n),
+  .platforms button:nth-child(n) {
+    width: 54px !important;
+    min-width: 54px !important;
+    height: 54px !important;
     flex: none !important;
-    justify-self: center !important; align-self: center !important;
-    grid-column: auto !important; grid-row: auto !important;
+    justify-self: center !important;
+    align-self: center !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
     border-radius: 50% !important;
   }
   .platform-icon { width: 46% !important; height: 46% !important; }
   .lava-toggle {
-    grid-column: 1 !important; grid-row: 2 !important;
-    width: 100% !important; min-width: 0 !important; height: 66px !important;
-    margin-top: 2px !important; padding: 0 16px !important;
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 66px !important;
+    margin-top: 2px !important;
+    padding: 0 16px !important;
     border-radius: 999px !important;
-    flex-direction: row !important; gap: .30em !important;
-    font-size: 24px !important; line-height: 1 !important;
+    flex-direction: row !important;
+    gap: .30em !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
   }
 
   .play { width: 54px !important; height: 54px !important; }
@@ -2567,35 +2620,44 @@ html.desktop-proportional .contact h2 { font-size: 38px !important; max-width: 1
   .cta-row .inline-arrow { width: 1em !important; height: 1em !important; margin-left: 5px !important; }
 
   .links-card { padding: 20px !important; }
-  .brand-heading { font-size: 30px !important; margin-bottom: 18px !important; }
-  .links-card > a { min-height: 68px !important; padding: 13px 0 !important; font-size: 17px !important; }
-  .links-card small { font-size: 11.5px !important; margin-top: 6px !important; }
+  .brand-heading { font-size: 31px !important; margin-bottom: 18px !important; }
+  .links-card > a { min-height: 70px !important; padding: 13px 0 !important; font-size: 18px !important; }
+  .links-card small { font-size: 13px !important; margin-top: 7px !important; }
 
   .sonodgtl-card > a > span:first-child,
   .sonodgtl-card small { white-space: normal !important; line-height: 1.18 !important; }
   .sonodgtl-cta-separator { display: none !important; }
   .mobile-only-break { display: block !important; }
 
+  .contact,
+  .contact-a { grid-template-rows: auto minmax(82px, 1fr) !important; }
+  .contact-a .contact-lower { min-height: 82px !important; align-items: center !important; }
   .contact h2 { max-width: 74% !important; font-size: clamp(18px, 5.5vw, 23px) !important; line-height: .94 !important; }
   .contact-line > span { display: block !important; white-space: nowrap !important; }
   .contact-smile,
-  .contact-smile-full { width: 106px !important; right: 7% !important; top: 50% !important; transform: translateY(-50%) !important; }
+  .contact-smile-full { width: 106px !important; right: 10% !important; top: 50% !important; transform: translateY(-50%) !important; }
+
+  .floating-motto { margin-bottom: 0 !important; }
 }
 
-/* TOUCH LANDSCAPE: one row, scaled to fit. */
+/* TOUCH LANDSCAPE */
 @media (orientation: landscape) and (pointer: coarse) {
   .site-stage { width: 80vw !important; max-width: 80vw !important; }
+  .site-shell { padding-bottom: 24px !important; }
   .hero {
     min-height: 0 !important;
     height: auto !important;
     grid-template-rows: auto auto auto !important;
-    padding: 14px 18px 20px !important;
+    padding: 18px 22px 28px !important;
   }
-  .hero-meta { font-size: 13px !important; }
-  .hero-claim-art-wrap { width: 84% !important; margin: 4px auto 7px !important; }
+  .hero-meta { font-size: 14px !important; padding-inline: 12px !important; }
+  .hero-claim-art-wrap { width: 100% !important; margin: 6px auto 8px !important; grid-template-columns: 1fr !important; }
+  .hero-claim-art { width: 145% !important; max-width: none !important; }
   .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 20px !important; align-items: start !important; }
   .identity-card-link:first-child .identity-block { text-align: right !important; }
   .identity-card-link:last-child .identity-block { text-align: left !important; }
+  .identity-block h2,
+  .identity-block p { padding-inline: 14px !important; }
   .identity-block h2 { font-size: 24px !important; }
   .identity-tagline { font-size: 11px !important; }
   .identity-meta { font-size: 10.4px !important; }
@@ -2611,33 +2673,40 @@ html.desktop-proportional .contact h2 { font-size: 38px !important; max-width: 1
     flex: 1 1 auto !important;
     align-items: center !important;
     justify-content: space-between !important;
-    gap: 5px !important;
+    gap: 0 !important;
     width: auto !important;
   }
   .platforms a,
-  .platforms a:nth-child(n) {
-    flex: 0 0 38px !important;
-    width: 38px !important; min-width: 38px !important; height: 38px !important;
+  .platforms button,
+  .platforms a:nth-child(n),
+  .platforms button:nth-child(n) {
+    flex: 0 0 42px !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
     border-radius: 50% !important;
   }
-  .platform-icon { width: 48% !important; height: 48% !important; }
+  .platform-icon { width: 50% !important; height: 50% !important; }
   .lava-toggle {
     flex: 0 0 118px !important;
-    width: 118px !important; min-width: 118px !important; height: 42px !important;
-    margin: 0 !important; border-radius: 36px !important;
-    font-size: 16px !important; gap: 5px !important;
+    width: 118px !important;
+    min-width: 118px !important;
+    height: 44px !important;
+    margin: 0 !important;
+    border-radius: 36px !important;
+    font-size: 16px !important;
+    gap: 5px !important;
   }
 
   .contact h2 { max-width: 100% !important; }
   .contact-line { display: block !important; }
   .contact-line > span { display: inline !important; white-space: nowrap !important; }
   .contact-smile,
-  .contact-smile-full { width: 133px !important; right: 11% !important; }
+  .contact-smile-full { width: 133px !important; right: 15% !important; }
 
   .mobile-only-break { display: none !important; }
   .sonodgtl-cta-separator { display: inline !important; }
 }
 
-
-/* Direct bubble manipulation: only immersive touch mode captures gestures. */
+/* Direct bubble manipulation: touch drag is captured only in immersive lava. */
 body.lava-mode { touch-action: none; }

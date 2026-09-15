@@ -1,26 +1,24 @@
-BEERBELGIO.GITHUB.IO — V0.39 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.40 PUBLIC STAGING
 
 STATUS
 Public staging for the BeerBelgio / Matteo Belgiovine digital hub.
 Search indexing remains disabled until the public 1.0 launch.
 
-V0.39 CHANGELOG
-- Build hygiene: V0.39 REPLACES the V0.38 staging override block. Staging overrides are not stacked from build to build.
-- Hero claim: replaced the responsive HTML/text-fitting system with Matteo's supplied vector artwork (`assets/claim.svg`). The claim is now one SVG object, centred and proportionally scaled on desktop/mobile/rotation with no font-metric JS.
-- Hero landing: refresh / page load now always returns to the top Hero. Clicking the Hero BeerBelgio block still centres the BeerBelgio links card, but no URL hash is left behind to be restored on refresh.
-- Hero mobile: larger name/location text, larger coherent card margins, more bottom breathing, and a single SVG claim that no longer changes construction after orientation changes.
-- Hero landscape mobile: reduced empty vertical space while preserving side-by-side BeerBelgio / sonoDGTL identity blocks.
-- Lower BeerBelgio / sonoDGTL cards: typography enlarged substantially to echo the hierarchy of the Hero identity blocks.
-- Desktop proportional layout: narrow desktop windows explicitly retain the full 760 px desktop composition (two identity columns, desktop typography, cards and quick links) and scale the whole shell as one unit.
-- Quick links desktop: restored true 58x58 circles, icons enlarged, equidistant distribution retained, and extra breathing added between Hero / Quick Links / Featured.
-- Quick links mobile portrait: keeps the approved 4 + 4 + FULL LAVA layout.
-- Quick links mobile landscape: changed to one compact row, scaled to fit the available width.
-- Mobile page end: restored desktop-like bottom spacing instead of leaving excessive scroll after the final motto.
-- Lava direct manipulation: mouse/pen can click-drag a visible blob from the background. Touch drag is enabled in FULL LAVA and /lava/ so normal page scrolling remains usable.
-- Lava deformation: deformation direction now interpolates instead of snapping to a new force angle, specifically to prevent occasional sudden blob rotations.
-- Lava touch warping: scroll/touch impulses now feed the deformation system as well as position, so mobile scrolling produces liquid warping closer to the desktop wheel/trackpad behaviour.
-- Lava iOS portrait: retired the scroll-follow document-canvas transform; portrait now uses a fixed vertically overscanned canvas, avoiding the extra document scroll range caused by translating an absolute canvas with scrollY.
-- Cache busting updated to ?v=039.
+V0.40 CHANGELOG
+- Build hygiene: V0.40 REPLACES the V0.39 staging override block. Staging overrides are not stacked from build to build.
+- Quick links: removed the Email quick-link asset/code and replaced it with a native Share button. On supported devices it opens the system share sheet; otherwise it copies https://beerbelgio.github.io/ to the clipboard.
+- Contact card: WRITE ME is vertically centred in the remaining space between the heading and the lower edge of the card.
+- Lava direct manipulation: dragged bubbles retain their release momentum for roughly 2 seconds, then blend back progressively into autonomous motion over the following ~3 seconds.
+- Lava interaction isolation: while a bubble is being dragged, global scroll/pointer impulses are suppressed for the other blobs.
+- Lava touch warping: stronger touch deformation and per-blob scroll response gains/delays/directional offsets. Blobs now react less uniformly and with more individual timing/shape variation.
+- Hero claim: still uses Matteo's supplied SVG. Desktop now explicitly resets the old two-column H1 grid and scales the SVG artwork to compensate for transparent artboard margins; portrait mobile is +25% versus V0.39, landscape uses the desktop-like scale.
+- Hero landing: strengthened top-of-page reset on load/pageshow so refresh always returns to the Hero rather than preserving an internal scroll position.
+- Hero mobile: name/location increased again, more coherent inner margin, more lower-card breathing.
+- Lower BeerBelgio / sonoDGTL cards: descriptors enlarged to better match the Hero hierarchy.
+- Quick links landscape: one-row layout retained and buttons increased to 42 px with equal spacing, including the Share button.
+- Desktop narrow-window mode: reinforced the complete desktop-proportional rule set so old viewport-width media rules cannot remap individual components while the 760 px composition is being scaled.
+- Mobile page end: bottom padding reduced to keep the final claim closer to the desktop ending behaviour.
+- Cache busting updated to ?v=040.
 
 RIGHTS / LICENSING
 - Original website code: PolyForm Noncommercial 1.0.0.
