@@ -2244,7 +2244,7 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.43 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   V0.44 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
    Replaces V0.40 completely. Never stack staging override blocks.
    ========================================================= */
 
@@ -2468,7 +2468,7 @@ html.ios-device #lava-canvas {
   width: 68% !important;
   max-width: none !important;
   margin: 0 !important;
-  font-size: 58px !important;
+  font-size: 64px !important;
   line-height: .93 !important;
 }
 .contact-a .contact-lower {
@@ -2491,9 +2491,10 @@ html.ios-device #lava-canvas {
   position: absolute !important;
   width: 205px !important;
   max-height: none !important;
-  right: 24px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
+  right: 26px !important;
+  bottom: 26px !important;
+  top: auto !important;
+  transform: none !important;
   object-fit: contain !important;
   pointer-events: none !important;
 }
@@ -2544,9 +2545,9 @@ html.desktop-proportional .brand-heading { font-size: 50px !important; }
 html.desktop-proportional .links-card > a { font-size: 21.5px !important; }
 html.desktop-proportional .links-card small { font-size: 16px !important; }
 html.desktop-proportional .contact { min-height: 286px !important; }
-html.desktop-proportional .contact h2 { font-size: 58px !important; width: 68% !important; }
+html.desktop-proportional .contact h2 { font-size: 64px !important; width: 68% !important; }
 html.desktop-proportional .contact-a .contact-lower { display:flex !important; padding-right:230px !important; }
-html.desktop-proportional .contact-smile-full { width:205px !important; right:24px !important; top:50% !important; transform:translateY(-50%) !important; }
+html.desktop-proportional .contact-smile-full { width:205px !important; right:26px !important; bottom:26px !important; top:auto !important; transform:none !important; }
 html.desktop-proportional .mobile-only-break { display: none !important; }
 html.desktop-proportional .sonodgtl-cta-separator { display: inline !important; }
 html.desktop-proportional .contact-line > span { display: inline !important; }
@@ -2555,8 +2556,8 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
 /* TOUCH / PHONE PORTRAIT */
 @media (pointer: coarse) {
   .site-stage {
-    width: 84vw !important;
-    max-width: 84vw !important;
+    width: 80vw !important;
+    max-width: 80vw !important;
     min-width: 0 !important;
     margin-inline: auto !important;
   }
@@ -2606,10 +2607,11 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .quick-actions {
     display: grid !important;
     grid-template-columns: repeat(4, 54px) !important;
+    grid-template-rows: 54px 54px 66px !important;
     grid-auto-rows: 54px !important;
     justify-content: space-between !important;
-    align-items: center !important;
-    row-gap: 12px !important;
+    align-items: start !important;
+    row-gap: 14px !important;
     width: 100% !important;
     margin: 14px 0 !important;
   }
@@ -2632,6 +2634,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     width: 100% !important;
     min-width: 0 !important;
     height: 66px !important;
+    align-self: start !important;
     margin: 0 !important;
     padding: 0 16px !important;
     border-radius: 999px !important;
@@ -2684,9 +2687,10 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .contact-smile-full {
     position: absolute !important;
     width: 104px !important;
-    right: 16px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    right: 20px !important;
+    bottom: 20px !important;
+    top: auto !important;
+    transform: none !important;
   }
 
   .floating-motto { margin-bottom: 0 !important; }
@@ -2760,7 +2764,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .contact-line > span { display: inline !important; white-space: nowrap !important; }
   .contact-a .contact-lower { display:flex !important; padding-right:180px !important; min-height:0 !important; }
   .contact-smile,
-  .contact-smile-full { position:absolute !important; width:160px !important; right:20px !important; top:50% !important; transform:translateY(-50%) !important; }
+  .contact-smile-full { position:absolute !important; width:160px !important; right:20px !important; bottom:20px !important; top:auto !important; transform:none !important; }
 
   .mobile-only-break { display: none !important; }
   .sonodgtl-cta-separator { display: inline !important; }
@@ -2788,4 +2792,38 @@ body.lava-mode { touch-action: none; }
     height: calc(100dvh + 40svh) !important;
     inset: auto !important;
   }
+}
+
+
+/* V0.44 deterministic touch orientation overrides.
+   JS toggles these classes after rotate/resize so Android cannot keep stale landscape rules. */
+html.touch-portrait .site-stage { width:80vw !important; max-width:80vw !important; }
+html.touch-portrait .identity-stack { grid-template-columns:1fr !important; gap:14px !important; }
+html.touch-portrait .hero-claim-art-wrap { margin:5px 0 !important; }
+html.touch-portrait .hero-claim-art { width:100% !important; justify-self:start !important; }
+html.touch-portrait .quick-actions {
+  grid-template-columns:repeat(4,54px) !important;
+  grid-template-rows:54px 54px 66px !important;
+  row-gap:14px !important;
+}
+html.touch-portrait .lava-toggle { grid-column:1/-1 !important; grid-row:3 !important; height:66px !important; align-self:start !important; }
+
+html.touch-landscape .site-stage { width:80vw !important; max-width:80vw !important; }
+html.touch-landscape .identity-stack { grid-template-columns:1fr 1fr !important; }
+html.touch-landscape .quick-actions {
+  grid-template-columns:repeat(8,42px) 112px !important;
+  grid-template-rows:42px !important;
+  grid-auto-rows:42px !important;
+  align-items:center !important;
+}
+html.touch-landscape .platforms a,
+html.touch-landscape .platforms button { grid-row:1 !important; }
+html.touch-landscape .lava-toggle { grid-column:9 !important; grid-row:1 !important; height:42px !important; }
+
+/* V0.44 mail/share fallback toast may contain a short instruction. */
+.share-toast {
+  max-width: min(90vw, 460px) !important;
+  text-align: center !important;
+  white-space: normal !important;
+  line-height: 1.25 !important;
 }

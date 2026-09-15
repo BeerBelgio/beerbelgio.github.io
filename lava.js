@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.43
+/* BeerBelgio Lava Engine — V0.44
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -108,9 +108,9 @@
       family: familyForColor(palette[i % palette.length]),
       phase: Math.random() * Math.PI * 2,
       phase2: Math.random() * Math.PI * 2,
-      wobble: 0.095 + Math.random() * 0.085,
-      morphBase: 0.30 + Math.random() * 0.12,
-      deformMag: 0.38 + Math.random() * 0.12,
+      wobble: 0.115 + Math.random() * 0.105,
+      morphBase: 0.32 + Math.random() * 0.14,
+      deformMag: 0.44 + Math.random() * 0.14,
       deformDir: Math.random() * Math.PI * 2,
       dragging: false,
       manualMomentumUntil: 0,
@@ -125,6 +125,8 @@
       scrollAngleOffset: (Math.random() - 0.5) * 0.28,
       scrollWarpGain: 0.82 + Math.random() * 0.55,
       scrollPhaseOffset: Math.random() * Math.PI * 2,
+      ambientWarpPhase: Math.random() * Math.PI * 2,
+      motionWarp: 0,
       forceX: 0,
       forceY: 0
     };
@@ -132,7 +134,7 @@
 
   function resize(force = false) {
     syncPortraitCanvasPosition();
-    // V0.43: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
+    // V0.44: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
     // desktop/landscape keep the fixed canvas. JS mirrors the CSS rectangle into
     // the backing bitmap. We never resize from visualViewport while Safari chrome animates.
     const oldPadX = padX;
@@ -213,11 +215,14 @@
       const deformDir = blob.deformDir || 0;
       const ambientMorph = blob.morphBase || 0.22;
 
+      const pulseA = 0.72 + 0.28 * Math.sin(time * 0.00023 + blob.turnPhase);
+      const pulseB = 0.68 + 0.32 * Math.sin(time * 0.00017 + blob.turnPhase * 1.37);
+      const pulseC = 0.74 + 0.26 * Math.sin(time * 0.00029 + blob.turnPhase * 0.71);
       const breathing =
         1
-        + wobbleNow * Math.sin(a * 3 + blob.phase + time * 0.00018)
-        + wobbleNow * 0.62 * Math.sin(a * 5 - blob.phase2 + time * 0.00012)
-        + ambientMorph * 0.08 * Math.sin(a * 2 + blob.phase2 * 0.6);
+        + wobbleNow * pulseA * Math.sin(a * 3 + blob.phase)
+        + wobbleNow * 0.72 * pulseB * Math.sin(a * 5 - blob.phase2)
+        + ambientMorph * 0.12 * pulseC * Math.sin(a * 2 + blob.phase2 * 0.6);
 
       const directional = Math.cos(a - deformDir);
       const stretch = 1
@@ -306,18 +311,16 @@
   function update(blob, dt, time) {
     const motionScale = prefersReducedMotion ? 0.18 : 1;
 
-    blob.phase += dt * 0.000095 * motionScale;
-    blob.phase2 -= dt * 0.000074 * motionScale;
     blob.forceX = 0;
     blob.forceY = 0;
 
     if (blob.dragging) {
       const dragSpeed = Math.hypot(dragVx, dragVy);
-      const dragWarp = Math.min(0.88, dragSpeed * 0.70);
-      // Manual motion deforms the contour, but never rotates the blob's shape axis.
-      blob.deformMag = Math.max(blob.morphBase || 0.22, (blob.morphBase || 0.22) + dragWarp);
-      blob.phase += dragVx * 0.0026 * dt;
-      blob.phase2 -= dragVy * 0.0022 * dt;
+      const baseMorph = blob.morphBase || 0.32;
+      const dragWarp = baseMorph * 0.50 + Math.min(0.90, dragSpeed * 0.72);
+      // While the blob is held, deformation stays at least ~50% above its autonomous base.
+      // The axis is fixed: the contour mutates, it does not rotate.
+      blob.deformMag = Math.max(baseMorph * 1.50, baseMorph + dragWarp);
       return;
     }
 
@@ -397,8 +400,6 @@
     const warpGain = 0.16 * blob.scrollWarpGain * scrollWarpBoost;
     blob.forceX += scrollFx * warpGain;
     blob.forceY += scrollFy * warpGain;
-    blob.phase += (scrollNormY + scrollNormX * 0.45) * (0.00034 + blob.scrollFollow * 0.04) * dt;
-    blob.phase2 -= (scrollNormY - scrollNormX * 0.35) * (0.00029 + blob.scrollFollow * 0.035) * dt;
 
     // Anti-edge / anti-corner disturbance:
     // viscous steering first, tiny pushes second. No flipper kicks.
@@ -466,7 +467,6 @@
       blob.vy += fy;
       blob.forceY += fy;
       blob.baseAngle += angleDelta(blob.baseAngle, -Math.PI / 2) * 0.00022 * dt * heaterStrength;
-      blob.phase += heaterStrength * 0.00007 * dt;
     }
 
     const forceMag = Math.hypot(blob.forceX, blob.forceY);
@@ -482,16 +482,21 @@
       manualWarp = (blob.manualWarpMag || 0) * (1 - t);
     }
     if (manualWarp > 0) {
-      blob.phase += manualWarp * 0.00038 * dt;
-      blob.phase2 -= manualWarp * 0.00031 * dt;
     }
 
-    const morphFloor = blob.morphBase || 0.22;
+    const morphFloor = blob.morphBase || 0.32;
+    const speedRatio = Math.hypot(blob.vx, blob.vy) / Math.max(0.0001, blob.baseSpeed);
+    const motionTarget = Math.min(0.34, Math.max(0, speedRatio - 0.65) * 0.055);
+    const motionFollow = Math.min(1, 0.0016 * dt);
+    blob.motionWarp += (motionTarget - (blob.motionWarp || 0)) * motionFollow;
+    const ambientWarp = 0.10 + 0.10 * (0.5 + 0.5 * Math.sin(time * 0.00031 + blob.ambientWarpPhase));
+    const livingFloor = morphFloor + ambientWarp + (blob.motionWarp || 0) + manualWarp;
+
     blob.deformMag = Math.min(
       1.02,
       Math.max(
-        morphFloor + manualWarp,
-        (blob.deformMag || morphFloor) * Math.pow(0.9990, dt) + forceMag * 138
+        livingFloor,
+        (blob.deformMag || livingFloor) * Math.pow(0.99925, dt) + forceMag * 148
       )
     );
 
@@ -519,10 +524,8 @@
       const fy = (dy / dist) * force * 0.15 * polarity;
       blob.vx += fx;
       blob.vy += fy;
-      blob.forceX += fx;
-      blob.forceY += fy;
-      blob.phase += force * 1.05;
-      blob.phase2 -= force * 0.72;
+      // Blank clicks affect trajectory only. Shape responds later through
+      // movement energy, avoiding an instantaneous rotation/morph jump.
     });
   }
 
@@ -831,9 +834,19 @@
   addEventListener("orientationchange", () => {
     syncPortraitCanvasPosition();
     resize();
-    setTimeout(resize, 120);
-    setTimeout(resize, 420);
+    setTimeout(resize, 100);
+    setTimeout(resize, 260);
+    setTimeout(resize, 520);
+    setTimeout(resize, 900);
   }, { passive: true });
+
+  if (window.visualViewport) {
+    let viewportResizeTimer = 0;
+    visualViewport.addEventListener("resize", () => {
+      clearTimeout(viewportResizeTimer);
+      viewportResizeTimer = setTimeout(() => resize(), 120);
+    }, { passive: true });
+  }
 
   addEventListener("pointermove", (e) => {
     pointer.x = e.clientX + padX;
@@ -869,12 +882,12 @@
   addEventListener("wheel", (e) => {
     if (draggedBlob) return;
     const immersive = document.body.classList.contains("lava-mode") || location.pathname.includes("/lava/");
-    const modeScale = immersive ? 0.34 : 0.62;
+    const modeScale = immersive ? 0.30 : 0.48;
     const dx = Math.max(-28, Math.min(28, e.deltaX * 0.20 * modeScale));
     const dy = Math.max(-28, Math.min(28, e.deltaY * 0.20 * modeScale));
     scrollImpulseX = Math.max(-34, Math.min(34, scrollImpulseX + dx));
     scrollImpulseY = Math.max(-34, Math.min(34, scrollImpulseY + dy));
-    scrollWarpBoost = immersive ? 1.45 : 1.75;
+    scrollWarpBoost = immersive ? 1.55 : 1.95;
   }, { passive: true });
 
   addEventListener("touchstart", (e) => {
@@ -893,12 +906,12 @@
       return;
     }
     const immersive = document.body.classList.contains("lava-mode") || location.pathname.includes("/lava/");
-    const modeScale = immersive ? 0.38 : 0.68;
+    const modeScale = immersive ? 0.34 : 0.52;
     const dx = Math.max(-28, Math.min(28, (lastTouchX - t.clientX) * 0.31 * modeScale));
     const dy = Math.max(-28, Math.min(28, (lastTouchY - t.clientY) * 0.31 * modeScale));
     scrollImpulseX = Math.max(-34, Math.min(34, scrollImpulseX + dx));
     scrollImpulseY = Math.max(-34, Math.min(34, scrollImpulseY + dy));
-    scrollWarpBoost = immersive ? 1.65 : 2.35;
+    scrollWarpBoost = immersive ? 1.85 : 2.55;
     lastTouchX = t.clientX;
     lastTouchY = t.clientY;
   }, { passive: true });

@@ -67,14 +67,14 @@ a { color: inherit; }
 }
 .sd-eyebrow {
   margin: 0;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: .025em;
 }
 .sd-name,
 .sd-role { display: block; }
-.sd-role { margin-top: 4px; }
+.sd-role { margin-top: 3px; }
 .sd-role-short { display: none; }
 .sd-hero-meta {
   margin: 0;
@@ -92,7 +92,7 @@ a { color: inherit; }
   letter-spacing: -.055em;
   font-weight: 800;
 }
-.sd-hero h1 span { display: block; }
+.sd-hero h1 span { display: block; white-space: nowrap; }
 .sd-hero-copy {
   margin: 0;
   width: 100%;
@@ -100,26 +100,26 @@ a { color: inherit; }
   font-size: clamp(20px, 2vw, 25px);
   line-height: 1.28;
   text-align: left;
-  letter-spacing: -.018em;
+  letter-spacing: -.026em;
 }
 
 .sd-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-top: 16px; }
 .sd-card { padding: 30px; background: var(--paper); }
 .sd-card h2 { margin: 0 0 20px; font-size: clamp(38px, 4.5vw, 62px); line-height: .92; letter-spacing: -.045em; }
-.sd-card h3 { margin: 0 0 9px; font-size: 22px; line-height: 1.05; letter-spacing: -.02em; }
-.sd-card p { margin: 0; font-size: 18px; line-height: 1.46; text-align: left; letter-spacing: -.018em; }
+.sd-card h3 { margin: 0 0 9px; font-size: 24px; line-height: 1.02; letter-spacing: -.025em; font-weight: 800; }
+.sd-card p { margin: 0; font-size: 18px; line-height: 1.46; text-align: left; letter-spacing: -.026em; }
 
 .sd-principle { grid-column: span 12; background: var(--orange); color: var(--cream); padding: 34px; }
 .sd-principle blockquote {
   margin: 0;
   max-width: 1040px;
   font-size: clamp(34px, 4.4vw, 60px);
-  line-height: 1.02;
-  letter-spacing: -.04em;
+  line-height: 1.09;
+  letter-spacing: -.025em;
   font-weight: 760;
 }
 .sd-principle blockquote span { display: block; }
-.sd-principle blockquote span + span { margin-top: .25em; }
+.sd-principle blockquote span + span { margin-top: .32em; }
 .sd-principle em { font-style: italic; font-size: inherit; font-weight: inherit; }
 
 .sd-capabilities { grid-column: span 8; }
@@ -138,8 +138,8 @@ a { color: inherit; }
   background: var(--orange);
   color: var(--cream);
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) 280px;
-  gap: 40px;
+  grid-template-columns: minmax(0, 1.85fr) 250px;
+  gap: 30px;
   align-items: center;
 }
 .sd-contact h2 {
@@ -152,7 +152,7 @@ a { color: inherit; }
 .sd-contact-actions {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px;
   align-items: stretch;
   justify-content: center;
   min-width: 0;
@@ -190,11 +190,11 @@ a { color: inherit; }
 
   .sd-hero { min-height: 0; padding: 22px; gap: 16px; }
   .sd-hero-top { grid-template-columns: 1fr auto; gap: 12px; }
-  .sd-eyebrow { font-size: 13px; }
+  .sd-eyebrow { font-size: 12px; }
   .sd-role-full { display: none; }
   .sd-role-short { display: block; }
-  .sd-hero-meta { font-size: 11.5px; }
-  .sd-hero h1 { max-width: 100%; font-size: clamp(43px, 13.5vw, 68px); }
+  .sd-hero-meta { font-size: 12px; }
+  .sd-hero h1 { max-width: 100%; font-size: clamp(34px, 10.8vw, 52px); }
   .sd-hero-copy { font-size: 17px; line-height: 1.34; }
 
   .sd-grid { gap: 11px; margin-top: 11px; }
@@ -204,6 +204,7 @@ a { color: inherit; }
   .sd-profile { grid-column: span 12; }
   .sd-principle blockquote { font-size: clamp(30px, 8.8vw, 48px); }
   .sd-cap-list { grid-template-columns: 1fr; }
+  .sd-card h3 { font-size: 21px; font-weight: 800; }
   .sd-card p { font-size: 17px; }
   .sd-cap-item p { font-size: 16px; }
   .sd-tag { font-size: 12.5px; }
@@ -219,7 +220,7 @@ a { color: inherit; }
   .sd-contact h2 {
     margin: 0;
     max-width: none;
-    font-size: clamp(42px, 13vw, 66px);
+    font-size: clamp(36px, 10.8vw, 54px);
     line-height: .88;
   }
   .sd-contact-actions {
@@ -233,46 +234,46 @@ a { color: inherit; }
 }
 
 @media (orientation: landscape) and (pointer: coarse) {
-  .sd-shell { width: 94vw; max-width: none; padding: 8px 0 24px; }
-  .sd-nav { padding: 4px 2px 8px; font-size: 11px; }
-  .sd-nav-brand { font-size: 16px; }
+  .sd-shell { width: 97vw; max-width: none; padding: 2px 0 16px; }
+  .sd-nav { padding: 2px 2px 5px; font-size: 10.5px; }
+  .sd-nav-brand { font-size: 15px; }
   .sd-pill { min-height: 32px; padding: 0 10px; }
   .sd-hub-pill img { width: 13px; height: 13px; }
 
-  .sd-hero { min-height: 0; padding: 17px 20px; gap: 10px; }
+  .sd-hero { min-height: 0; padding: 14px 17px; gap: 8px; }
   .sd-hero-top { grid-template-columns: 1fr auto; gap: 16px; }
-  .sd-eyebrow { font-size: 11px; }
+  .sd-eyebrow { font-size: 10.5px; }
   .sd-role-full { display: block; }
   .sd-role-short { display: none; }
   .sd-hero-meta { font-size: 10.5px; }
-  .sd-hero h1 { font-size: clamp(42px, 7vw, 66px); max-width: 720px; }
-  .sd-hero-copy { font-size: 14px; line-height: 1.28; }
+  .sd-hero h1 { font-size: clamp(36px, 5.9vw, 58px); max-width: 720px; }
+  .sd-hero-copy { font-size: 13px; line-height: 1.24; }
 
-  .sd-grid { gap: 10px; margin-top: 10px; }
-  .sd-card { padding: 18px; }
-  .sd-card h2 { font-size: clamp(28px, 4vw, 44px); margin-bottom: 14px; }
-  .sd-card h3 { font-size: 17px; }
-  .sd-card p { font-size: 14px; line-height: 1.35; }
-  .sd-principle { grid-column: span 12; padding: 20px; }
-  .sd-principle blockquote { font-size: clamp(26px, 4.5vw, 42px); }
+  .sd-grid { gap: 8px; margin-top: 8px; }
+  .sd-card { padding: 15px; }
+  .sd-card h2 { font-size: clamp(26px, 3.6vw, 40px); margin-bottom: 11px; }
+  .sd-card h3 { font-size: 18px; font-weight: 800; }
+  .sd-card p { font-size: 13px; line-height: 1.30; }
+  .sd-principle { grid-column: span 12; padding: 16px; }
+  .sd-principle blockquote { font-size: clamp(23px, 3.8vw, 36px); line-height:1.06; }
   .sd-capabilities { grid-column: span 8; }
   .sd-profile { grid-column: span 4; }
   .sd-cap-list { gap: 0 14px; }
-  .sd-cap-item { padding: 12px 0; }
+  .sd-cap-item { padding: 9px 0; }
   .sd-cap-item p { font-size: 13.5px; }
   .sd-tags { gap: 6px; margin-top: 14px; }
   .sd-tag { font-size: 10px; padding: 6px 8px; }
 
   .sd-contact {
-    margin-top: 10px;
-    padding: 20px;
-    min-height: 220px;
-    grid-template-columns: minmax(0, 1.55fr) 230px;
-    gap: 26px;
+    margin-top: 8px;
+    padding: 16px;
+    min-height: 190px;
+    grid-template-columns: minmax(0, 1.85fr) 220px;
+    gap: 20px;
     align-items: center;
   }
-  .sd-contact h2 { font-size: clamp(42px, 6.2vw, 68px); line-height: .84; }
-  .sd-contact-actions { display: flex; flex-direction: column; gap: 12px; }
-  .sd-contact-actions a { min-height: 40px; font-size: 11px; }
+  .sd-contact h2 { font-size: clamp(34px, 5vw, 58px); line-height: .86; }
+  .sd-contact-actions { display: flex; flex-direction: column; gap: 15px; }
+  .sd-contact-actions a { min-height: 36px; font-size: 10.5px; }
   .sd-footer { padding-top: 16px; font-size: 10px; }
 }
