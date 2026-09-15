@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.37
+/* BeerBelgio Lava Engine — V0.38
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -45,7 +45,10 @@
   let width = innerWidth;
   let height = innerHeight;
   let dpr = Math.min(devicePixelRatio || 1, 2);
-  let wheelImpulse = 0;
+  let scrollImpulseX = 0;
+  let scrollImpulseY = 0;
+  let lastTouchX = null;
+  let lastTouchY = null;
   let lastFrame = performance.now();
   let hiddenAt = null;
   let portraitScrollRAF = 0;
@@ -323,13 +326,16 @@
 
     // Scroll should be perceptible without permanently accelerating the blobs.
     // It temporarily nudges their position and organic phase, then decays.
-    const wheelNorm = Math.tanh(wheelImpulse / 5.8);
-    const scrollFx = Math.sin(blob.turnPhase + time * 0.0007) * wheelNorm * 0.00022 * dt;
-    const scrollFy = wheelNorm * 0.00054 * dt;
+    const scrollNormX = Math.tanh(scrollImpulseX / 5.8);
+    const scrollNormY = Math.tanh(scrollImpulseY / 5.8);
+    const scrollMagnitude = Math.min(1, Math.hypot(scrollNormX, scrollNormY));
+    const scrollFx = (scrollNormX * 0.00054
+      + Math.sin(blob.turnPhase + time * 0.0007) * scrollMagnitude * 0.00010) * dt;
+    const scrollFy = scrollNormY * 0.00054 * dt;
     blob.vx += scrollFx;
     blob.vy += scrollFy;
-    blob.phase += wheelNorm * 0.00036 * dt;
-    blob.phase2 -= wheelNorm * 0.00030 * dt;
+    blob.phase += (scrollNormY + scrollNormX * 0.45) * 0.00030 * dt;
+    blob.phase2 -= (scrollNormY - scrollNormX * 0.35) * 0.00026 * dt;
 
     // Anti-edge / anti-corner disturbance:
     // viscous steering first, tiny pushes second. No flipper kicks.
@@ -614,7 +620,8 @@
     ctx.fillStyle = "#973320";
     ctx.fillRect(0, 0, width, height);
 
-    wheelImpulse *= 0.86;
+    scrollImpulseX *= 0.86;
+    scrollImpulseY *= 0.86;
     pointer.impulse *= 0.84;
     pointer.strength += (pointer.impulse - pointer.strength) * 0.08;
 
@@ -660,9 +667,36 @@
   }, { passive: true });
 
   addEventListener("wheel", (e) => {
-    const delta = Math.max(-34, Math.min(34, e.deltaY * 0.24));
-    wheelImpulse = Math.max(-40, Math.min(40, wheelImpulse + delta));
+    const dx = Math.max(-34, Math.min(34, e.deltaX * 0.24));
+    const dy = Math.max(-34, Math.min(34, e.deltaY * 0.24));
+    scrollImpulseX = Math.max(-40, Math.min(40, scrollImpulseX + dx));
+    scrollImpulseY = Math.max(-40, Math.min(40, scrollImpulseY + dy));
   }, { passive: true });
+
+  addEventListener("touchstart", (e) => {
+    const t = e.touches && e.touches[0];
+    if (!t) return;
+    lastTouchX = t.clientX;
+    lastTouchY = t.clientY;
+  }, { passive: true });
+
+  addEventListener("touchmove", (e) => {
+    const t = e.touches && e.touches[0];
+    if (!t || lastTouchX == null || lastTouchY == null) return;
+    const dx = Math.max(-34, Math.min(34, (lastTouchX - t.clientX) * 0.34));
+    const dy = Math.max(-34, Math.min(34, (lastTouchY - t.clientY) * 0.34));
+    scrollImpulseX = Math.max(-40, Math.min(40, scrollImpulseX + dx));
+    scrollImpulseY = Math.max(-40, Math.min(40, scrollImpulseY + dy));
+    lastTouchX = t.clientX;
+    lastTouchY = t.clientY;
+  }, { passive: true });
+
+  const clearTouchScroll = () => {
+    lastTouchX = null;
+    lastTouchY = null;
+  };
+  addEventListener("touchend", clearTouchScroll, { passive: true });
+  addEventListener("touchcancel", clearTouchScroll, { passive: true });
 
   // Browsers can throttle animation in hidden tabs.
   // When the page becomes visible again, advance the slow autonomous travel

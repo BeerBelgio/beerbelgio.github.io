@@ -2244,8 +2244,8 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.37 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
-   Replaces V0.34 completely. Never stack staging override blocks.
+   V0.38 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   Replaces V0.37 completely. Never stack staging override blocks.
    ========================================================= */
 
 .site-stage,
@@ -2255,7 +2255,6 @@ html.desktop-proportional .site-shell {
 .platforms,
 .hero-claim-box { min-width: 0; }
 
-/* SVG utility icons */
 .inline-arrow,
 .arrow img {
   width: 1em;
@@ -2267,10 +2266,6 @@ html.desktop-proportional .site-shell {
 
 /* ---------------------------------------------------------
    LAVA CANVAS
-   Desktop + phone landscape keep the fixed canvas that solved
-   the horizontal crop. Phone portrait uses an absolute canvas
-   counter-translated with scroll so Safari treats it like page
-   content rather than clipping a fixed compositor layer.
    --------------------------------------------------------- */
 #lava-canvas {
   position: fixed !important;
@@ -2286,26 +2281,39 @@ html.desktop-proportional .site-shell {
 }
 
 /* ---------------------------------------------------------
-   HERO CLAIM — ONE GROUP, centred as one unit.
-   Both halves are centred inside the group rather than pushed
-   independently toward card edges.
+   HERO — desktop/internal 760px design.
+   Claim is one centred group; temporary HTML version uses a 5px gap.
    --------------------------------------------------------- */
+.hero {
+  min-height: 570px !important;
+  padding: 28px !important;
+  grid-template-rows: auto auto auto !important;
+}
+.hero-meta {
+  padding-inline: 4px !important;
+  font-size: 18px !important;
+  line-height: 1.1 !important;
+  font-weight: 500 !important;
+  letter-spacing: .03em !important;
+}
 .hero .fun { color: var(--orange) !important; }
 .hero-claim-grid {
-  width: 98% !important;
-  max-width: 740px !important;
-  margin: 0 auto !important;
+  width: 84% !important;
+  max-width: 690px !important;
+  margin: 2px auto 4px !important;
   align-self: center !important;
   justify-self: center !important;
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-  column-gap: 25px !important;
+  column-gap: 5px !important;
   align-items: center !important;
   justify-items: center !important;
+  transform: scale(1.15) !important;
+  transform-origin: center center !important;
 }
 .hero-claim-box {
   width: 100% !important;
-  height: 292px !important;
+  height: 218px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2328,16 +2336,20 @@ html.desktop-proportional .site-shell {
 }
 .hero .serious > span { display: block; white-space: nowrap !important; }
 
-/* ---------------------------------------------------------
-   HERO IDENTITIES
-   --------------------------------------------------------- */
+.identity-stack {
+  grid-template-columns: 1fr 1fr !important;
+  gap: 26px !important;
+}
 .identity-card-link:first-child .identity-block { text-align: right; }
 .identity-card-link:last-child .identity-block { text-align: left; }
-.identity-stack { grid-template-columns: 1fr 1fr !important; }
 .identity-block {
   grid-template-rows: auto auto auto !important;
-  gap: 16px !important;
-  padding-top: 16px !important;
+  gap: 14px !important;
+  padding-top: 15px !important;
+}
+.identity-block h2,
+.identity-block p {
+  padding-inline: 10px !important;
 }
 .identity-block h2 {
   font-size: 50px !important;
@@ -2358,7 +2370,7 @@ html.desktop-proportional .site-shell {
 }
 
 /* ---------------------------------------------------------
-   QUICK LINKS DESKTOP — one row, evenly distributed circles + FULL LAVA.
+   DESKTOP QUICK LINKS — evenly distributed, intentionally slightly oval.
    --------------------------------------------------------- */
 .quick-actions {
   display: flex !important;
@@ -2377,10 +2389,10 @@ html.desktop-proportional .site-shell {
 }
 .platforms a,
 .platforms a:nth-child(n) {
-  width: 58px !important;
-  min-width: 58px !important;
-  height: 58px !important;
-  aspect-ratio: 1 / 1 !important;
+  width: 64px !important;
+  min-width: 64px !important;
+  height: 54px !important;
+  aspect-ratio: auto !important;
   display: grid !important;
   place-items: center !important;
   line-height: 0 !important;
@@ -2388,26 +2400,26 @@ html.desktop-proportional .site-shell {
   grid-row: auto !important;
 }
 .platform-icon {
-  width: 40% !important;
-  height: 40% !important;
+  width: 46% !important;
+  height: 46% !important;
   object-fit: contain !important;
   display: block !important;
   margin: 0 !important;
 }
 .lava-toggle {
-  flex: 0 0 190px !important;
-  width: 190px !important;
-  min-width: 190px !important;
-  height: 58px !important;
-  padding: 0 16px !important;
+  flex: 0 0 184px !important;
+  width: 184px !important;
+  min-width: 184px !important;
+  height: 54px !important;
+  padding: 0 15px !important;
   border-radius: 50px !important;
   display: inline-flex !important;
   flex-direction: row !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 8px !important;
-  font-size: 27px !important;
-  line-height: .9 !important;
+  gap: 7px !important;
+  font-size: 23px !important;
+  line-height: .92 !important;
   font-weight: 700 !important;
   letter-spacing: .01em !important;
   text-align: center !important;
@@ -2415,7 +2427,7 @@ html.desktop-proportional .site-shell {
 .lava-toggle span { display: inline !important; }
 
 /* ---------------------------------------------------------
-   FEATURED
+   FEATURED / CONTACT
    --------------------------------------------------------- */
 .play { display: grid !important; place-items: center !important; padding: 0 !important; }
 .play img {
@@ -2437,10 +2449,6 @@ html.desktop-proportional .site-shell {
   height: 1em !important;
   filter: none !important;
 }
-
-/* ---------------------------------------------------------
-   BRAND / CONTACT
-   --------------------------------------------------------- */
 .beerbelgio-card .brand-heading { text-transform: none !important; }
 .contact-smile,
 .contact-smile-full {
@@ -2453,7 +2461,37 @@ html.desktop-proportional .site-shell {
 .mobile-only-break { display: none; }
 
 /* ---------------------------------------------------------
-   MOBILE EXPERIENCE
+   DESKTOP PROPORTIONAL — must remain desktop even in a narrow browser window.
+   The 760px internal design is scaled by JS into the 45vw stage.
+   --------------------------------------------------------- */
+html.desktop-proportional .site-stage {
+  width: 45vw !important;
+  max-width: none !important;
+  margin: 0 auto !important;
+}
+html.desktop-proportional .site-shell {
+  width: 760px !important;
+  max-width: none !important;
+  margin: 0 !important;
+  gap: 18px !important;
+  padding-top: 24px !important;
+  padding-bottom: 60px !important;
+}
+html.desktop-proportional .hero {
+  min-height: 570px !important;
+  padding: 28px !important;
+}
+html.desktop-proportional .featured,
+html.desktop-proportional .links-card,
+html.desktop-proportional .contact { padding: 24px !important; }
+html.desktop-proportional .brand-heading { font-size: 40px !important; }
+html.desktop-proportional .links-card > a { font-size: 18px !important; }
+html.desktop-proportional .links-card small { font-size: 11px !important; }
+html.desktop-proportional .contact { min-height: 245px !important; }
+html.desktop-proportional .contact h2 { font-size: 38px !important; max-width: 100% !important; }
+
+/* ---------------------------------------------------------
+   TOUCH / PHONE PORTRAIT
    --------------------------------------------------------- */
 @media (pointer: coarse) {
   .site-stage {
@@ -2468,38 +2506,44 @@ html.desktop-proportional .site-shell {
     max-width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
-    padding-top: 12px !important;
+    padding-top: 10px !important;
   }
   .card { width: 100% !important; max-width: 100% !important; }
 
-  /* One centred claim group, compact vertically. */
   .identity-stack { grid-template-columns: 1fr !important; }
   .hero {
-    padding: 9px 15px 10px !important;
+    padding: 12px 15px 11px !important;
     min-height: 0 !important;
     height: auto !important;
     grid-template-rows: auto auto auto !important;
   }
-  .hero-meta { font-size: 10px !important; }
+  .hero-meta {
+    padding-inline: 3px !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+  }
   .hero-claim-grid {
-    width: 98% !important;
+    width: 84% !important;
     max-width: none !important;
-    margin: 0 auto 1px !important;
+    margin: -2px auto -2px !important;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    column-gap: 8px !important;
+    column-gap: 5px !important;
     align-items: center !important;
     justify-items: center !important;
+    transform: scale(1.15) !important;
+    transform-origin: center center !important;
   }
   .hero-claim-box {
-    height: 98px !important;
+    height: 80px !important;
     min-width: 0 !important;
   }
-
-  .identity-stack { gap: 19px !important; }
+  .identity-stack { gap: 17px !important; }
   .identity-block {
-    gap: 14px !important;
-    padding-top: 14px !important;
+    gap: 13px !important;
+    padding-top: 13px !important;
   }
+  .identity-block h2,
+  .identity-block p { padding-inline: 8px !important; }
   .identity-block h2 { font-size: 25px !important; }
   .identity-tagline {
     font-size: 11px !important;
@@ -2512,7 +2556,6 @@ html.desktop-proportional .site-shell {
     line-height: 1.16 !important;
   }
 
-  /* Approved mobile 4 + 4, then FULL LAVA alone. */
   .quick-actions {
     display: grid !important;
     grid-template-columns: 1fr !important;
@@ -2538,7 +2581,7 @@ html.desktop-proportional .site-shell {
     justify-self: center !important;
     align-self: center !important;
   }
-  .platform-icon { width: 40% !important; height: 40% !important; }
+  .platform-icon { width: 46% !important; height: 46% !important; }
   .lava-toggle {
     grid-column: 1 !important;
     grid-row: 2 !important;
@@ -2550,31 +2593,17 @@ html.desktop-proportional .site-shell {
     border-radius: 999px !important;
     flex-direction: row !important;
     gap: .30em !important;
-    font-size: 23px !important;
+    font-size: 24px !important;
     line-height: 1 !important;
   }
 
   .play { width: 54px !important; height: 54px !important; }
-  .play img {
-    width: 46% !important;
-    height: 46% !important;
-    transform: none !important;
-  }
-  .cta-row a {
-    min-height: 50px !important;
-    font-size: 15px !important;
-  }
-  .cta-row .inline-arrow {
-    width: 1em !important;
-    height: 1em !important;
-    margin-left: 5px !important;
-  }
+  .play img { width: 46% !important; height: 46% !important; transform: none !important; }
+  .cta-row a { min-height: 50px !important; font-size: 15px !important; }
+  .cta-row .inline-arrow { width: 1em !important; height: 1em !important; margin-left: 5px !important; }
 
   .sonodgtl-card > a > span:first-child,
-  .sonodgtl-card small {
-    white-space: normal !important;
-    line-height: 1.18 !important;
-  }
+  .sonodgtl-card small { white-space: normal !important; line-height: 1.18 !important; }
   .sonodgtl-cta-separator { display: none !important; }
   .mobile-only-break { display: block !important; }
 
@@ -2583,21 +2612,17 @@ html.desktop-proportional .site-shell {
     font-size: clamp(18px, 5.5vw, 23px) !important;
     line-height: .94 !important;
   }
-  .contact-line > span {
-    display: block !important;
-    white-space: nowrap !important;
-  }
+  .contact-line > span { display: block !important; white-space: nowrap !important; }
   .contact-smile,
   .contact-smile-full {
     width: 106px !important;
-    right: 5px !important;
+    right: 7% !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
   }
 }
 
-/* Phone portrait: avoid Safari's fixed-layer top/bottom clip by using
-   a normal document-layer canvas that JS counter-translates with scroll. */
+/* iPhone portrait canvas workaround retained. */
 @media (orientation: portrait) and (pointer: coarse) {
   html.ios-device body { position: relative !important; }
   html.ios-device #lava-canvas {
@@ -2611,23 +2636,24 @@ html.desktop-proportional .site-shell {
     z-index: 0 !important;
     pointer-events: none !important;
   }
-  .site-stage {
-    position: relative !important;
-    z-index: 1 !important;
-  }
+  .site-stage { position: relative !important; z-index: 1 !important; }
 }
 
-/* Phone landscape: same 80% stage; identities stay side-by-side and
-   the hero sheds any inherited minimum height / dead bottom space. */
+/* ---------------------------------------------------------
+   TOUCH LANDSCAPE
+   4+4 icons on the left, FULL LAVA spans both rows on the right.
+   --------------------------------------------------------- */
 @media (orientation: landscape) and (pointer: coarse) {
   .site-stage { width: 80vw !important; max-width: 80vw !important; }
   .hero {
     min-height: 0 !important;
     height: auto !important;
     grid-template-rows: auto auto auto !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
   }
-  .hero-claim-grid { margin-top: 5px !important; margin-bottom: 7px !important; }
-  .hero-claim-box { height: 96px !important; }
+  .hero-claim-grid { margin-top: -2px !important; margin-bottom: -2px !important; }
+  .hero-claim-box { height: 74px !important; }
   .identity-stack {
     grid-template-columns: 1fr 1fr !important;
     gap: 20px !important;
@@ -2640,51 +2666,51 @@ html.desktop-proportional .site-shell {
   .identity-meta { font-size: 10.4px !important; }
 
   .quick-actions {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 150px !important;
+    grid-template-rows: 1fr !important;
+    gap: 12px !important;
+    align-items: stretch !important;
   }
   .platforms {
-    display: flex !important;
-    flex: 1 1 auto !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    gap: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, 42px) !important;
+    gap: 10px 8px !important;
+    width: 100% !important;
   }
   .platforms a,
   .platforms a:nth-child(n) {
     width: 42px !important;
     min-width: 42px !important;
     height: 42px !important;
+    justify-self: center !important;
+    align-self: center !important;
   }
+  .platform-icon { width: 46% !important; height: 46% !important; }
   .lava-toggle {
-    flex: 0 0 150px !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
     width: 150px !important;
     min-width: 150px !important;
-    height: 42px !important;
-    margin-top: 0 !important;
-    border-radius: 38px !important;
-    font-size: 18px !important;
+    height: 94px !important;
+    margin: 0 !important;
+    align-self: stretch !important;
+    border-radius: 42px !important;
+    font-size: 20px !important;
     gap: 6px !important;
   }
-  .contact h2 {
-    max-width: 100% !important;
-  }
+
+  .contact h2 { max-width: 100% !important; }
   .contact-line { display: block !important; }
-  .contact-line > span {
-    display: inline !important;
-    white-space: nowrap !important;
+  .contact-line > span { display: inline !important; white-space: nowrap !important; }
+  .contact-smile,
+  .contact-smile-full {
+    width: 133px !important;
+    right: 11% !important;
   }
+
+  .mobile-only-break { display: none !important; }
+  .sonodgtl-cta-separator { display: inline !important; }
 }
 
-
-/* Narrow desktop windows remain desktop: viewport width must not impersonate a phone. */
-@media (pointer: fine) {
-  .identity-stack { grid-template-columns: 1fr 1fr !important; }
-  .featured, .links-card, .contact { padding: 24px !important; }
-  .brand-heading { font-size: 40px !important; }
-  .links-card > a { font-size: 18px !important; }
-  .links-card small { font-size: 11px !important; }
-  .contact { min-height: 245px !important; }
-  .contact h2 { font-size: 38px !important; max-width: 100% !important; }
-}

@@ -143,7 +143,25 @@
     fitHeroClaim();
   }
 
-  addEventListener("resize", fitHeroClaim, { passive: true });
+  let heroRefitTimer = 0;
+
+  function scheduleHeroRefit() {
+    clearTimeout(heroRefitTimer);
+    requestAnimationFrame(() => requestAnimationFrame(fitHeroClaim));
+    heroRefitTimer = setTimeout(fitHeroClaim, 140);
+    setTimeout(fitHeroClaim, 360);
+  }
+
+  addEventListener("resize", scheduleHeroRefit, { passive: true });
+  addEventListener("orientationchange", scheduleHeroRefit, { passive: true });
+  if (window.visualViewport) visualViewport.addEventListener("resize", scheduleHeroRefit, { passive: true });
+
+  if (window.ResizeObserver) {
+    const heroClaimObserver = new ResizeObserver(scheduleHeroRefit);
+    if (heroFunBox) heroClaimObserver.observe(heroFunBox);
+    if (heroSeriousBox) heroClaimObserver.observe(heroSeriousBox);
+  }
+
   startHeroClaim();
 
 

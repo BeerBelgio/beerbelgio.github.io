@@ -1,22 +1,25 @@
-BEERBELGIO.GITHUB.IO — V0.37 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.38 PUBLIC STAGING
 
 STATUS
 Public staging for the BeerBelgio / Matteo Belgiovine digital hub.
 Search indexing remains disabled until the public 1.0 launch.
 
-V0.37 CHANGELOG
-- Build hygiene: V0.37 replaces the V0.36 staging override block; staging overrides are not stacked.
-- Android lava scroll: the iPhone portrait document-canvas workaround is now iOS-only. Android stays on the stable fixed canvas and no longer runs the scroll counter-translation path, specifically to remove the heavy Android flicker reported during scrolling.
-- Lava visibility: blob containment now follows the visible viewport rather than the oversized backing canvas. Blobs may still travel partially beyond an edge, but interaction / FULL LAVA cannot push the whole population into the invisible overscan area.
-- iPhone portrait lava: keeps the vertical overscan experiment, now with blob coordinates explicitly anchored to the visible viewport.
-- Desktop resize: phone layout is no longer selected merely because a desktop browser window becomes narrow. Mobile-specific layout is keyed to coarse/touch pointer; fine-pointer desktop windows retain desktop proportions.
-- Hero claim: desktop gap reduced from 50 px to 25 px; the overall claim group is wider and both halves receive more fitting room, while remaining centred as a single group.
-- Hero claim mobile: group widened, gap reduced, and vertical space above/below cut again.
-- Quick links desktop: eight icon buttons are evenly distributed across the available row; FULL LAVA remains at right with slightly smaller type.
-- Quick links phone landscape: switches to a desktop-like single-row arrangement (scaled to fit landscape phone width).
-- Contact phone landscape: restores the desktop two-line headline instead of the portrait multi-line treatment.
-- Featured play: new geometrically centred triangle SVG; same centred scaling is used desktop and mobile.
-- Cache busting updated to ?v=037.
+V0.38 CHANGELOG
+- Build hygiene: V0.38 REPLACES the V0.37 staging override block. Staging overrides are not stacked from build to build.
+- Hero claim temporary HTML test: gap reduced to 5 px, both halves treated as one centred group, and the complete group enlarged proportionally by ~15%. This is the last HTML-text pass before evaluating Matteo's vector claim.
+- Hero claim orientation robustness: delayed refits plus ResizeObserver prevent portrait → landscape → portrait from keeping stale type sizes from the previous orientation.
+- Hero mobile: reduced dead space above and below the claim again.
+- Hero metadata: MATTEO BELGIOVINE / TORINO, ITALY enlarged and given consistent inset margins.
+- Hero identity copy: added consistent horizontal inset from card edges and tightened the vertical rhythm.
+- Narrow desktop windows: desktop-proportional mode now explicitly reapplies the internal 760 px desktop design rules, so shrinking a desktop browser window does not fall back to mobile/base proportions.
+- Desktop quick links: kept the slightly oval direction, enlarged platform icons by ~15%, restored even distribution, and reduced FULL LAVA type.
+- Touch landscape quick links: restored a compact 4 + 4 block on the left with FULL LAVA spanning both rows on the right.
+- Touch landscape sonoDGTL card: removed mobile forced line breaks and restored the desktop separator.
+- Contact smile: moved left in portrait; landscape smile moved substantially left and enlarged by ~25%.
+- Lava interaction: scrolling is now directional in both axes. Trackpads use WheelEvent deltaX/deltaY; touch gestures derive X/Y scroll direction from finger motion; traditional mouse wheels naturally remain vertical.
+- iPhone portrait canvas workaround retained from V0.37.
+- Android scroll-flicker fix from V0.37 retained pending re-test on the affected devices.
+- Cache busting updated to ?v=038.
 
 RIGHTS / LICENSING
 - Original website code: PolyForm Noncommercial 1.0.0.
