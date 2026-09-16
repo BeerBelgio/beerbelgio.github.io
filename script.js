@@ -41,6 +41,30 @@
     setTimeout(forceHeroLanding, 500);
   }, { passive: true });
 
+  // TOUCH ORIENTATION LANDING — after a portrait/landscape rotation, return
+  // to the start of the Hero instead of preserving an arbitrary document
+  // scroll position. This only changes scroll position; it does not resize,
+  // zoom or otherwise govern the responsive stage.
+  function scrollToHeroAfterRotation() {
+    if (!heroSection || !matchMedia("(pointer: coarse)").matches) return;
+    const go = () => {
+      const top = Math.max(0, Math.round(window.scrollY + heroSection.getBoundingClientRect().top));
+      window.scrollTo({ top, left: 0, behavior: "auto" });
+    };
+    go();
+    requestAnimationFrame(go);
+    setTimeout(go, 90);
+    setTimeout(go, 260);
+  }
+
+  const portraitOrientation = matchMedia("(orientation: portrait)");
+  if (typeof portraitOrientation.addEventListener === "function") {
+    portraitOrientation.addEventListener("change", scrollToHeroAfterRotation);
+  } else if (typeof portraitOrientation.addListener === "function") {
+    portraitOrientation.addListener(scrollToHeroAfterRotation);
+  }
+  addEventListener("orientationchange", scrollToHeroAfterRotation, { passive: true });
+
   function setLavaMode(active) {
     body.classList.toggle("lava-mode", active);
     if (lavaToggle) {

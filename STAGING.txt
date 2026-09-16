@@ -1,1 +1,1 @@
-V0.53 PUBLIC STAGING — V0.42 HUB responsive baseline, V0.40 lava baseline, sonoDGTL refinements. Cache-busting ?v=053.
+V0.54 PUBLIC STAGING — approved HUB baseline refinements, V0.40 lava frozen, sonoDGTL micro-adjustments. Cache-busting ?v=054.

@@ -192,7 +192,7 @@ a { color: inherit; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 7px;
   width: auto;
   max-width: 100%;
   margin: 0 auto;
@@ -214,7 +214,7 @@ a { color: inherit; }
 @media (pointer: coarse) and (orientation: portrait) {
   .sd-shell { width: 80vw; max-width: 80vw; padding-top: 10px; }
   .sd-nav { flex-direction: column; align-items: stretch; gap: 21px; font-size: 12px; padding-bottom: 18px; }
-  .sd-nav-brand { order: 2; font-size: 57px; line-height: .84; letter-spacing: -.055em; font-weight: 900; }
+  .sd-nav-brand { order: 2; font-size: 60px; line-height: .84; letter-spacing: -.055em; font-weight: 900; }
   .sd-nav-links { order: 1; width: 100%; gap: 6px; justify-content: flex-end; align-self: flex-end; }
   .sd-pill { min-height: 36px; padding: 0 11px; }
   .sd-hub-pill img { width: 14px; height: 14px; }
