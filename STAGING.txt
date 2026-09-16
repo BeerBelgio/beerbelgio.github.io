@@ -1,1 +1,1 @@
-V0.46 PUBLIC STAGING — noindex / nofollow / noarchive active. Cache-busting updated to ?v=046.
+V0.47 PUBLIC STAGING — noindex / nofollow / noarchive active. Cache-busting updated to ?v=047.

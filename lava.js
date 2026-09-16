@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.46
+/* BeerBelgio Lava Engine — V0.47
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -108,8 +108,8 @@
       family: familyForColor(palette[i % palette.length]),
       phase: Math.random() * Math.PI * 2,
       phase2: Math.random() * Math.PI * 2,
-      phaseSpeedA: 0.00016 + Math.random() * 0.00013,
-      phaseSpeedB: 0.00012 + Math.random() * 0.00011,
+      phaseSpeedA: 0.00078 + Math.random() * 0.00034,
+      phaseSpeedB: 0.00060 + Math.random() * 0.00030,
       wobble: 0.115 + Math.random() * 0.105,
       morphBase: 0.32 + Math.random() * 0.14,
       deformMag: 0.44 + Math.random() * 0.14,
@@ -130,6 +130,7 @@
       ambientWarpPhase: Math.random() * Math.PI * 2,
       motionWarp: 0,
       grabScale: 0,
+      dragBaseDeform: 0,
       forceX: 0,
       forceY: 0
     };
@@ -137,7 +138,7 @@
 
   function resize(force = false) {
     syncPortraitCanvasPosition();
-    // V0.46: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
+    // V0.47: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
     // desktop/landscape keep the fixed canvas. JS mirrors the CSS rectangle into
     // the backing bitmap. We never resize from visualViewport while Safari chrome animates.
     const oldPadX = padX;
@@ -316,7 +317,7 @@
   function update(blob, dt, time) {
     const motionScale = prefersReducedMotion ? 0.18 : 1;
 
-    // V0.46: restore the continuously evolving shape phases that were
+    // V0.47: restore the continuously evolving shape phases that were
     // accidentally dropped during the drag-physics refactor. Without these,
     // deformMag could be large but the contour itself stayed almost frozen.
     blob.phase += dt * blob.phaseSpeedA * motionScale;
@@ -329,14 +330,20 @@
     if (blob.dragging) {
       const dragSpeed = Math.hypot(dragVx, dragVy);
       const baseMorph = blob.morphBase || 0.32;
-      const dragWarp = baseMorph * 1.35 + Math.min(1.55, dragSpeed * 1.20);
-      // While held: only +5% size, but a much stronger and continuously evolving
-      // liquid deformation. The deformation changes for the entire hold.
-      blob.deformMag = Math.max(baseMorph * 2.35, baseMorph + dragWarp);
+      // Autonomous liquid deformation is the baseline. Grabbing a bubble raises
+      // the same behaviour by ~50%, rather than switching to a different effect.
+      const autonomousLiquid = baseMorph * 2.15
+        + 0.18
+        + 0.18 * (0.5 + 0.5 * Math.sin(time * 0.00042 + blob.ambientWarpPhase));
+      const dragEnergy = Math.min(0.85, dragSpeed * 0.48);
+      const heldBaseline = Math.max(autonomousLiquid, blob.dragBaseDeform || 0);
+      blob.deformMag = heldBaseline * 1.50 + dragEnergy;
       blob.grabScale += (0.05 - (blob.grabScale || 0)) * Math.min(1, 0.028 * dt);
-      blob.phase += dt * 0.00092;
-      blob.phase2 -= dt * 0.00071;
-      blob.ambientWarpPhase += dt * 0.00044;
+      // Morph speed also rises by 50% while held and keeps evolving even if the
+      // pointer pauses, so the object continues to feel liquid in the hand.
+      blob.phase += dt * blob.phaseSpeedA * 0.50;
+      blob.phase2 -= dt * blob.phaseSpeedB * 0.50;
+      blob.ambientWarpPhase += dt * 0.00028;
       return;
     }
 
@@ -509,11 +516,11 @@
     const motionTarget = Math.min(0.34, Math.max(0, speedRatio - 0.65) * 0.055);
     const motionFollow = Math.min(1, 0.0016 * dt);
     blob.motionWarp += (motionTarget - (blob.motionWarp || 0)) * motionFollow;
-    const ambientWarp = 0.24 + 0.30 * (0.5 + 0.5 * Math.sin(time * 0.00038 + blob.ambientWarpPhase));
-    const livingFloor = morphFloor + ambientWarp + (blob.motionWarp || 0) + manualWarp;
+    const ambientWarp = 0.18 + 0.22 * (0.5 + 0.5 * Math.sin(time * 0.00042 + blob.ambientWarpPhase));
+    const livingFloor = morphFloor * 2.15 + ambientWarp + (blob.motionWarp || 0) + manualWarp;
 
     blob.deformMag = Math.min(
-      1.28,
+      1.85,
       Math.max(
         livingFloor,
         (blob.deformMag || livingFloor) * Math.pow(0.99925, dt) + forceMag * 148
@@ -747,6 +754,7 @@
 
     draggedBlob = hit;
     draggedBlob.dragging = true;
+    draggedBlob.dragBaseDeform = Math.max(hit.deformMag || 0, (hit.morphBase || 0.32) * 2.15 + 0.28);
     dragPointerId = e.pointerId;
     dragLastX = x;
     dragLastY = y;

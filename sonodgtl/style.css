@@ -176,7 +176,14 @@ a { color: inherit; }
   font-weight: 850;
   letter-spacing: .01em;
 }
-.sd-contact-hub img { width: 40px; height: 40px; object-fit: contain; display: block; }
+.sd-contact-hub {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  text-align: center !important;
+}
+.sd-contact-hub img { width: 60px; height: 60px; object-fit: contain; display: block; flex: 0 0 auto; }
 .sd-landscape-break { display: none; }
 
 .sd-footer {
@@ -243,7 +250,7 @@ a { color: inherit; }
     width: 100%;
   }
   .sd-contact-actions a { min-height: 54px; font-size: 12px; }
-  .sd-contact-hub img { width: 18px; height: 18px; }
+    .sd-contact-hub img { width: 54px; height: 54px; }
   .sd-footer { flex-direction: column; gap: 8px; }
 }
 
@@ -290,7 +297,7 @@ a { color: inherit; }
   .sd-contact h2 { font-size: clamp(38px, 5vw, 60px); line-height: .86; }
   .sd-contact-actions { display: flex; flex-direction: column; gap: 16px; }
   .sd-contact-actions a { min-height: 36px; font-size: 10.5px; }
-  .sd-contact-hub img { width: 16px; height: 16px; }
+    .sd-contact-hub img { width: 48px; height: 48px; }
   .sd-landscape-break { display: inline; }
   .sd-footer { padding-top: 16px; font-size: 10px; }
 }
@@ -300,11 +307,11 @@ a { color: inherit; }
   html[lang="it"] .sd-principle blockquote {
     font-size: clamp(27px, 7.25vw, 40px);
   }
-  .sd-contact-hub img { width: 36px; height: 36px; }
+  .sd-contact-hub img { width: 54px; height: 54px; }
 }
 
 @media (pointer: coarse) and (orientation: landscape) {
-  .sd-contact-hub img { width: 32px; height: 32px; }
+  .sd-contact-hub img { width: 48px; height: 48px; }
 }
 
 /* Fine-pointer narrow windows: preserve the desktop composition and scale it

@@ -2244,8 +2244,8 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.46 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
-   Replaces V0.45 completely. Never stack staging override blocks.
+   V0.47 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   Replaces V0.47 completely. Never stack staging override blocks.
    ========================================================= */
 
 .site-stage,
@@ -2535,7 +2535,7 @@ html.ios-device #lava-canvas {
    --------------------------------------------------------- */
 html.desktop-proportional .site-stage {
   position: relative !important;
-  width: 52vw !important;
+  width: 53.25vw !important;
   max-width: none !important;
   margin: 0 auto !important;
 }
@@ -2555,7 +2555,15 @@ html.desktop-proportional .card { width: 100% !important; max-width: none !impor
 html.desktop-proportional .hero { min-height: 570px !important; padding: 28px !important; grid-template-rows: auto 1fr auto !important; }
 html.desktop-proportional .hero-meta { display: flex !important; font-size: 18px !important; padding-inline: 8px !important; }
 html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; margin: 10px auto !important; }
-html.desktop-proportional .hero-claim-art { width: 120% !important; max-width: none !important; justify-self: center !important; }
+html.desktop-proportional .hero-claim-art {
+  width: 100% !important;
+  max-width: none !important;
+  justify-self: center !important;
+  position: relative !important;
+  left: 50% !important;
+  transform: translateX(-50%) scale(1.20) !important;
+  transform-origin: center center !important;
+}
 html.desktop-proportional .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 26px !important; }
 html.desktop-proportional .identity-block { gap: 14px !important; padding-top: 15px !important; }
 html.desktop-proportional .identity-block h2,
@@ -2619,7 +2627,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     grid-template-columns: 1fr 1fr !important;
     gap: 12px !important;
     padding-inline: 8px !important;
-    font-size: 15px !important;
+    font-size: 16.5px !important;
     line-height: 1.08 !important;
     letter-spacing: .025em !important;
   }
@@ -2636,21 +2644,23 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     place-items: center !important;
   }
   .hero-claim-art {
-    width: 125% !important;
+    width: 100% !important;
     height: auto !important;
     max-width: none !important;
-    justify-self: start !important;
-    transform: none !important;
-    transform-origin: left center !important;
+    justify-self: center !important;
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) scale(1.25) !important;
+    transform-origin: center center !important;
   }
 
   .identity-stack { grid-template-columns: 1fr !important; gap: 19px !important; }
   .identity-block { gap: 13px !important; padding-top: 14px !important; }
   .identity-block h2,
   .identity-block p { padding-inline: 10px !important; }
-  .identity-block h2 { font-size: 27px !important; }
-  .identity-tagline { font-size: 12px !important; line-height: 1.15 !important; font-weight: 500 !important; white-space: nowrap !important; }
-  .identity-meta { font-size: 11.2px !important; line-height: 1.16 !important; }
+  .identity-block h2 { font-size: 34px !important; }
+  .identity-tagline { font-size: 14px !important; line-height: 1.15 !important; font-weight: 500 !important; white-space: nowrap !important; }
+  .identity-meta { font-size: 12.5px !important; line-height: 1.16 !important; }
 
   .quick-actions {
     display: grid !important;
@@ -2718,7 +2728,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     grid-column: 1 !important;
     grid-row: 1 !important;
     width: 100% !important;
-    font-size: clamp(23px, 6.8vw, 29px) !important;
+    font-size: clamp(27px, 7.6vw, 33px) !important;
     line-height: .94 !important;
   }
   .contact-a .contact-lower {
@@ -2778,7 +2788,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     grid-template-rows: auto auto auto !important;
     padding: 16px 20px 22px !important;
   }
-  .hero-meta { display: flex !important; font-size: 14px !important; padding-inline: 12px !important; }
+  .hero-meta { display: flex !important; font-size: 16px !important; padding-inline: 12px !important; }
   .hero-meta-mobile-break { display: none !important; }
   .hero-meta-desktop-space { display: inline !important; }
   .hero-claim-art-wrap {
@@ -2787,19 +2797,24 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     place-items: center !important;
   }
   .hero-claim-art {
-    width: 112.5% !important;
+    width: 100% !important;
     max-width: none !important;
     justify-self: center !important;
-    transform: none !important;
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) scale(1.125) !important;
+    transform-origin: center center !important;
   }
-  .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 20px !important; align-items: start !important; }
+  .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 20px !important; align-items: stretch !important; }
+  .identity-card-link { height: 100% !important; }
+  .identity-block { height: 100% !important; grid-template-rows: auto auto 1fr !important; align-content: start !important; }
   .identity-card-link:first-child .identity-block { text-align: right !important; }
   .identity-card-link:last-child .identity-block { text-align: left !important; }
   .identity-block h2,
   .identity-block p { padding-inline: 12px !important; }
-  .identity-block h2 { font-size: 26px !important; }
-  .identity-tagline { font-size: 12px !important; }
-  .identity-meta { font-size: 11.2px !important; }
+  .identity-block h2 { font-size: 32px !important; }
+  .identity-tagline { font-size: 14px !important; }
+  .identity-meta { font-size: 12.5px !important; }
 
   .quick-actions {
     display: flex !important;
@@ -2863,6 +2878,44 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
   .sonodgtl-cta-separator { display: inline !important; }
   .floating-motto { margin-top: 28px !important; }
 }
+
+/* ---------------------------------------------------------
+   V0.47 TOUCH LAYOUT HARD OVERRIDE
+   JS measures the real visualViewport and writes the 80% stage in pixels.
+   These classes prevent any legacy width/media rule from rescaling the shell.
+   --------------------------------------------------------- */
+html.touch-experience .site-stage {
+  position: relative !important;
+  min-width: 0 !important;
+}
+html.touch-experience .site-shell {
+  position: relative !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  zoom: 1 !important;
+  transform: none !important;
+}
+html.touch-experience .card { width: 100% !important; max-width: 100% !important; }
+html.touch-portrait .hero-meta {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  font-size: 16.5px !important;
+}
+html.touch-portrait .hero-claim-art-wrap { width: 100% !important; max-width: none !important; }
+html.touch-portrait .identity-block h2 { font-size: 34px !important; }
+html.touch-portrait .identity-tagline { font-size: 14px !important; }
+html.touch-portrait .identity-meta { font-size: 12.5px !important; }
+html.touch-landscape .hero-meta { font-size: 16px !important; }
+html.touch-landscape .identity-stack { align-items: stretch !important; }
+html.touch-landscape .identity-card-link,
+html.touch-landscape .identity-block { height: 100% !important; }
+html.touch-landscape .identity-block h2 { font-size: 32px !important; }
+html.touch-landscape .identity-tagline { font-size: 14px !important; }
+html.touch-landscape .identity-meta { font-size: 12.5px !important; }
 
 /* ---------------------------------------------------------
    EMAIL FALLBACK
@@ -2960,7 +3013,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
 body.lava-mode { touch-action: none; }
 
 
-/* V0.46 hard guard: even if a mobile browser transiently misreports pointer
+/* V0.47 hard guard: even if a mobile browser transiently misreports pointer
    capabilities, touch devices keep the fixed 80vw composition. */
 @media (pointer: coarse), (hover: none) {
   html.desktop-proportional .site-stage {
