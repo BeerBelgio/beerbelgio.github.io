@@ -15,19 +15,27 @@
     window.scrollTo(0, 0);
   }
   resetLandingToHero();
+  const forceHeroLanding = () => {
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
   addEventListener("pageshow", () => {
-    requestAnimationFrame(() => window.scrollTo(0, 0));
+    forceHeroLanding();
+    requestAnimationFrame(forceHeroLanding);
+    setTimeout(forceHeroLanding, 80);
+    setTimeout(forceHeroLanding, 320);
   }, { passive: true });
   addEventListener("load", () => {
-    requestAnimationFrame(() => window.scrollTo(0, 0));
-    setTimeout(() => window.scrollTo(0, 0), 80);
+    forceHeroLanding();
+    requestAnimationFrame(forceHeroLanding);
+    setTimeout(forceHeroLanding, 120);
+    setTimeout(forceHeroLanding, 500);
   }, { passive: true });
 
   function setLavaMode(active) {
     body.classList.toggle("lava-mode", active);
     if (lavaToggle) {
       lavaToggle.setAttribute("aria-pressed", String(active));
-      lavaToggle.textContent = "FULL LAVA";
     }
   }
 
@@ -106,6 +114,59 @@
     beerbelgioHeroAnchor.addEventListener('click', (event) => {
       event.preventDefault();
       scrollCardToCenter(beerbelgioTarget);
+    });
+  }
+
+  // ---------------------------------------------------------------
+  // SHARE — native share sheet when available, clipboard fallback otherwise.
+  // ---------------------------------------------------------------
+  const shareSite = document.getElementById("share-site");
+
+  function showShareToast(message) {
+    let toast = document.getElementById("share-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "share-toast";
+      toast.className = "share-toast";
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    clearTimeout(showShareToast.timer);
+    showShareToast.timer = setTimeout(() => toast.classList.remove("is-visible"), 1400);
+  }
+
+  if (shareSite) {
+    shareSite.addEventListener("click", async () => {
+      const shareData = {
+        title: "Matteo Belgiovine",
+        text: "Music, digital strategy and useful ideas from unexpected angles.",
+        url: "https://beerbelgio.github.io/"
+      };
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+          return;
+        }
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(shareData.url);
+        } else {
+          const input = document.createElement("textarea");
+          input.value = shareData.url;
+          input.setAttribute("readonly", "");
+          input.style.position = "fixed";
+          input.style.opacity = "0";
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand("copy");
+          input.remove();
+        }
+        showShareToast("LINK COPIED");
+      } catch (error) {
+        if (error?.name !== "AbortError") showShareToast("COPY THE URL ABOVE");
+      }
     });
   }
 
