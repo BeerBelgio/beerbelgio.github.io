@@ -198,7 +198,7 @@ a { color: inherit; }
   margin: 0 auto;
 }
 .sd-hub-content > span { display: block; line-height: 1; }
-.sd-contact-hub img { width: 60px; height: 60px; object-fit: contain; display: block; flex: 0 0 auto; }
+.sd-contact-hub img { width: 30px; height: 30px; object-fit: contain; display: block; flex: 0 0 auto; }
 .sd-landscape-break { display: none; }
 
 .sd-footer {
@@ -213,8 +213,8 @@ a { color: inherit; }
 
 @media (pointer: coarse) and (orientation: portrait) {
   .sd-shell { width: 80vw; max-width: 80vw; padding-top: 10px; }
-  .sd-nav { flex-direction: column; align-items: stretch; gap: 14px; font-size: 12px; padding-bottom: 36px; }
-  .sd-nav-brand { order: 2; font-size: 54px; line-height: .84; letter-spacing: -.055em; font-weight: 900; }
+  .sd-nav { flex-direction: column; align-items: stretch; gap: 21px; font-size: 12px; padding-bottom: 18px; }
+  .sd-nav-brand { order: 2; font-size: 57px; line-height: .84; letter-spacing: -.055em; font-weight: 900; }
   .sd-nav-links { order: 1; width: 100%; gap: 6px; justify-content: flex-end; align-self: flex-end; }
   .sd-pill { min-height: 36px; padding: 0 11px; }
   .sd-hub-pill img { width: 14px; height: 14px; }
@@ -266,7 +266,7 @@ a { color: inherit; }
     width: 100%;
   }
   .sd-contact-actions a { min-height: 54px; font-size: 12px; }
-    .sd-contact-hub img { width: 54px; height: 54px; }
+    .sd-contact-hub img { width: 27px; height: 27px; }
   .sd-footer { flex-direction: column; gap: 8px; }
 }
 
@@ -313,7 +313,7 @@ a { color: inherit; }
   .sd-contact h2 { font-size: clamp(48px, 6vw, 70px); line-height: .86; }
   .sd-contact-actions { display: flex; flex-direction: column; gap: 16px; }
   .sd-contact-actions a { min-height: 36px; font-size: 10.5px; }
-    .sd-contact-hub img { width: 48px; height: 48px; }
+    .sd-contact-hub img { width: 24px; height: 24px; }
   .sd-landscape-break { display: inline; }
   .sd-footer { padding-top: 16px; font-size: 10px; }
 }
@@ -323,11 +323,11 @@ a { color: inherit; }
   html[lang="it"] .sd-principle blockquote {
     font-size: clamp(27px, 7.25vw, 40px);
   }
-  .sd-contact-hub img { width: 54px; height: 54px; }
+  .sd-contact-hub img { width: 27px; height: 27px; }
 }
 
 @media (pointer: coarse) and (orientation: landscape) {
-  .sd-contact-hub img { width: 48px; height: 48px; }
+  .sd-contact-hub img { width: 24px; height: 24px; }
 }
 
 /* Fine-pointer narrow windows: preserve the desktop composition and scale it

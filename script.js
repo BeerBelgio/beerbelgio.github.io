@@ -5,19 +5,28 @@
   const siteStage = document.getElementById("site-stage");
   const siteShell = document.getElementById("site-shell");
 
-  // Always land at the top / Hero. Internal BeerBelgio scrolling is handled
-  // without leaving a hash in the URL, so refresh cannot restore that anchor.
+  // Always land on the Hero. In touch portrait the document keeps a 100px
+  // pre-roll above the Hero for iPhone top-edge breathing room, but that pre-roll
+  // is not the initial reading position: the Hero itself is treated as page zero.
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  const heroSection = document.querySelector(".hero");
+  function isTouchPortrait() {
+    return matchMedia("(pointer: coarse) and (orientation: portrait)").matches;
+  }
+  function heroLandingTop() {
+    if (!isTouchPortrait() || !heroSection) return 0;
+    return Math.max(0, Math.round(window.scrollY + heroSection.getBoundingClientRect().top));
+  }
   function resetLandingToHero() {
     if (location.hash) {
       history.replaceState(null, "", location.pathname + location.search);
     }
-    window.scrollTo(0, 0);
+    window.scrollTo(0, heroLandingTop());
   }
   resetLandingToHero();
   const forceHeroLanding = () => {
     if (location.hash) history.replaceState(null, "", location.pathname + location.search);
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    window.scrollTo({ top: heroLandingTop(), left: 0, behavior: "auto" });
   };
   addEventListener("pageshow", () => {
     forceHeroLanding();

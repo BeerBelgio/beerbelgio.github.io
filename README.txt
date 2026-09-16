@@ -1,4 +1,4 @@
-BEERBELGIO.GITHUB.IO — V0.52 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.53 PUBLIC STAGING
 
 STATUS
 Public staging for the BeerBelgio / Matteo Belgiovine digital hub.
@@ -6,35 +6,33 @@ Search indexing remains disabled until the public 1.0 launch.
 
 BASELINE / FREEZE STRATEGY
 - HUB responsive architecture remains the known-good V0.42 baseline restored in V0.49.
-- Desktop HUB layout is intentionally frozen in this build.
-- LAVA ENGINE remains byte-for-byte the V0.40 lava.js baseline. No lava-engine feature is reintroduced in this build.
-- sonoDGTL remains based on the current V0.51 page, with only the refinements listed below.
+- Desktop HUB layout remains frozen.
+- LAVA ENGINE remains byte-for-byte the V0.40 lava.js baseline. No lava-engine feature is reintroduced here.
+- sonoDGTL remains based on the current V0.53 page, with only the refinements listed below.
 
-V0.52 HUB CHANGES
-- Portrait Hero claim: no SVG geometry change. The existing portrait-specific SVG is now centred by the card/grid itself (`justify-self:center`) instead of relying on auto margins on an oversized image.
-- Portrait Hero top offset: page content now starts 50 px lower, while refresh still lands at scrollY=0. This creates a visible lava band above the Hero without changing the responsive stage geometry.
-- Portrait final motto runway: added bottom runway only in portrait so the final “FUN IS A SERIOUS THING.” can be scrolled to approximately the vertical centre of the viewport. Landscape/desktop remain unchanged.
-- Landscape Hero claim: external margin above/below the claim reduced to 0 px; the SVG keeps its own internal artboard spacing.
-- Landscape quick links: rebuilt as one 9-column row (`8 × 42px + FULL LAVA 118px`) with `space-between`, matching the desktop logic. FULL LAVA cannot wrap into a second row.
-- Contact WRITE ME: optical vertical correction increased from +3 px to +6 px so top/bottom residual space reads more evenly.
-- No desktop HUB geometry, page-stage scaling, lava canvas, or lava.js code is changed.
+V0.53 HUB CHANGES
+- Portrait top runway increased from 50 px to 100 px.
+- Portrait landing behaviour changed deliberately: the 100 px runway exists in the document above the Hero, but page refresh/pageshow/load scroll to the Hero itself. The Hero is therefore treated as the visual “page zero” while retaining real document space above it.
+- Hero claim orientation handling simplified: the two independent claim <img> elements have been replaced by one <picture> element. Portrait selects claim-portrait.svg through a media source; landscape/desktop use claim.svg. The same DOM element is resized on rotation instead of hiding one image and showing another.
+- Added explicit final portrait and landscape claim geometry guards after the normal mobile rules. Portrait remains 123%; landscape remains 98%. The goal is to prevent stale landscape margins/scale when rotating back to portrait without introducing responsive stage JavaScript.
+- No other HUB card geometry, quick links, Contact layout, desktop layout, final motto behaviour, or responsive-stage sizing is changed.
 
-V0.52 SONODGTL CHANGES
-- Main sonoDGTL lettering now uses M PLUS Rounded 1c Black / 900.
-- To compensate for the heavier weight, lettering size is reduced by ~15%: 162 px desktop, 82 px touch-landscape, 54 px touch-portrait.
-- Space between the naming/navigation block and the Hero is doubled by doubling the nav bottom padding in each responsive mode.
-- Touch portrait order changed: EN / ITA / HUB controls appear above, lettering below.
-- Contact HUB control: replaced the large 3000×3000-artboard logo with a button-specific SVG using a cropped viewBox around the real mark. This removes internal transparent whitespace that made the mathematically centred group look visually left-shifted.
-- Contact HUB group now uses normal centred flex/grid flow with an exact 3 px text/logo gap; the previous absolute-centering workaround is removed.
+V0.53 SONODGTL CHANGES
+- Touch-portrait lettering increased by ~5%: 54 px -> 57 px.
+- Touch-portrait space between EN / ITA / HUB controls and the lettering increased by 50%: 14 px -> 21 px.
+- Touch-portrait space between the lettering and Hero reduced by 50%: nav bottom padding 36 px -> 18 px.
+- Contact HUB logo reduced by 50% in every layout while preserving the centred HUB + logo flex group and the existing 3 px gap: 60 -> 30 px desktop, 54 -> 27 px portrait, 48 -> 24 px landscape.
 
 LAVA STATUS
 - lava.js is deliberately unchanged from the V0.40 baseline.
+- SHA-256 expected: 2ea8275caca3e54a5020682611c89a3400207ce7b7dc7f0d52eba9a069cd9ba2
 - LAVA_AUDIT_V040-V048.txt remains included for later controlled feature reintroduction.
 
-RISK / RESPONSIVE NOTE
-- The two new HUB scroll/spacing changes are portrait-only CSS spacing changes. They do not write widths, transforms or viewport dimensions and do not touch the responsive stage JavaScript.
-- The 50 px top offset changes only where the first card begins in document flow.
-- The final-motto runway changes only maximum scrollable page height in portrait.
+LAVA REINTRODUCTION PLAN
+- Treat V0.41 as the behavioural target / first upgrade layer over the V0.40 baseline.
+- Keep all mobile canvas overscan / visualViewport experiments out of the first reintroduction passes.
+- Reintroduce later interaction features as isolated groups, each with its own test build: proportional drag/release + decay first; then reduced scroll sensitivity; then +5% selected scale + stronger selected warping; then corrected 5+5 trajectory behaviour; finally any autonomous-morph fixes only if the V0.41-style baseline still needs them.
+- Prefer lava-only test builds once the surrounding UI is frozen. If cache busting changes, update lava.js plus only the HTML files that reference its version query.
 
 RIGHTS / LICENSING
 - Original website code: PolyForm Noncommercial 1.0.0.
