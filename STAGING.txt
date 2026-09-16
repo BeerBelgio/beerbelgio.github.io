@@ -1,1 +1,1 @@
-V0.54 PUBLIC STAGING — approved HUB baseline refinements, V0.40 lava frozen, sonoDGTL micro-adjustments. Cache-busting ?v=054.
+V0.54.1 / L1 PUBLIC STAGING — V0.54 UI frozen; LAVA-only test: lower scroll sensitivity + no click/drag-driven artificial shape-axis rotation. lava.js cache ?v=0541.

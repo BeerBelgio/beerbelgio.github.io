@@ -1,3 +1,31 @@
+BEERBELGIO.GITHUB.IO — V0.54.1 / L1 PUBLIC STAGING
+
+STATUS
+V0.54 is the frozen UI/responsive baseline. V0.54.1 is the first isolated LAVA-only test.
+All HUB layout/responsive behaviour and all sonoDGTL UI remain V0.54.
+
+V0.54.1 / L1 — LAVA ONLY
+- Reduced scroll sensitivity for wheel and touch.
+  - Normal HUB wheel response: mode scale 0.48, input multiplier 0.20, per-event cap 28, accumulated cap 34.
+  - Immersive/FULL LAVA wheel response: mode scale 0.30 with the same multiplier/caps.
+  - Normal HUB touch response: mode scale 0.52, input multiplier 0.31, per-event cap 28, accumulated cap 34.
+  - Immersive/FULL LAVA touch response: mode scale 0.34 with the same multiplier/caps.
+  - V0.40 scroll-warp boost values are deliberately unchanged in L1; only movement sensitivity is being tested.
+- Removed abrupt click-driven morphology changes: blank-space burst clicks no longer jump phase/phase2. Clicks still retain the V0.40 motion impulse.
+- Removed drag-direction shape-axis steering: selecting/dragging a blob no longer rotates its deformation axis toward pointer direction. Existing V0.40 deformation amount remains otherwise unchanged.
+
+FROZEN / EXPLICITLY NOT TOUCHED
+- HUB geometry, responsive stage, Hero, quick links, Contact, mail fallback and rotation-to-Hero behaviour: V0.54 exactly.
+- sonoDGTL: V0.54 exactly.
+- Canvas sizing, overscan, visualViewport logic and resize/orientation behaviour: unchanged from the V0.40 lava baseline used by V0.54.
+- L2 release/momentum behaviour: NOT introduced.
+- L3 +5% selected size / +50% liquid warp: NOT introduced.
+- L4 5+5 attraction/repulsion: NOT introduced.
+
+CACHE
+- Only lava.js loaders are bumped to ?v=0541. Other V0.54 UI assets retain ?v=054 because they are frozen.
+
+--- V0.54 BASELINE NOTES (frozen) ---
 BEERBELGIO.GITHUB.IO — V0.54 PUBLIC STAGING
 
 STATUS
