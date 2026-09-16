@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.47
+/* BeerBelgio Lava Engine — V0.48
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -92,7 +92,15 @@
     const radiusBase = Math.min(width, height) * 0.19;
     const r = radiusBase * (0.925 + Math.random() * 0.15); // total spread ~15%
     const angle = Math.random() * Math.PI * 2;
-    const baseSpeed = (0.0025 + Math.random() * 0.0027) * 0.98; // V0.27: a little slower / more viscous
+    // V0.48: slightly slower autonomous travel. Morphing remains lively, but
+    // the blobs themselves drift with more viscous weight.
+    const baseSpeed = (0.0025 + Math.random() * 0.0027) * 0.88;
+    // Keep the two morphology phases close instead of unrelated. This avoids a
+    // persistent pear/potato bias while still letting each blob breathe.
+    const phase = Math.random() * Math.PI * 2;
+    const phase2 = phase + (Math.random() - 0.5) * 0.32;
+    const phaseSpeedA = 0.00046 + Math.random() * 0.00018;
+    const phaseSpeedB = phaseSpeedA * (0.92 + Math.random() * 0.12);
 
     return {
       x: Math.random() * width,
@@ -106,13 +114,13 @@
       r,
       color: palette[i % palette.length],
       family: familyForColor(palette[i % palette.length]),
-      phase: Math.random() * Math.PI * 2,
-      phase2: Math.random() * Math.PI * 2,
-      phaseSpeedA: 0.00078 + Math.random() * 0.00034,
-      phaseSpeedB: 0.00060 + Math.random() * 0.00030,
-      wobble: 0.115 + Math.random() * 0.105,
-      morphBase: 0.32 + Math.random() * 0.14,
-      deformMag: 0.44 + Math.random() * 0.14,
+      phase,
+      phase2,
+      phaseSpeedA,
+      phaseSpeedB,
+      wobble: 0.090 + Math.random() * 0.055,
+      morphBase: 0.36 + Math.random() * 0.12,
+      deformMag: 0.82 + Math.random() * 0.16,
       deformDir: Math.random() * Math.PI * 2,
       dragging: false,
       manualMomentumUntil: 0,
@@ -138,7 +146,7 @@
 
   function resize(force = false) {
     syncPortraitCanvasPosition();
-    // V0.47: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
+    // V0.48: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
     // desktop/landscape keep the fixed canvas. JS mirrors the CSS rectangle into
     // the backing bitmap. We never resize from visualViewport while Safari chrome animates.
     const oldPadX = padX;
@@ -219,27 +227,31 @@
       const deformDir = blob.deformDir || 0;
       const ambientMorph = blob.morphBase || 0.22;
 
-      const pulseA = 0.72 + 0.28 * Math.sin(time * 0.00023 + blob.turnPhase);
-      const pulseB = 0.68 + 0.32 * Math.sin(time * 0.00017 + blob.turnPhase * 1.37);
-      const pulseC = 0.74 + 0.26 * Math.sin(time * 0.00029 + blob.turnPhase * 0.71);
+      const pulseA = 0.74 + 0.26 * Math.sin(time * 0.00019 + blob.turnPhase);
+      const pulseB = 0.72 + 0.28 * Math.sin(time * 0.00015 + blob.turnPhase * 1.31);
+      const pulseC = 0.78 + 0.22 * Math.sin(time * 0.00024 + blob.turnPhase * 0.73);
+      const phaseMix = (blob.phase + blob.phase2) * 0.5;
+
+      // Base contour is built mainly from even harmonics (2 / 4 / 6). That
+      // keeps the silhouette round/squarish and liquid instead of pear-shaped.
+      // A very small third harmonic prevents it from feeling mechanically even.
       const breathing =
         1
-        + wobbleNow * pulseA * Math.sin(a * 3 + blob.phase)
-        + wobbleNow * 0.72 * pulseB * Math.sin(a * 5 - blob.phase2)
-        + ambientMorph * 0.12 * pulseC * Math.sin(a * 2 + blob.phase2 * 0.6);
+        + wobbleNow * 0.78 * pulseA * Math.sin(a * 2 + phaseMix)
+        + wobbleNow * 0.48 * pulseB * Math.sin(a * 4 - phaseMix * 0.82)
+        + wobbleNow * 0.24 * pulseC * Math.sin(a * 6 + phaseMix * 0.58)
+        + wobbleNow * 0.10 * Math.sin(a * 3 + blob.phase * 0.44);
 
-      const directional = Math.cos(a - deformDir);
+      const relative = a - deformDir;
       const stretch = 1
-        + ambientMorph * 0.22 * Math.sin((a - deformDir) * 2 + blob.phase * 0.55)
-        + ambientMorph * 0.17 * Math.sin((a - deformDir) * 3 - blob.phase2 * 0.42)
-        + deformMag * 0.46 * directional
-        - deformMag * 0.32 * Math.cos((a - deformDir) * 2)
-        + deformMag * 0.20 * Math.sin((a - deformDir) * 3 + blob.phase2 * 0.55)
-        + deformMag * 0.13 * Math.sin((a - deformDir) * 4 - blob.phase * 0.45)
-        + deformMag * 0.08 * Math.sin((a - deformDir) * 5 + blob.phase * 0.33);
+        + ambientMorph * 0.10 * Math.sin(relative * 2 + phaseMix * 0.48)
+        + deformMag * 0.17 * Math.cos(relative * 2 + phaseMix * 0.34)
+        + deformMag * 0.105 * Math.sin(relative * 4 - phaseMix * 0.62)
+        + deformMag * 0.050 * Math.sin(relative * 6 + phaseMix * 0.39)
+        + deformMag * 0.026 * Math.sin(relative * 3 - phaseMix * 0.28);
 
       const grabScale = 1 + (blob.grabScale || 0);
-      radii.push(blob.r * grabScale * Math.max(0.46, Math.min(1.76, breathing * stretch)));
+      radii.push(blob.r * grabScale * Math.max(0.54, Math.min(1.62, breathing * stretch)));
     }
 
     // Low-pass the radial contour so deformation stays liquid instead of pointy/clipped.
@@ -317,7 +329,7 @@
   function update(blob, dt, time) {
     const motionScale = prefersReducedMotion ? 0.18 : 1;
 
-    // V0.47: restore the continuously evolving shape phases that were
+    // V0.48: restore the continuously evolving shape phases that were
     // accidentally dropped during the drag-physics refactor. Without these,
     // deformMag could be large but the contour itself stayed almost frozen.
     blob.phase += dt * blob.phaseSpeedA * motionScale;
@@ -332,10 +344,10 @@
       const baseMorph = blob.morphBase || 0.32;
       // Autonomous liquid deformation is the baseline. Grabbing a bubble raises
       // the same behaviour by ~50%, rather than switching to a different effect.
-      const autonomousLiquid = baseMorph * 2.15
-        + 0.18
-        + 0.18 * (0.5 + 0.5 * Math.sin(time * 0.00042 + blob.ambientWarpPhase));
-      const dragEnergy = Math.min(0.85, dragSpeed * 0.48);
+      const autonomousLiquid = baseMorph * 2.60
+        + 0.30
+        + 0.28 * (0.5 + 0.5 * Math.sin(time * 0.00036 + blob.ambientWarpPhase));
+      const dragEnergy = Math.min(0.95, dragSpeed * 0.52);
       const heldBaseline = Math.max(autonomousLiquid, blob.dragBaseDeform || 0);
       blob.deformMag = heldBaseline * 1.50 + dragEnergy;
       blob.grabScale += (0.05 - (blob.grabScale || 0)) * Math.min(1, 0.028 * dt);
@@ -516,11 +528,11 @@
     const motionTarget = Math.min(0.34, Math.max(0, speedRatio - 0.65) * 0.055);
     const motionFollow = Math.min(1, 0.0016 * dt);
     blob.motionWarp += (motionTarget - (blob.motionWarp || 0)) * motionFollow;
-    const ambientWarp = 0.18 + 0.22 * (0.5 + 0.5 * Math.sin(time * 0.00042 + blob.ambientWarpPhase));
-    const livingFloor = morphFloor * 2.15 + ambientWarp + (blob.motionWarp || 0) + manualWarp;
+    const ambientWarp = 0.30 + 0.28 * (0.5 + 0.5 * Math.sin(time * 0.00036 + blob.ambientWarpPhase));
+    const livingFloor = morphFloor * 2.60 + ambientWarp + (blob.motionWarp || 0) + manualWarp;
 
     blob.deformMag = Math.min(
-      1.85,
+      2.55,
       Math.max(
         livingFloor,
         (blob.deformMag || livingFloor) * Math.pow(0.99925, dt) + forceMag * 148

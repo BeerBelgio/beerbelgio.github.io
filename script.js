@@ -43,79 +43,25 @@
   if (lavaBack) lavaBack.addEventListener("click", () => setLavaMode(false));
 
   // ---------------------------------------------------------------
-  // DESKTOP PROPORTIONAL STAGE
+  // RESPONSIVE STAGE — V0.48
   //
-  // IMPORTANT: desktop detection must NOT depend on the page's CSS viewport,
-  // because Chrome zoom changes that viewport. A fine pointer + desktop-class
-  // screen keeps this active at 25%, 100%, 200%, etc.
+  // Touch layouts are now pure CSS. No visualViewport widths, no inline
+  // margins and no touch-orientation classes are written by JS. This mirrors
+  // the robust pattern used by the MarkDO reference: viewport meta + normal
+  // document flow + CSS media queries.
   //
-  // The stage is 53.25vw and centred on desktop.
-  // The internal 760px design is zoomed to fit the stage exactly.
-  // The lava remains a separate full-viewport canvas.
+  // Desktop keeps the proven proportional 760px composition, but only on
+  // genuine fine-pointer desktop windows.
   // ---------------------------------------------------------------
   const DESIGN_WIDTH = 760;
 
   function isDesktopExperience() {
-    // Touch devices must never inherit desktop proportional scaling. Some mobile
-    // browsers can transiently report a fine pointer during rotation / browser-UI
-    // changes, so maxTouchPoints is the hard guard.
-    return navigator.maxTouchPoints === 0
-      && matchMedia("(hover: hover) and (pointer: fine)").matches
-      && screen.width >= 900;
-  }
-
-  function isTouchExperience() {
-    return navigator.maxTouchPoints > 0 || matchMedia("(hover: none)").matches;
-  }
-
-  function updateTouchStage() {
-    if (!siteStage || !siteShell) return;
-    const root = document.documentElement;
-
-    if (!isTouchExperience()) {
-      root.classList.remove("touch-experience", "touch-portrait", "touch-landscape");
-      siteStage.style.removeProperty("width");
-      siteStage.style.removeProperty("max-width");
-      siteStage.style.removeProperty("margin-left");
-      siteStage.style.removeProperty("margin-right");
-      return;
-    }
-
-    root.classList.add("touch-experience");
-    root.classList.remove("desktop-proportional");
-    siteShell.style.removeProperty("zoom");
-    siteStage.style.removeProperty("height");
-
-    // Use the ACTUAL visible viewport, not CSS vw. This avoids Safari / Android
-    // layout-viewport mismatches after browser chrome changes or rotation.
-    const vv = window.visualViewport;
-    const visibleWidth = Math.max(1, vv?.width || window.innerWidth || document.documentElement.clientWidth || 1);
-    const visibleHeight = Math.max(1, vv?.height || window.innerHeight || document.documentElement.clientHeight || 1);
-    const visibleOffsetX = Math.max(0, vv?.offsetLeft || 0);
-    const portrait = visibleHeight >= visibleWidth;
-    root.classList.toggle("touch-portrait", portrait);
-    root.classList.toggle("touch-landscape", !portrait);
-
-    const stageWidth = visibleWidth * 0.80;
-    const stageLeft = visibleOffsetX + (visibleWidth - stageWidth) * 0.5;
-    siteStage.style.setProperty("width", `${stageWidth}px`, "important");
-    siteStage.style.setProperty("max-width", `${stageWidth}px`, "important");
-    siteStage.style.setProperty("margin-left", `${stageLeft}px`, "important");
-    siteStage.style.setProperty("margin-right", "0px", "important");
-    siteShell.style.setProperty("width", "100%", "important");
-    siteShell.style.setProperty("max-width", "100%", "important");
+    return matchMedia("(hover: hover) and (pointer: fine)").matches
+      && window.innerWidth >= 900;
   }
 
   function updateDesktopStage() {
     if (!siteStage || !siteShell) return;
-
-    if (isTouchExperience()) {
-      document.documentElement.classList.remove("desktop-proportional");
-      siteShell.style.removeProperty("zoom");
-      siteStage.style.removeProperty("height");
-      updateTouchStage();
-      return;
-    }
 
     if (!isDesktopExperience()) {
       document.documentElement.classList.remove("desktop-proportional");
@@ -124,40 +70,26 @@
       return;
     }
 
-    document.documentElement.classList.remove("touch-experience", "touch-portrait", "touch-landscape");
     document.documentElement.classList.add("desktop-proportional");
 
-    // 53.25% of the CURRENT browser viewport in CSS pixels.
-    // Browser page zoom changes innerWidth; this counter-scaling is intentional.
-    const targetWidth = innerWidth * 0.5325;
+    // A deliberately larger desktop composition: 60% of the viewport.
+    const targetWidth = innerWidth * 0.60;
     const scale = targetWidth / DESIGN_WIDTH;
-
     siteShell.style.zoom = String(scale);
 
     requestAnimationFrame(() => {
-      // The stage owns the document flow; shell itself is absolutely positioned.
       const visualHeight = siteShell.getBoundingClientRect().height;
       siteStage.style.height = `${Math.max(1, visualHeight)}px`;
     });
   }
 
-  updateTouchStage();
   updateDesktopStage();
-  const refreshResponsiveStage = () => {
-    updateTouchStage();
-    updateDesktopStage();
-  };
-  addEventListener("resize", refreshResponsiveStage, { passive: true });
+  addEventListener("resize", updateDesktopStage, { passive: true });
   addEventListener("orientationchange", () => {
-    refreshResponsiveStage();
-    requestAnimationFrame(refreshResponsiveStage);
-    setTimeout(refreshResponsiveStage, 120);
-    setTimeout(refreshResponsiveStage, 420);
+    updateDesktopStage();
+    requestAnimationFrame(updateDesktopStage);
+    setTimeout(updateDesktopStage, 160);
   }, { passive: true });
-  if (window.visualViewport) {
-    visualViewport.addEventListener("resize", refreshResponsiveStage, { passive: true });
-    visualViewport.addEventListener("scroll", updateTouchStage, { passive: true });
-  }
 
   // ---------------------------------------------------------------
   // HERO CLAIM

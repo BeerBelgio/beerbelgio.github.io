@@ -100,7 +100,7 @@ a { color: inherit; }
   margin: 0;
   width: 100%;
   max-width: none;
-  font-size: clamp(20px, 2vw, 25px);
+  font-size: clamp(25px, 2.35vw, 30px);
   line-height: 1.32;
   text-align: left;
   letter-spacing: 0;
@@ -180,7 +180,7 @@ a { color: inherit; }
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 10px !important;
+  gap: 4px !important;
   text-align: center !important;
 }
 .sd-contact-hub img { width: 60px; height: 60px; object-fit: contain; display: block; flex: 0 0 auto; }
@@ -265,11 +265,11 @@ a { color: inherit; }
   .sd-hero { min-height: 0; padding: 15px 18px; }
   .sd-hero-top { grid-template-columns: 1fr auto; gap: 16px; }
   .sd-eyebrow,
-  .sd-hero-meta { font-size: 12.5px; line-height: 1.16; }
+  .sd-hero-meta { font-size: 14px; line-height: 1.16; }
   .sd-role-full { display: block; }
   .sd-role-short { display: none; }
   .sd-hero h1 { margin: 22px 0; font-size: clamp(36px, 5.6vw, 58px); max-width: 760px; }
-  .sd-hero-copy { font-size: 13px; line-height: 1.28; }
+  .sd-hero-copy { font-size: 18px; line-height: 1.28; }
 
   .sd-grid { gap: 8px; margin-top: 8px; }
   .sd-card { padding: 15px; }
@@ -294,7 +294,7 @@ a { color: inherit; }
     gap: 24px;
     align-items: center;
   }
-  .sd-contact h2 { font-size: clamp(38px, 5vw, 60px); line-height: .86; }
+  .sd-contact h2 { font-size: clamp(48px, 6vw, 70px); line-height: .86; }
   .sd-contact-actions { display: flex; flex-direction: column; gap: 16px; }
   .sd-contact-actions a { min-height: 36px; font-size: 10.5px; }
     .sd-contact-hub img { width: 48px; height: 48px; }

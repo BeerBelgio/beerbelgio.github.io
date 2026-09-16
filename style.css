@@ -2244,9 +2244,16 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.47 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
-   Replaces V0.47 completely. Never stack staging override blocks.
+   V0.48 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   Replaces V0.48 completely. Never stack staging override blocks.
    ========================================================= */
+
+/* Safari/iOS must not auto-inflate type independently of the layout. */
+html {
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
+
 
 .site-stage,
 .site-shell,
@@ -2535,7 +2542,7 @@ html.ios-device #lava-canvas {
    --------------------------------------------------------- */
 html.desktop-proportional .site-stage {
   position: relative !important;
-  width: 53.25vw !important;
+  width: 60vw !important;
   max-width: none !important;
   margin: 0 auto !important;
 }
@@ -2560,8 +2567,8 @@ html.desktop-proportional .hero-claim-art {
   max-width: none !important;
   justify-self: center !important;
   position: relative !important;
-  left: 50% !important;
-  transform: translateX(-50%) scale(1.20) !important;
+  left: auto !important;
+  transform: scale(1.08) !important;
   transform-origin: center center !important;
 }
 html.desktop-proportional .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 26px !important; }
@@ -2649,8 +2656,8 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     max-width: none !important;
     justify-self: center !important;
     position: relative !important;
-    left: 50% !important;
-    transform: translateX(-50%) scale(1.25) !important;
+    left: auto !important;
+    transform: scale(1.25) !important;
     transform-origin: center center !important;
   }
 
@@ -2728,7 +2735,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     grid-column: 1 !important;
     grid-row: 1 !important;
     width: 100% !important;
-    font-size: clamp(27px, 7.6vw, 33px) !important;
+    font-size: clamp(30px, 8.4vw, 36px) !important;
     line-height: .94 !important;
   }
   .contact-a .contact-lower {
@@ -2801,8 +2808,8 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     max-width: none !important;
     justify-self: center !important;
     position: relative !important;
-    left: 50% !important;
-    transform: translateX(-50%) scale(1.125) !important;
+    left: auto !important;
+    transform: scale(1.125) !important;
     transform-origin: center center !important;
   }
   .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 20px !important; align-items: stretch !important; }
@@ -2878,44 +2885,6 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
   .sonodgtl-cta-separator { display: inline !important; }
   .floating-motto { margin-top: 28px !important; }
 }
-
-/* ---------------------------------------------------------
-   V0.47 TOUCH LAYOUT HARD OVERRIDE
-   JS measures the real visualViewport and writes the 80% stage in pixels.
-   These classes prevent any legacy width/media rule from rescaling the shell.
-   --------------------------------------------------------- */
-html.touch-experience .site-stage {
-  position: relative !important;
-  min-width: 0 !important;
-}
-html.touch-experience .site-shell {
-  position: relative !important;
-  left: 0 !important;
-  top: 0 !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  zoom: 1 !important;
-  transform: none !important;
-}
-html.touch-experience .card { width: 100% !important; max-width: 100% !important; }
-html.touch-portrait .hero-meta {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  font-size: 16.5px !important;
-}
-html.touch-portrait .hero-claim-art-wrap { width: 100% !important; max-width: none !important; }
-html.touch-portrait .identity-block h2 { font-size: 34px !important; }
-html.touch-portrait .identity-tagline { font-size: 14px !important; }
-html.touch-portrait .identity-meta { font-size: 12.5px !important; }
-html.touch-landscape .hero-meta { font-size: 16px !important; }
-html.touch-landscape .identity-stack { align-items: stretch !important; }
-html.touch-landscape .identity-card-link,
-html.touch-landscape .identity-block { height: 100% !important; }
-html.touch-landscape .identity-block h2 { font-size: 32px !important; }
-html.touch-landscape .identity-tagline { font-size: 14px !important; }
-html.touch-landscape .identity-meta { font-size: 12.5px !important; }
 
 /* ---------------------------------------------------------
    EMAIL FALLBACK
@@ -3011,22 +2980,3 @@ html.touch-landscape .identity-meta { font-size: 12.5px !important; }
 .share-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
 body.lava-mode { touch-action: none; }
-
-
-/* V0.47 hard guard: even if a mobile browser transiently misreports pointer
-   capabilities, touch devices keep the fixed 80vw composition. */
-@media (pointer: coarse), (hover: none) {
-  html.desktop-proportional .site-stage {
-    position: relative !important;
-    width: 80vw !important;
-    max-width: 80vw !important;
-    margin-inline: auto !important;
-  }
-  html.desktop-proportional .site-shell {
-    position: relative !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    zoom: 1 !important;
-  }
-}
