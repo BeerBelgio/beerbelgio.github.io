@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.41
+/* BeerBelgio Lava Engine — V0.42
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -106,9 +106,9 @@
       family: familyForColor(palette[i % palette.length]),
       phase: Math.random() * Math.PI * 2,
       phase2: Math.random() * Math.PI * 2,
-      wobble: 0.055 + Math.random() * 0.06,
-      morphBase: 0.20 + Math.random() * 0.07,
-      deformMag: 0.24 + Math.random() * 0.05,
+      wobble: 0.062 + Math.random() * 0.072,
+      morphBase: 0.24 + Math.random() * 0.09,
+      deformMag: 0.30 + Math.random() * 0.08,
       deformDir: Math.random() * Math.PI * 2,
       dragging: false,
       manualMomentumUntil: 0,
@@ -130,7 +130,7 @@
 
   function resize(force = false) {
     syncPortraitCanvasPosition();
-    // V0.41: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
+    // V0.42: fixed overscanned canvas; Safari chrome changes do not recreate the bitmap unnecessarily;
     // desktop/landscape keep the fixed canvas. JS mirrors the CSS rectangle into
     // the backing bitmap. We never resize from visualViewport while Safari chrome animates.
     const oldPadX = padX;
@@ -311,7 +311,7 @@
 
     if (blob.dragging) {
       const dragSpeed = Math.hypot(dragVx, dragVy);
-      const dragWarp = Math.min(0.42, dragSpeed * 0.32);
+      const dragWarp = Math.min(0.58, dragSpeed * 0.46);
       // Manual motion deforms the contour, but never rotates the blob's shape axis.
       blob.deformMag = Math.max(blob.morphBase || 0.22, (blob.morphBase || 0.22) + dragWarp);
       blob.phase += dragVx * 0.0026 * dt;
@@ -351,7 +351,7 @@
 
     // Persistent liquid memory: the shape keeps wandering instead of snapping back to round.
     blob.morphBase += Math.sin(time * 0.00011 + blob.turnPhase * 1.7) * 0.000010 * dt;
-    blob.morphBase = Math.max(0.18, Math.min(0.34, blob.morphBase));
+    blob.morphBase = Math.max(0.22, Math.min(0.42, blob.morphBase));
 
     if (pointer.strength > 0.001) {
       const dx = pointer.x - blob.x;
@@ -486,10 +486,10 @@
 
     const morphFloor = blob.morphBase || 0.22;
     blob.deformMag = Math.min(
-      0.64,
+      0.86,
       Math.max(
         morphFloor + manualWarp,
-        (blob.deformMag || morphFloor) * Math.pow(0.997, dt) + forceMag * 62
+        (blob.deformMag || morphFloor) * Math.pow(0.9987, dt) + forceMag * 102
       )
     );
 
@@ -764,10 +764,9 @@
     const dragSpeed = Math.hypot(dragVx, dragVy);
     // Release momentum is genuinely proportional to the user's final gesture.
     // Slow release = slow drift; energetic release = faster drift, with a safety cap.
-    const releaseGain = 0.085;
-    const maxRelease = 0.165;
-    draggedBlob.vx = Math.max(-maxRelease, Math.min(maxRelease, dragVx * releaseGain));
-    draggedBlob.vy = Math.max(-maxRelease, Math.min(maxRelease, dragVy * releaseGain));
+    const releaseGain = 0.095;
+    draggedBlob.vx = dragVx * releaseGain;
+    draggedBlob.vy = dragVy * releaseGain;
     if (Math.hypot(draggedBlob.vx, draggedBlob.vy) > 0.0001) {
       draggedBlob.baseAngle = Math.atan2(draggedBlob.vy, draggedBlob.vx);
     }
@@ -776,7 +775,7 @@
     const blendMs = 2200 + gesture * 2600;
     draggedBlob.manualMomentumUntil = now + holdMs;
     draggedBlob.manualBlendUntil = now + holdMs + blendMs;
-    draggedBlob.manualWarpMag = 0.10 + gesture * 0.24;
+    draggedBlob.manualWarpMag = 0.16 + gesture * 0.36;
     draggedBlob.manualWarpUntil = now + holdMs;
     draggedBlob.manualWarpBlendUntil = now + holdMs + blendMs;
     draggedBlob.dragging = false;
