@@ -171,6 +171,80 @@
   }
 
   // ---------------------------------------------------------------
+  // HUB EMAIL — normal mailto first, structured webmail fallback second.
+  // Browsers do not expose a reliable API telling us whether a local mail
+  // handler exists. We therefore keep mailto behaviour and reveal a compact
+  // in-page fallback with TO / SUBJECT / MESSAGE as separate copyable fields.
+  // ---------------------------------------------------------------
+  const hubWriteButton = document.getElementById("hub-write-me");
+  const emailFallback = document.getElementById("email-fallback");
+  const emailFallbackClose = document.getElementById("email-fallback-close");
+  let emailFallbackTimer = 0;
+
+  function closeEmailFallback() {
+    if (!emailFallback) return;
+    emailFallback.hidden = true;
+    document.body.classList.remove("email-fallback-open");
+  }
+
+  function openEmailFallback() {
+    if (!emailFallback) return;
+    emailFallback.hidden = false;
+    document.body.classList.add("email-fallback-open");
+  }
+
+  async function copyFallbackField(id, button) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    const value = target.textContent || "";
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value);
+      } else {
+        const area = document.createElement("textarea");
+        area.value = value;
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+      }
+      if (button) {
+        const old = button.textContent;
+        button.textContent = "COPIED";
+        setTimeout(() => { button.textContent = old; }, 900);
+      }
+    } catch {
+      showShareToast("COPY FAILED — SELECT THE TEXT MANUALLY");
+    }
+  }
+
+  if (hubWriteButton) {
+    hubWriteButton.addEventListener("click", (event) => {
+      const href = hubWriteButton.getAttribute("href") || "";
+      if (!href.startsWith("mailto:")) return;
+      event.preventDefault();
+
+      clearTimeout(emailFallbackTimer);
+      window.location.href = href;
+
+      // If no app takes over, the visitor remains on the page and gets a
+      // structured fallback instead of one unusable combined clipboard blob.
+      emailFallbackTimer = setTimeout(openEmailFallback, 850);
+    });
+  }
+
+  if (emailFallbackClose) emailFallbackClose.addEventListener("click", closeEmailFallback);
+  if (emailFallback) {
+    emailFallback.addEventListener("click", (event) => {
+      if (event.target === emailFallback) closeEmailFallback();
+      const button = event.target.closest?.("[data-copy-target]");
+      if (button) copyFallbackField(button.dataset.copyTarget, button);
+    });
+  }
+
+  // ---------------------------------------------------------------
   // VIDEO
   // ---------------------------------------------------------------
   const videoShell = document.getElementById("video-shell");

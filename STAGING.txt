@@ -1,1 +1,1 @@
-V0.49 PUBLIC STAGING — HUB rollback to V0.42; LAVA rollback to V0.40; sonoDGTL based on V0.48 + V0.49 nav/title changes. noindex active.
+V0.50 PUBLIC STAGING — HUB based on V0.42 responsive baseline; lava.js frozen at V0.40; sonoDGTL updated; cache-busting ?v=050.

@@ -29,6 +29,10 @@ a { color: inherit; }
   padding: 18px 0 56px;
 }
 .sd-nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--cream);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -38,7 +42,7 @@ a { color: inherit; }
   font-weight: 800;
   letter-spacing: .015em;
 }
-.sd-nav-brand { font-size: 190px; line-height: .80; letter-spacing: -.065em; font-weight: 700; }
+.sd-nav-brand { font-size: 190px; line-height: .80; letter-spacing: -.065em; font-weight: 700; color: var(--orange); }
 .sd-nav-links { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; justify-content: flex-end; }
 .sd-pill {
   display: inline-flex;
@@ -180,9 +184,17 @@ a { color: inherit; }
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 4px !important;
+  gap: 0 !important;
   text-align: center !important;
 }
+.sd-hub-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0 auto;
+}
+.sd-hub-content > span { display: block; line-height: 1; }
 .sd-contact-hub img { width: 60px; height: 60px; object-fit: contain; display: block; flex: 0 0 auto; }
 .sd-landscape-break { display: none; }
 
