@@ -1415,6 +1415,7 @@ select {
   min-height: 54px !important;
   font-size: 14px !important;
   letter-spacing: .11em !important;
+  transform: translateY(3px) !important;
 }
 
 .contact-smile-full {
@@ -2244,8 +2245,8 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.50 PUBLIC STAGING — V0.42 HUB BASE + CONTROLLED UI REFINEMENTS
-   Replaces V0.40 completely. Never stack staging override blocks.
+   V0.51 PUBLIC STAGING — V0.42 HUB BASE + CONTROLLED UI REFINEMENTS
+   Replaces V0.50 completely. Never stack staging override blocks.
    ========================================================= */
 
 .site-stage,
@@ -2320,6 +2321,7 @@ html.ios-device #lava-canvas {
   height: auto !important;
   max-width: none !important;
 }
+.hero-claim-art-portrait { display: none !important; }
 
 .identity-stack {
   grid-template-columns: 1fr 1fr !important;
@@ -2556,6 +2558,7 @@ html.desktop-proportional .links-card small { font-size: 16px !important; }
 html.desktop-proportional .contact { min-height: 286px !important; grid-template-columns: minmax(0,2fr) minmax(190px,1fr) !important; padding:26px !important; }
 html.desktop-proportional .contact h2 { font-size: 53px !important; width:100% !important; grid-column:1 !important; grid-row:1 !important; }
 html.desktop-proportional .contact-a .contact-lower { grid-column:1 !important; grid-row:2 !important; display:flex !important; align-items:center !important; }
+html.desktop-proportional .write-button { transform: translateY(3px) !important; }
 html.desktop-proportional .contact-smile-full { grid-column:2 !important; grid-row:1/3 !important; width:205px !important; justify-self:end !important; align-self:end !important; transform:none !important; }
 html.desktop-proportional .mobile-only-break { display: none !important; }
 html.desktop-proportional .sonodgtl-cta-separator { display: inline !important; }
@@ -2597,8 +2600,15 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   }
   .hero-meta span:first-child { text-align: left !important; }
   .hero-meta span:last-child { text-align: right !important; }
+  .hero-location {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-self: end !important;
+    width: max-content !important;
+  }
   .hero-location .location-city,
-  .hero-location .location-country { display: block !important; }
+  .hero-location .location-country { display: block !important; width: max-content !important; text-align: right !important; }
   .hero-location .location-country::before { content: "" !important; }
   .hero-location .location-comma { display: none !important; }
   .hero-claim-art-wrap {
@@ -2606,8 +2616,10 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     max-width: none !important;
     margin: 2px auto 4px !important;
     grid-template-columns: 1fr !important;
+    place-items: center !important;
   }
-  .hero-claim-art { width: 123% !important; height: auto !important; max-width: none !important; }
+  .hero-claim-art-default { display: none !important; }
+  .hero-claim-art-portrait { display: block !important; width: 123% !important; height: auto !important; max-width: none !important; margin: 0 auto !important; }
 
   .identity-stack { grid-template-columns: 1fr !important; gap: 16px !important; }
   .identity-block { gap: 13px !important; padding-top: 15px !important; }
@@ -2618,16 +2630,21 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .identity-meta { font-size: 10.4px !important; line-height: 1.16 !important; }
 
   .quick-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+    width: 100% !important;
+    margin: 14px 0 !important;
+  }
+  .platforms {
     display: grid !important;
     grid-template-columns: repeat(4, 54px) !important;
-    grid-template-rows: 54px 54px 66px !important;
     justify-content: space-between !important;
     align-items: center !important;
     row-gap: 18px !important;
     width: 100% !important;
-    margin: 14px 0 !important;
   }
-  .platforms { display: contents !important; }
   .platforms a,
   .platforms button,
   .platforms a:nth-child(n),
@@ -2643,8 +2660,6 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   }
   .platform-icon { width: 46% !important; height: 46% !important; }
   .lava-toggle {
-    grid-column: 1 / -1 !important;
-    grid-row: 3 !important;
     width: 100% !important;
     min-width: 0 !important;
     height: 66px !important;
@@ -2699,6 +2714,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     width: 100% !important;
     min-height: 48px !important;
     font-size: 12px !important;
+    transform: translateY(3px) !important;
   }
   .contact-line > span { display: block !important; white-space: nowrap !important; }
   .contact-smile,
@@ -2730,8 +2746,14 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     font-size: 14px !important;
     padding-inline: 16px !important;
   }
-  .hero-claim-art-wrap { width: 100% !important; margin: 4px auto 6px !important; grid-template-columns: 1fr !important; }
-  .hero-claim-art { width: 98% !important; max-width: none !important; }
+  .hero-location { display: inline !important; width: auto !important; }
+  .hero-location .location-city,
+  .hero-location .location-country { display: inline !important; width: auto !important; }
+  .hero-location .location-comma { display: inline !important; }
+  .hero-location .location-country::before { content: " " !important; }
+  .hero-claim-art-wrap { width: 100% !important; margin: 2px auto 3px !important; grid-template-columns: 1fr !important; }
+  .hero-claim-art-default { display: block !important; width: 98% !important; max-width: none !important; margin: 0 auto !important; }
+  .hero-claim-art-portrait { display: none !important; }
   .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 20px !important; align-items: start !important; }
   .identity-card-link:first-child .identity-block { text-align: right !important; }
   .identity-card-link:last-child .identity-block { text-align: left !important; }
@@ -2790,6 +2812,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .contact-line { display: block !important; }
   .contact-line > span { display: inline !important; white-space: nowrap !important; }
   .contact-a .contact-lower { grid-column:1 !important; grid-row:2 !important; display:flex !important; align-items:center !important; padding:0 !important; }
+  .write-button { transform: translateY(3px) !important; }
   .contact-smile,
   .contact-smile-full {
     grid-column:2 !important;
