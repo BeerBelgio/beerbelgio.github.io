@@ -2245,7 +2245,7 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.51 PUBLIC STAGING — V0.42 HUB BASE + CONTROLLED UI REFINEMENTS
+   V0.52 PUBLIC STAGING — V0.42 HUB BASE + CONTROLLED UI REFINEMENTS
    Replaces V0.50 completely. Never stack staging override blocks.
    ========================================================= */
 
@@ -2558,7 +2558,7 @@ html.desktop-proportional .links-card small { font-size: 16px !important; }
 html.desktop-proportional .contact { min-height: 286px !important; grid-template-columns: minmax(0,2fr) minmax(190px,1fr) !important; padding:26px !important; }
 html.desktop-proportional .contact h2 { font-size: 53px !important; width:100% !important; grid-column:1 !important; grid-row:1 !important; }
 html.desktop-proportional .contact-a .contact-lower { grid-column:1 !important; grid-row:2 !important; display:flex !important; align-items:center !important; }
-html.desktop-proportional .write-button { transform: translateY(3px) !important; }
+html.desktop-proportional .write-button { transform: translateY(6px) !important; }
 html.desktop-proportional .contact-smile-full { grid-column:2 !important; grid-row:1/3 !important; width:205px !important; justify-self:end !important; align-self:end !important; transform:none !important; }
 html.desktop-proportional .mobile-only-break { display: none !important; }
 html.desktop-proportional .sonodgtl-cta-separator { display: inline !important; }
@@ -2578,7 +2578,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     max-width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
-    padding-top: 10px !important;
+    padding-top: 50px !important;
     padding-bottom: 24px !important;
   }
   .card { width: 100% !important; max-width: 100% !important; }
@@ -2619,7 +2619,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     place-items: center !important;
   }
   .hero-claim-art-default { display: none !important; }
-  .hero-claim-art-portrait { display: block !important; width: 123% !important; height: auto !important; max-width: none !important; margin: 0 auto !important; }
+  .hero-claim-art-portrait { display: block !important; width: 123% !important; height: auto !important; max-width: none !important; margin: 0 !important; justify-self: center !important; align-self: center !important; }
 
   .identity-stack { grid-template-columns: 1fr !important; gap: 16px !important; }
   .identity-block { gap: 13px !important; padding-top: 15px !important; }
@@ -2727,13 +2727,13 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     transform: none !important;
   }
 
-  .floating-motto { margin-bottom: 0 !important; }
+  .floating-motto { margin-bottom: max(24px, calc(50svh - 28px)) !important; }
 }
 
 /* TOUCH LANDSCAPE */
 @media (orientation: landscape) and (pointer: coarse) {
   .site-stage { width: 80vw !important; max-width: 80vw !important; }
-  .site-shell { padding-bottom: 24px !important; }
+  .site-shell { padding-top: 10px !important; padding-bottom: 24px !important; }
   .hero {
     min-height: 0 !important;
     height: auto !important;
@@ -2751,7 +2751,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .hero-location .location-country { display: inline !important; width: auto !important; }
   .hero-location .location-comma { display: inline !important; }
   .hero-location .location-country::before { content: " " !important; }
-  .hero-claim-art-wrap { width: 100% !important; margin: 2px auto 3px !important; grid-template-columns: 1fr !important; }
+  .hero-claim-art-wrap { width: 100% !important; margin: 0 auto !important; grid-template-columns: 1fr !important; }
   .hero-claim-art-default { display: block !important; width: 98% !important; max-width: none !important; margin: 0 auto !important; }
   .hero-claim-art-portrait { display: none !important; }
   .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 20px !important; align-items: start !important; }
@@ -2764,25 +2764,19 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .identity-meta { font-size: 10.4px !important; }
 
   .quick-actions {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    width: 100% !important;
-    margin: 10px 0 !important;
-  }
-  .platforms {
-    display: flex !important;
-    flex: 1 1 auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(8, 42px) 118px !important;
     align-items: center !important;
     justify-content: space-between !important;
     gap: 0 !important;
-    width: auto !important;
+    width: 100% !important;
+    margin: 10px 0 !important;
   }
+  .platforms { display: contents !important; }
   .platforms a,
   .platforms button,
   .platforms a:nth-child(n),
   .platforms button:nth-child(n) {
-    flex: 0 0 42px !important;
     width: 42px !important;
     min-width: 42px !important;
     height: 42px !important;
@@ -2790,7 +2784,6 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   }
   .platform-icon { width: 50% !important; height: 50% !important; }
   .lava-toggle {
-    flex: 0 0 118px !important;
     width: 118px !important;
     min-width: 118px !important;
     height: 44px !important;
@@ -2812,7 +2805,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .contact-line { display: block !important; }
   .contact-line > span { display: inline !important; white-space: nowrap !important; }
   .contact-a .contact-lower { grid-column:1 !important; grid-row:2 !important; display:flex !important; align-items:center !important; padding:0 !important; }
-  .write-button { transform: translateY(3px) !important; }
+  .write-button { transform: translateY(6px) !important; }
   .contact-smile,
   .contact-smile-full {
     grid-column:2 !important;
@@ -2825,6 +2818,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
 
   .mobile-only-break { display: none !important; }
   .sonodgtl-cta-separator { display: inline !important; }
+  .floating-motto { margin-bottom: 0 !important; }
 }
 
 

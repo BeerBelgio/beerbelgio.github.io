@@ -33,12 +33,12 @@ a { color: inherit; }
   justify-content: space-between;
   align-items: flex-start;
   gap: 18px;
-  padding: 8px 4px 18px;
+  padding: 8px 4px 36px;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: .015em;
 }
-.sd-nav-brand { font-size: 190px; line-height: .80; letter-spacing: -.065em; font-weight: 700; color: var(--ink); }
+.sd-nav-brand { font-size: 162px; line-height: .80; letter-spacing: -.065em; font-weight: 900; color: var(--ink); }
 .sd-brand-sono { color: var(--ink); }
 .sd-brand-dgtl { color: var(--orange); }
 .sd-nav-links { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; justify-content: flex-end; }
@@ -180,23 +180,22 @@ a { color: inherit; }
 }
 .sd-contact-hub {
   position: relative !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: grid !important;
+  place-items: center !important;
   gap: 0 !important;
   text-align: center !important;
+  padding-inline: 18px !important;
 }
 .sd-hub-content {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  position: static;
+  transform: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  width: max-content;
-  margin: 0;
+  gap: 3px;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
 }
 .sd-hub-content > span { display: block; line-height: 1; }
 .sd-contact-hub img { width: 60px; height: 60px; object-fit: contain; display: block; flex: 0 0 auto; }
@@ -214,9 +213,9 @@ a { color: inherit; }
 
 @media (pointer: coarse) and (orientation: portrait) {
   .sd-shell { width: 80vw; max-width: 80vw; padding-top: 10px; }
-  .sd-nav { flex-direction: column; align-items: stretch; gap: 14px; font-size: 12px; padding-bottom: 18px; }
-  .sd-nav-brand { font-size: 64px; line-height: .84; letter-spacing: -.055em; }
-  .sd-nav-links { width: 100%; gap: 6px; justify-content: flex-end; }
+  .sd-nav { flex-direction: column; align-items: stretch; gap: 14px; font-size: 12px; padding-bottom: 36px; }
+  .sd-nav-brand { order: 2; font-size: 54px; line-height: .84; letter-spacing: -.055em; font-weight: 900; }
+  .sd-nav-links { order: 1; width: 100%; gap: 6px; justify-content: flex-end; align-self: flex-end; }
   .sd-pill { min-height: 36px; padding: 0 11px; }
   .sd-hub-pill img { width: 14px; height: 14px; }
 
@@ -274,8 +273,8 @@ a { color: inherit; }
 @media (pointer: coarse) and (orientation: landscape) {
   /* Keep the same 80% card ratio while reducing vertical density. */
   .sd-shell { width: 80vw; max-width: 80vw; padding: 4px 0 18px; }
-  .sd-nav { padding: 3px 2px 7px; font-size: 10.5px; }
-  .sd-nav-brand { font-size: 96px; line-height: .80; letter-spacing: -.06em; }
+  .sd-nav { padding: 3px 2px 14px; font-size: 10.5px; }
+  .sd-nav-brand { font-size: 82px; line-height: .80; letter-spacing: -.06em; font-weight: 900; }
   .sd-pill { min-height: 31px; padding: 0 9px; }
   .sd-hub-pill img { width: 13px; height: 13px; }
 
