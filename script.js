@@ -15,27 +15,19 @@
     window.scrollTo(0, 0);
   }
   resetLandingToHero();
-  const forceHeroLanding = () => {
-    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  };
   addEventListener("pageshow", () => {
-    forceHeroLanding();
-    requestAnimationFrame(forceHeroLanding);
-    setTimeout(forceHeroLanding, 80);
-    setTimeout(forceHeroLanding, 320);
+    requestAnimationFrame(() => window.scrollTo(0, 0));
   }, { passive: true });
   addEventListener("load", () => {
-    forceHeroLanding();
-    requestAnimationFrame(forceHeroLanding);
-    setTimeout(forceHeroLanding, 120);
-    setTimeout(forceHeroLanding, 500);
+    requestAnimationFrame(() => window.scrollTo(0, 0));
+    setTimeout(() => window.scrollTo(0, 0), 80);
   }, { passive: true });
 
   function setLavaMode(active) {
     body.classList.toggle("lava-mode", active);
     if (lavaToggle) {
       lavaToggle.setAttribute("aria-pressed", String(active));
+      lavaToggle.textContent = "FULL LAVA";
     }
   }
 
@@ -43,21 +35,20 @@
   if (lavaBack) lavaBack.addEventListener("click", () => setLavaMode(false));
 
   // ---------------------------------------------------------------
-  // RESPONSIVE STAGE — V0.48
+  // DESKTOP PROPORTIONAL STAGE
   //
-  // Touch layouts are now pure CSS. No visualViewport widths, no inline
-  // margins and no touch-orientation classes are written by JS. This mirrors
-  // the robust pattern used by the MarkDO reference: viewport meta + normal
-  // document flow + CSS media queries.
+  // IMPORTANT: desktop detection must NOT depend on the page's CSS viewport,
+  // because Chrome zoom changes that viewport. A fine pointer + desktop-class
+  // screen keeps this active at 25%, 100%, 200%, etc.
   //
-  // Desktop keeps the proven proportional 760px composition, but only on
-  // genuine fine-pointer desktop windows.
+  // The stage is always 45vw and centred.
+  // The internal 760px design is zoomed to fit the stage exactly.
+  // The lava remains a separate full-viewport canvas.
   // ---------------------------------------------------------------
   const DESIGN_WIDTH = 760;
 
   function isDesktopExperience() {
-    return matchMedia("(hover: hover) and (pointer: fine)").matches
-      && window.innerWidth >= 900;
+    return matchMedia("(pointer: fine)").matches && screen.width >= 900;
   }
 
   function updateDesktopStage() {
@@ -72,12 +63,15 @@
 
     document.documentElement.classList.add("desktop-proportional");
 
-    // A deliberately larger desktop composition: 60% of the viewport.
-    const targetWidth = innerWidth * 0.60;
+    // 45% of the CURRENT browser viewport in CSS pixels.
+    // Browser page zoom changes innerWidth; this counter-scaling is intentional.
+    const targetWidth = innerWidth * 0.45;
     const scale = targetWidth / DESIGN_WIDTH;
+
     siteShell.style.zoom = String(scale);
 
     requestAnimationFrame(() => {
+      // The stage owns the document flow; shell itself is absolutely positioned.
       const visualHeight = siteShell.getBoundingClientRect().height;
       siteStage.style.height = `${Math.max(1, visualHeight)}px`;
     });
@@ -85,11 +79,9 @@
 
   updateDesktopStage();
   addEventListener("resize", updateDesktopStage, { passive: true });
-  addEventListener("orientationchange", () => {
-    updateDesktopStage();
-    requestAnimationFrame(updateDesktopStage);
-    setTimeout(updateDesktopStage, 160);
-  }, { passive: true });
+  if (window.visualViewport) {
+    visualViewport.addEventListener("resize", updateDesktopStage, { passive: true });
+  }
 
   // ---------------------------------------------------------------
   // HERO CLAIM
@@ -114,133 +106,6 @@
     beerbelgioHeroAnchor.addEventListener('click', (event) => {
       event.preventDefault();
       scrollCardToCenter(beerbelgioTarget);
-    });
-  }
-
-  // ---------------------------------------------------------------
-  // SHARE — native share sheet when available, clipboard fallback otherwise.
-  // ---------------------------------------------------------------
-  const shareSite = document.getElementById("share-site");
-
-  function showShareToast(message) {
-    let toast = document.getElementById("share-toast");
-    if (!toast) {
-      toast = document.createElement("div");
-      toast.id = "share-toast";
-      toast.className = "share-toast";
-      toast.setAttribute("role", "status");
-      toast.setAttribute("aria-live", "polite");
-      document.body.appendChild(toast);
-    }
-    toast.textContent = message;
-    toast.classList.add("is-visible");
-    clearTimeout(showShareToast.timer);
-    showShareToast.timer = setTimeout(() => toast.classList.remove("is-visible"), 1400);
-  }
-
-  if (shareSite) {
-    shareSite.addEventListener("click", async () => {
-      const shareData = {
-        title: "Matteo Belgiovine",
-        text: "Music, digital strategy and useful ideas from unexpected angles.",
-        url: "https://beerbelgio.github.io/"
-      };
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-          return;
-        }
-        if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(shareData.url);
-        } else {
-          const input = document.createElement("textarea");
-          input.value = shareData.url;
-          input.setAttribute("readonly", "");
-          input.style.position = "fixed";
-          input.style.opacity = "0";
-          document.body.appendChild(input);
-          input.select();
-          document.execCommand("copy");
-          input.remove();
-        }
-        showShareToast("LINK COPIED");
-      } catch (error) {
-        if (error?.name !== "AbortError") showShareToast("COPY THE URL ABOVE");
-      }
-    });
-  }
-
-  // ---------------------------------------------------------------
-  // HUB EMAIL — normal mailto first, structured webmail fallback second.
-  // Browsers do not expose a reliable API telling us whether a local mail
-  // handler exists. We therefore keep mailto behaviour and reveal a compact
-  // in-page fallback with TO / SUBJECT / MESSAGE as separate copyable fields.
-  // ---------------------------------------------------------------
-  const hubWriteButton = document.getElementById("hub-write-me");
-  const emailFallback = document.getElementById("email-fallback");
-  const emailFallbackClose = document.getElementById("email-fallback-close");
-  let emailFallbackTimer = 0;
-
-  function closeEmailFallback() {
-    if (!emailFallback) return;
-    emailFallback.hidden = true;
-    document.body.classList.remove("email-fallback-open");
-  }
-
-  function openEmailFallback() {
-    if (!emailFallback) return;
-    emailFallback.hidden = false;
-    document.body.classList.add("email-fallback-open");
-  }
-
-  async function copyFallbackField(id, button) {
-    const target = document.getElementById(id);
-    if (!target) return;
-    const value = target.textContent || "";
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(value);
-      } else {
-        const area = document.createElement("textarea");
-        area.value = value;
-        area.style.position = "fixed";
-        area.style.opacity = "0";
-        document.body.appendChild(area);
-        area.select();
-        document.execCommand("copy");
-        area.remove();
-      }
-      if (button) {
-        const old = button.textContent;
-        button.textContent = "COPIED";
-        setTimeout(() => { button.textContent = old; }, 900);
-      }
-    } catch {
-      showShareToast("COPY FAILED — SELECT THE TEXT MANUALLY");
-    }
-  }
-
-  if (hubWriteButton) {
-    hubWriteButton.addEventListener("click", (event) => {
-      const href = hubWriteButton.getAttribute("href") || "";
-      if (!href.startsWith("mailto:")) return;
-      event.preventDefault();
-
-      clearTimeout(emailFallbackTimer);
-      window.location.href = href;
-
-      // If no app takes over, the visitor remains on the page and gets a
-      // structured fallback instead of one unusable combined clipboard blob.
-      emailFallbackTimer = setTimeout(openEmailFallback, 850);
-    });
-  }
-
-  if (emailFallbackClose) emailFallbackClose.addEventListener("click", closeEmailFallback);
-  if (emailFallback) {
-    emailFallback.addEventListener("click", (event) => {
-      if (event.target === emailFallback) closeEmailFallback();
-      const button = event.target.closest?.("[data-copy-target]");
-      if (button) copyFallbackField(button.dataset.copyTarget, button);
     });
   }
 
