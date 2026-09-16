@@ -5,36 +5,6 @@
   const siteStage = document.getElementById("site-stage");
   const siteShell = document.getElementById("site-shell");
 
-  // Touch orientation is mirrored into explicit root classes.
-  // Some Android browsers briefly keep stale media-query state after rotation;
-  // these classes are resynchronised several times while the viewport settles.
-  function syncTouchOrientationClass() {
-    const coarse = matchMedia("(pointer: coarse)").matches;
-    const vw = window.visualViewport?.width || window.innerWidth;
-    const vh = window.visualViewport?.height || window.innerHeight;
-    document.documentElement.classList.toggle("touch-portrait", coarse && vh >= vw);
-    document.documentElement.classList.toggle("touch-landscape", coarse && vw > vh);
-    if (!coarse) {
-      document.documentElement.classList.remove("touch-portrait", "touch-landscape");
-    }
-  }
-
-  function settleTouchOrientation() {
-    syncTouchOrientationClass();
-    [80, 220, 500, 900].forEach(delay => setTimeout(syncTouchOrientationClass, delay));
-  }
-
-  settleTouchOrientation();
-  addEventListener("resize", settleTouchOrientation, { passive: true });
-  addEventListener("orientationchange", settleTouchOrientation, { passive: true });
-  if (window.visualViewport) {
-    let vvTimer = 0;
-    visualViewport.addEventListener("resize", () => {
-      clearTimeout(vvTimer);
-      vvTimer = setTimeout(settleTouchOrientation, 90);
-    }, { passive: true });
-  }
-
   // Always land at the top / Hero. Internal BeerBelgio scrolling is handled
   // without leaving a hash in the URL, so refresh cannot restore that anchor.
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
@@ -201,29 +171,76 @@
   }
 
   // ---------------------------------------------------------------
-  // HUB EMAIL — mailto + browser-webmail fallback aid.
-  // The address is copied first, so a visitor without a configured local mail
-  // client still has an immediate usable fallback.
+  // HUB EMAIL — normal mailto first, structured webmail fallback second.
+  // Browsers do not expose a reliable API telling us whether a local mail
+  // handler exists. We therefore keep mailto behaviour and reveal a compact
+  // in-page fallback with TO / SUBJECT / MESSAGE as separate copyable fields.
   // ---------------------------------------------------------------
-  const hubWriteButton = document.querySelector(".write-button");
+  const hubWriteButton = document.getElementById("hub-write-me");
+  const emailFallback = document.getElementById("email-fallback");
+  const emailFallbackClose = document.getElementById("email-fallback-close");
+  let emailFallbackTimer = 0;
+
+  function closeEmailFallback() {
+    if (!emailFallback) return;
+    emailFallback.hidden = true;
+    document.body.classList.remove("email-fallback-open");
+  }
+
+  function openEmailFallback() {
+    if (!emailFallback) return;
+    emailFallback.hidden = false;
+    document.body.classList.add("email-fallback-open");
+  }
+
+  async function copyFallbackField(id, button) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    const value = target.textContent || "";
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value);
+      } else {
+        const area = document.createElement("textarea");
+        area.value = value;
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+      }
+      if (button) {
+        const old = button.textContent;
+        button.textContent = "COPIED";
+        setTimeout(() => { button.textContent = old; }, 900);
+      }
+    } catch {
+      showShareToast("COPY FAILED — SELECT THE TEXT MANUALLY");
+    }
+  }
+
   if (hubWriteButton) {
-    hubWriteButton.addEventListener("click", async (event) => {
+    hubWriteButton.addEventListener("click", (event) => {
       const href = hubWriteButton.getAttribute("href") || "";
-      const address = "matteo.sonodgtl@gmail.com";
-      if (href.startsWith("mailto:")) event.preventDefault();
+      if (!href.startsWith("mailto:")) return;
+      event.preventDefault();
 
-      try {
-        if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(address);
-        showShareToast("EMAIL COPIED — IF NOTHING OPENS, PASTE IT IN WEBMAIL");
-      } catch {
-        showShareToast("EMAIL: matteo.sonodgtl@gmail.com");
-      }
+      clearTimeout(emailFallbackTimer);
+      window.location.href = href;
 
-      // Keep the normal mailto behaviour for configured devices.
-      // A tiny delay lets the clipboard action complete without swallowing the click.
-      if (href.startsWith("mailto:")) {
-        setTimeout(() => { window.location.href = href; }, 120);
-      }
+      // If no app takes over, the visitor remains on the page and gets a
+      // structured fallback instead of one unusable combined clipboard blob.
+      emailFallbackTimer = setTimeout(openEmailFallback, 850);
+    });
+  }
+
+  if (emailFallbackClose) emailFallbackClose.addEventListener("click", closeEmailFallback);
+  if (emailFallback) {
+    emailFallback.addEventListener("click", (event) => {
+      if (event.target === emailFallback) closeEmailFallback();
+      const button = event.target.closest?.("[data-copy-target]");
+      if (button) copyFallbackField(button.dataset.copyTarget, button);
     });
   }
 

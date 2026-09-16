@@ -2244,8 +2244,8 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.44 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
-   Replaces V0.40 completely. Never stack staging override blocks.
+   V0.45 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   Replaces V0.45 completely. Never stack staging override blocks.
    ========================================================= */
 
 .site-stage,
@@ -2263,7 +2263,9 @@ html.desktop-proportional .site-shell {
 }
 .arrow { display: grid; place-items: center; }
 
-/* LAVA */
+/* ---------------------------------------------------------
+   LAVA CANVAS
+   --------------------------------------------------------- */
 #lava-canvas {
   position: fixed !important;
   inset: 0 !important;
@@ -2276,13 +2278,27 @@ html.desktop-proportional .site-shell {
   transform: translateZ(0);
   will-change: transform;
 }
-html.ios-device #lava-canvas {
-  top: -20svh !important;
-  bottom: auto !important;
-  height: calc(100lvh + 40svh) !important;
+
+/* Touch devices get symmetric overscan. The JS physics remain tied to
+   the visible viewport, not to this larger backing rectangle. */
+@media (pointer: coarse) {
+  #lava-canvas {
+    inset: auto !important;
+    left: -16vw !important;
+    top: -16svh !important;
+    width: calc(100vw + 32vw) !important;
+    height: calc(100dvh + 32svh) !important;
+  }
 }
 
-/* HERO DESKTOP */
+html.ios-device #lava-canvas {
+  top: -18svh !important;
+  height: calc(100dvh + 36svh) !important;
+}
+
+/* ---------------------------------------------------------
+   HERO — DESKTOP DESIGN REFERENCE
+   --------------------------------------------------------- */
 .hero {
   min-height: 570px !important;
   padding: 28px !important;
@@ -2300,10 +2316,12 @@ html.ios-device #lava-canvas {
   letter-spacing: .03em !important;
 }
 .hero-meta span:last-child { text-align: right !important; }
+.hero-meta-mobile-break { display: none !important; }
+
 .hero-claim-art-wrap {
   width: 100% !important;
   max-width: 704px !important;
-  margin: 5px auto 5px !important;
+  margin: 10px auto !important;
   display: grid !important;
   grid-template-columns: 1fr !important;
   place-items: center !important;
@@ -2349,7 +2367,9 @@ html.ios-device #lava-canvas {
   line-height: 1.18 !important;
 }
 
-/* QUICK LINKS DESKTOP — all nine items share one spacing system. */
+/* ---------------------------------------------------------
+   QUICK LINKS — DESKTOP
+   --------------------------------------------------------- */
 .quick-actions {
   display: grid !important;
   grid-template-columns: repeat(8, 58px) 174px !important;
@@ -2404,26 +2424,9 @@ html.ios-device #lava-canvas {
 }
 .lava-toggle span { display: inline !important; }
 
-.share-toast {
-  position: fixed;
-  z-index: 50;
-  left: 50%;
-  bottom: max(24px, env(safe-area-inset-bottom));
-  transform: translate(-50%, 14px);
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: var(--ink);
-  color: var(--cream);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .06em;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-.share-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
-
-/* FEATURED */
+/* ---------------------------------------------------------
+   FEATURED + LOWER CARDS
+   --------------------------------------------------------- */
 .play { display: grid !important; place-items: center !important; padding: 0 !important; }
 .play img { width: 46% !important; height: 46% !important; display: block !important; transform: none !important; }
 .video-note { display: none !important; }
@@ -2432,7 +2435,6 @@ html.ios-device #lava-canvas {
 .write-button .inline-arrow { margin-left: 5px !important; }
 .cta-row .inline-arrow { width: 1em !important; height: 1em !important; filter: none !important; }
 
-/* LOWER BRAND CARDS */
 .links-card { padding: 24px !important; }
 .brand-heading {
   margin: 0 0 22px !important;
@@ -2454,29 +2456,37 @@ html.ios-device #lava-canvas {
   line-height: 1.18 !important;
 }
 
-/* CONTACT — lower row is a real two-column grid, not an absolute overlay. */
+/* ---------------------------------------------------------
+   CONTACT — DESKTOP
+   Reserve the right third for the smile so text can never sit below it.
+   --------------------------------------------------------- */
 .contact,
 .contact-a {
   position: relative !important;
   display: grid !important;
+  grid-template-columns: minmax(0, 2fr) minmax(190px, 1fr) !important;
   grid-template-rows: auto 1fr !important;
+  column-gap: 18px !important;
   min-height: 286px !important;
   padding: 26px !important;
   overflow: hidden !important;
 }
 .contact h2 {
-  width: 68% !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
-  font-size: 64px !important;
+  font-size: 58px !important;
   line-height: .93 !important;
 }
 .contact-a .contact-lower {
-  position: relative !important;
+  grid-column: 1 !important;
+  grid-row: 2 !important;
   display: flex !important;
   align-items: center !important;
   min-height: 0 !important;
-  padding-right: 230px !important;
+  padding: 0 !important;
 }
 .write-button {
   justify-self: start !important;
@@ -2488,13 +2498,14 @@ html.ios-device #lava-canvas {
 }
 .contact-smile,
 .contact-smile-full {
-  position: absolute !important;
+  grid-column: 2 !important;
+  grid-row: 1 / 3 !important;
+  position: static !important;
   width: 205px !important;
   max-height: none !important;
-  right: 26px !important;
-  bottom: 26px !important;
-  top: auto !important;
-  transform: none !important;
+  justify-self: end !important;
+  align-self: end !important;
+  transform: translateY(13px) !important;
   object-fit: contain !important;
   pointer-events: none !important;
 }
@@ -2502,7 +2513,26 @@ html.ios-device #lava-canvas {
 .contact-line > span { display: inline !important; white-space: nowrap !important; }
 .mobile-only-break { display: none !important; }
 
-/* DESKTOP PROPORTIONAL — restore the V0.18 canonical 760px composition. */
+/* ---------------------------------------------------------
+   FINAL MOTTO — always centred on the site's vertical midline.
+   --------------------------------------------------------- */
+.floating-motto {
+  width: 100% !important;
+  margin: 34px 0 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  overflow: visible !important;
+}
+.motto-fit {
+  margin-inline: auto !important;
+  justify-content: center !important;
+}
+
+/* ---------------------------------------------------------
+   DESKTOP PROPORTIONAL — canonical 760px composition.
+   --------------------------------------------------------- */
 html.desktop-proportional .site-stage {
   position: relative !important;
   width: 45vw !important;
@@ -2524,8 +2554,8 @@ html.desktop-proportional .site-shell {
 html.desktop-proportional .card { width: 100% !important; max-width: none !important; }
 html.desktop-proportional .hero { min-height: 570px !important; padding: 28px !important; grid-template-rows: auto 1fr auto !important; }
 html.desktop-proportional .hero-meta { display: flex !important; font-size: 18px !important; padding-inline: 8px !important; }
-html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; margin: 5px auto 5px !important; }
-html.desktop-proportional .hero-claim-art { width: 100% !important; max-width: none !important; }
+html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; margin: 10px auto !important; }
+html.desktop-proportional .hero-claim-art { width: 100% !important; }
 html.desktop-proportional .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 26px !important; }
 html.desktop-proportional .identity-block { gap: 14px !important; padding-top: 15px !important; }
 html.desktop-proportional .identity-block h2,
@@ -2539,67 +2569,83 @@ html.desktop-proportional .platforms a,
 html.desktop-proportional .platforms button { width: 58px !important; min-width: 58px !important; height: 58px !important; border-radius: 50% !important; }
 html.desktop-proportional .lava-toggle { width: 174px !important; min-width: 174px !important; height: 58px !important; font-size: 18px !important; }
 html.desktop-proportional .featured,
-html.desktop-proportional .links-card,
-html.desktop-proportional .contact { padding: 24px !important; }
+html.desktop-proportional .links-card { padding: 24px !important; }
 html.desktop-proportional .brand-heading { font-size: 50px !important; }
 html.desktop-proportional .links-card > a { font-size: 21.5px !important; }
 html.desktop-proportional .links-card small { font-size: 16px !important; }
-html.desktop-proportional .contact { min-height: 286px !important; }
-html.desktop-proportional .contact h2 { font-size: 64px !important; width: 68% !important; }
-html.desktop-proportional .contact-a .contact-lower { display:flex !important; padding-right:230px !important; }
-html.desktop-proportional .contact-smile-full { width:205px !important; right:26px !important; bottom:26px !important; top:auto !important; transform:none !important; }
-html.desktop-proportional .mobile-only-break { display: none !important; }
+html.desktop-proportional .contact { min-height: 286px !important; padding: 26px !important; }
+html.desktop-proportional .contact h2 { font-size: 58px !important; }
+html.desktop-proportional .contact-smile-full { width: 205px !important; transform: translateY(13px) !important; }
+html.desktop-proportional .mobile-only-break,
+html.desktop-proportional .hero-meta-mobile-break { display: none !important; }
 html.desktop-proportional .sonodgtl-cta-separator { display: inline !important; }
 html.desktop-proportional .contact-line > span { display: inline !important; }
-html.desktop-proportional .floating-motto { width: 100% !important; margin-bottom: 0 !important; }
+html.desktop-proportional .floating-motto { width: 100% !important; }
 
-/* TOUCH / PHONE PORTRAIT */
-@media (pointer: coarse) {
+/* ---------------------------------------------------------
+   TOUCH PORTRAIT — fixed 80vw stage, no desktop scaling inheritance.
+   --------------------------------------------------------- */
+@media (pointer: coarse) and (orientation: portrait) {
   .site-stage {
+    position: relative !important;
     width: 80vw !important;
     max-width: 80vw !important;
     min-width: 0 !important;
-    margin-inline: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
   .site-shell {
+    position: relative !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
     padding-top: 10px !important;
-    padding-bottom: 24px !important;
+    padding-bottom: 32px !important;
+    gap: 14px !important;
+    zoom: 1 !important;
   }
   .card { width: 100% !important; max-width: 100% !important; }
 
   .hero {
-    padding: 18px 22px 20px !important;
     min-height: 0 !important;
     height: auto !important;
+    padding: 20px 20px 22px !important;
     grid-template-rows: auto auto auto !important;
   }
   .hero-meta {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 16px !important;
-    padding-inline: 12px !important;
+    gap: 12px !important;
+    padding-inline: 8px !important;
     font-size: 15px !important;
-    line-height: 1.12 !important;
+    line-height: 1.08 !important;
     letter-spacing: .025em !important;
   }
   .hero-meta span:first-child { text-align: left !important; }
   .hero-meta span:last-child { text-align: right !important; }
+  .hero-meta-mobile-break { display: block !important; }
+  .hero-meta-desktop-space { display: none !important; }
+
+  /* Equal 25px breathing above/below the artwork centres it between meta and identities. */
   .hero-claim-art-wrap {
     width: 100% !important;
     max-width: none !important;
-    margin: 5px 0 5px !important;
-    grid-template-columns: 1fr !important;
+    margin: 25px auto !important;
+    place-items: center !important;
   }
-  .hero-claim-art { width: 100% !important; height: auto !important; max-width: none !important; justify-self: start !important; transform-origin: left center !important; }
+  .hero-claim-art {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    justify-self: center !important;
+    transform: none !important;
+  }
 
-  .identity-stack { grid-template-columns: 1fr !important; gap: 14px !important; }
-  .identity-block { gap: 13px !important; padding-top: 15px !important; }
+  .identity-stack { grid-template-columns: 1fr !important; gap: 19px !important; }
+  .identity-block { gap: 13px !important; padding-top: 14px !important; }
   .identity-block h2,
-  .identity-block p { padding-inline: 14px !important; }
+  .identity-block p { padding-inline: 10px !important; }
   .identity-block h2 { font-size: 25px !important; }
   .identity-tagline { font-size: 11px !important; line-height: 1.15 !important; font-weight: 500 !important; white-space: nowrap !important; }
   .identity-meta { font-size: 10.4px !important; line-height: 1.16 !important; }
@@ -2608,10 +2654,9 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     display: grid !important;
     grid-template-columns: repeat(4, 54px) !important;
     grid-template-rows: 54px 54px 66px !important;
-    grid-auto-rows: 54px !important;
     justify-content: space-between !important;
-    align-items: start !important;
-    row-gap: 14px !important;
+    align-items: center !important;
+    row-gap: 18px !important;
     width: 100% !important;
     margin: 14px 0 !important;
   }
@@ -2626,6 +2671,8 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     border-radius: 50% !important;
     grid-column: auto !important;
     grid-row: auto !important;
+    justify-self: center !important;
+    align-self: center !important;
   }
   .platform-icon { width: 46% !important; height: 46% !important; }
   .lava-toggle {
@@ -2634,7 +2681,6 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     width: 100% !important;
     min-width: 0 !important;
     height: 66px !important;
-    align-self: start !important;
     margin: 0 !important;
     padding: 0 16px !important;
     border-radius: 999px !important;
@@ -2647,183 +2693,265 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .play { width: 54px !important; height: 54px !important; }
   .play img { width: 46% !important; height: 46% !important; transform: none !important; }
   .cta-row a { min-height: 50px !important; font-size: 15px !important; }
-  .cta-row .inline-arrow { width: 1em !important; height: 1em !important; margin-left: 5px !important; }
 
   .links-card { padding: 20px !important; }
   .brand-heading { font-size: 31px !important; margin-bottom: 18px !important; }
   .links-card > a { min-height: 70px !important; padding: 13px 0 !important; font-size: 18px !important; }
   .links-card small { font-size: 13px !important; margin-top: 7px !important; }
-
   .sonodgtl-card > a > span:first-child,
   .sonodgtl-card small { white-space: normal !important; line-height: 1.18 !important; }
   .sonodgtl-cta-separator { display: none !important; }
   .mobile-only-break { display: block !important; }
 
+  /* Contact portrait = true 2/3 left + 1/3 smile area. */
   .contact,
   .contact-a {
-    min-height: 235px !important;
+    min-height: 240px !important;
     padding: 20px !important;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) !important;
     grid-template-rows: auto 1fr !important;
+    column-gap: 12px !important;
   }
   .contact h2 {
-    width: 72% !important;
-    max-width: none !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
     font-size: clamp(18px, 5.5vw, 23px) !important;
     line-height: .94 !important;
   }
   .contact-a .contact-lower {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
     display: flex !important;
     align-items: center !important;
-    padding-right: 118px !important;
-    min-height: 0 !important;
+    padding: 0 !important;
   }
   .write-button {
-    width: min(205px, 96%) !important;
+    width: 100% !important;
     min-height: 48px !important;
     font-size: 12px !important;
   }
   .contact-line > span { display: block !important; white-space: nowrap !important; }
   .contact-smile,
   .contact-smile-full {
-    position: absolute !important;
-    width: 104px !important;
-    right: 20px !important;
-    bottom: 20px !important;
-    top: auto !important;
-    transform: none !important;
+    grid-column: 2 !important;
+    grid-row: 1 / 3 !important;
+    width: 106px !important;
+    justify-self: end !important;
+    align-self: center !important;
+    transform: translateY(7px) !important;
   }
 
-  .floating-motto { margin-bottom: 0 !important; }
+  .floating-motto { margin-top: 28px !important; }
 }
 
-/* TOUCH LANDSCAPE */
-@media (orientation: landscape) and (pointer: coarse) {
-  .site-stage { width: 80vw !important; max-width: 80vw !important; }
-  .site-shell { padding-bottom: 24px !important; }
+/* ---------------------------------------------------------
+   TOUCH LANDSCAPE — same fixed 80vw stage, desktop-like internal composition.
+   --------------------------------------------------------- */
+@media (pointer: coarse) and (orientation: landscape) {
+  .site-stage {
+    position: relative !important;
+    width: 80vw !important;
+    max-width: 80vw !important;
+    min-width: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .site-shell {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-top: 10px !important;
+    padding-bottom: 28px !important;
+    gap: 14px !important;
+    zoom: 1 !important;
+  }
+  .card { width: 100% !important; max-width: 100% !important; }
+
   .hero {
     min-height: 0 !important;
     height: auto !important;
     grid-template-rows: auto auto auto !important;
-    padding: 18px 22px 24px !important;
+    padding: 16px 20px 22px !important;
   }
-  .hero-meta {
-    display: flex !important;
-    justify-content: space-between !important;
-    font-size: 14px !important;
-    padding-inline: 16px !important;
+  .hero-meta { display: flex !important; font-size: 14px !important; padding-inline: 12px !important; }
+  .hero-meta-mobile-break { display: none !important; }
+  .hero-meta-desktop-space { display: inline !important; }
+  .hero-claim-art-wrap {
+    width: 100% !important;
+    margin: 14px auto !important;
+    place-items: center !important;
   }
-  .hero-claim-art-wrap { width: 100% !important; margin: 5px auto 5px !important; grid-template-columns: 1fr !important; }
-  .hero-claim-art { width: 72% !important; max-width: none !important; }
+  .hero-claim-art {
+    width: 90% !important;
+    max-width: none !important;
+    justify-self: center !important;
+    transform: none !important;
+  }
   .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 20px !important; align-items: start !important; }
   .identity-card-link:first-child .identity-block { text-align: right !important; }
   .identity-card-link:last-child .identity-block { text-align: left !important; }
   .identity-block h2,
-  .identity-block p { padding-inline: 14px !important; }
+  .identity-block p { padding-inline: 12px !important; }
   .identity-block h2 { font-size: 24px !important; }
   .identity-tagline { font-size: 11px !important; }
   .identity-meta { font-size: 10.4px !important; }
 
   .quick-actions {
-    display: grid !important;
-    grid-template-columns: repeat(8, 42px) 112px !important;
-    grid-auto-rows: 42px !important;
-    justify-content: space-between !important;
+    display: flex !important;
     align-items: center !important;
+    gap: 12px !important;
     width: 100% !important;
     margin: 10px 0 !important;
   }
-  .platforms { display: contents !important; }
+  .platforms {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0 !important;
+    width: auto !important;
+  }
   .platforms a,
   .platforms button,
   .platforms a:nth-child(n),
   .platforms button:nth-child(n) {
+    flex: 0 0 42px !important;
     width: 42px !important;
     min-width: 42px !important;
     height: 42px !important;
     border-radius: 50% !important;
-    grid-row: 1 !important;
-    grid-column: auto !important;
   }
   .platform-icon { width: 50% !important; height: 50% !important; }
   .lava-toggle {
-    grid-column: 9 !important;
-    grid-row: 1 !important;
-    width: 112px !important;
-    min-width: 112px !important;
-    height: 42px !important;
+    flex: 0 0 118px !important;
+    width: 118px !important;
+    min-width: 118px !important;
+    height: 44px !important;
     margin: 0 !important;
     border-radius: 36px !important;
-    font-size: 14px !important;
-    gap: 4px !important;
+    font-size: 16px !important;
+    gap: 5px !important;
   }
 
   .contact,
-  .contact-a { min-height: 230px !important; }
-  .contact h2 { width: 72% !important; font-size: 46px !important; }
-  .contact-line { display: block !important; }
+  .contact-a {
+    min-height: 230px !important;
+    padding: 20px !important;
+    grid-template-columns: minmax(0, 2fr) minmax(150px, 1fr) !important;
+    grid-template-rows: auto 1fr !important;
+    column-gap: 16px !important;
+  }
+  .contact h2 { grid-column:1 !important; grid-row:1 !important; width:100% !important; font-size:40px !important; }
   .contact-line > span { display: inline !important; white-space: nowrap !important; }
-  .contact-a .contact-lower { display:flex !important; padding-right:180px !important; min-height:0 !important; }
+  .contact-a .contact-lower { grid-column:1 !important; grid-row:2 !important; display:flex !important; align-items:center !important; padding:0 !important; }
   .contact-smile,
-  .contact-smile-full { position:absolute !important; width:160px !important; right:20px !important; bottom:20px !important; top:auto !important; transform:none !important; }
+  .contact-smile-full {
+    grid-column:2 !important;
+    grid-row:1/3 !important;
+    width:160px !important;
+    justify-self:end !important;
+    align-self:end !important;
+    transform:translateY(10px) !important;
+  }
 
   .mobile-only-break { display: none !important; }
   .sonodgtl-cta-separator { display: inline !important; }
+  .floating-motto { margin-top: 28px !important; }
 }
 
-
-/* Direct bubble manipulation: touch drag is captured only in immersive lava. */
-body.lava-mode { touch-action: none; }
-
-@media (pointer: coarse) {
-  #lava-canvas {
-    left: -18vw !important;
-    top: -18svh !important;
-    width: calc(100vw + 36vw) !important;
-    height: calc(100dvh + 36svh) !important;
-    inset: auto !important;
-  }
+/* ---------------------------------------------------------
+   EMAIL FALLBACK
+   --------------------------------------------------------- */
+.email-fallback[hidden] { display: none !important; }
+.email-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(28, 23, 19, .58);
+  font-family: var(--ui-font), sans-serif;
 }
-
-@media (pointer: coarse) {
-  html.ios-device #lava-canvas {
-    left: -18vw !important;
-    top: -20svh !important;
-    width: calc(100vw + 36vw) !important;
-    height: calc(100dvh + 40svh) !important;
-    inset: auto !important;
-  }
+.email-fallback-card {
+  position: relative;
+  width: min(92vw, 620px);
+  max-height: min(88vh, 720px);
+  overflow: auto;
+  padding: 24px;
+  border-radius: 26px;
+  background: var(--cream);
+  color: var(--ink);
 }
-
-
-/* V0.44 deterministic touch orientation overrides.
-   JS toggles these classes after rotate/resize so Android cannot keep stale landscape rules. */
-html.touch-portrait .site-stage { width:80vw !important; max-width:80vw !important; }
-html.touch-portrait .identity-stack { grid-template-columns:1fr !important; gap:14px !important; }
-html.touch-portrait .hero-claim-art-wrap { margin:5px 0 !important; }
-html.touch-portrait .hero-claim-art { width:100% !important; justify-self:start !important; }
-html.touch-portrait .quick-actions {
-  grid-template-columns:repeat(4,54px) !important;
-  grid-template-rows:54px 54px 66px !important;
-  row-gap:14px !important;
+.email-fallback-card h2 { margin: 0 40px 6px 0; font-size: 30px; line-height: .95; }
+.email-fallback-card > p { margin: 0 0 18px; font-size: 14px; }
+.email-fallback-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--cream);
+  font: inherit;
+  font-size: 22px;
+  cursor: pointer;
 }
-html.touch-portrait .lava-toggle { grid-column:1/-1 !important; grid-row:3 !important; height:66px !important; align-self:start !important; }
-
-html.touch-landscape .site-stage { width:80vw !important; max-width:80vw !important; }
-html.touch-landscape .identity-stack { grid-template-columns:1fr 1fr !important; }
-html.touch-landscape .quick-actions {
-  grid-template-columns:repeat(8,42px) 112px !important;
-  grid-template-rows:42px !important;
-  grid-auto-rows:42px !important;
-  align-items:center !important;
+.email-field {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 2px solid var(--ink);
 }
-html.touch-landscape .platforms a,
-html.touch-landscape .platforms button { grid-row:1 !important; }
-html.touch-landscape .lava-toggle { grid-column:9 !important; grid-row:1 !important; height:42px !important; }
+.email-field > span { font-size: 11px; font-weight: 800; letter-spacing: .04em; }
+.email-field code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: var(--ui-font), sans-serif;
+  font-size: 13px;
+  line-height: 1.3;
+}
+.email-field button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cream);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.email-field-body { align-items: start; }
 
-/* V0.44 mail/share fallback toast may contain a short instruction. */
 .share-toast {
-  max-width: min(90vw, 460px) !important;
-  text-align: center !important;
-  white-space: normal !important;
-  line-height: 1.25 !important;
+  position: fixed;
+  z-index: 110;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  transform: translate(-50%, 14px);
+  max-width: min(90vw, 460px);
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--ui-font), sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  line-height: 1.25;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
 }
+.share-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+body.lava-mode { touch-action: none; }

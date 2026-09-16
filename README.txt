@@ -1,53 +1,52 @@
-BEERBELGIO.GITHUB.IO — V0.44 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.45 PUBLIC STAGING
 
 STATUS
 Public staging for the BeerBelgio / Matteo Belgiovine hub.
-Search indexing remains disabled until public 1.0.
+Search indexing remains disabled until the public 1.0 launch.
 
-V0.44 CHANGELOG — HUB
-- Build hygiene: V0.44 replaces the previous authoritative staging layer; no new historical override block was stacked underneath it.
-- Hero claim asset: restored the user-supplied SVG exactly with its original 740 × 120 viewBox. The custom cropped viewBox introduced in V0.43 is gone.
-- Mobile stage: portrait and touch-landscape are explicitly locked back to the approved 80vw width.
-- Android / mobile rotation: added explicit touch-portrait / touch-landscape root classes, resynchronised repeatedly during resize/orientation settling. This is intended to prevent stale landscape rules after rotating back to portrait.
-- Hero claim portrait: left anchored with the supplied SVG and 5px top / 5px bottom wrapper margin.
-- Quick links portrait: explicit rows 54 / 54 / 66px with a real 14px row gap, so row 2 → FULL LAVA uses the same spacing logic as row 1 → row 2.
-- Quick links landscape: deterministic single-row placement is reasserted through the touch-landscape class so FULL LAVA cannot inherit the portrait row.
-- Contact desktop: headline enlarged to 64px; smiley no longer sits on the vertical centre line and instead uses equal 26px right/bottom margins.
-- Contact portrait: smiley keeps the approved size and now uses equal 20px right/bottom margins; WRITE ME remains vertically centred in the residual lower area.
-- Contact landscape: same bottom/right margin concept as desktop.
-- Hub WRITE ME fallback: the email address is copied before launching mailto. If a visitor has no configured local mail application, the on-page toast tells them to paste the copied address into webmail.
-- Lava scroll: hub scroll sensitivity reduced further while interaction warping remains strong.
-- Lava autonomous shape: stronger independent ambient morphing and movement-energy deformation, with slower contour-phase motion so blobs feel less round / static.
-- Lava drag: while held, a blob maintains at least ~50% extra deformation; release momentum remains uncapped.
-- Blank-click attract/repel: 5-click repulsive / 5-click attractive cycle retained, but blank clicks now change trajectory only and no longer inject abrupt phase / morph jumps.
-- Lava rotation behaviour: interaction-driven angular phase changes were removed; shape amplitudes mutate without intentionally rotating the contour.
-- Mobile lava orientation settling: canvas resize now also rechecks visualViewport after rotation with debounced settling passes.
-- Cache busting updated to ?v=044.
-
-V0.44 CHANGELOG — SONODGTL
-- Hero eyebrow / location meta: matching font size in desktop; portrait uses CONSULTANT only; all versions use REMOTE FRIENDLY.
-- Hero claim: comma removed; two forced nowrap lines — BE HEARD / THE RIGHT WAY. and FATTI SENTIRE / NEL MODO GIUSTO.
-- Portrait claim: reduced enough to preserve the intended two-line structure.
-- Hero body copy: em dash replaced by a sentence break.
-- Principle card: relationship between the two statements clarified with “It needs…” / “Ha bisogno di…”. Both sentences use one consistent type size; line-height increased to avoid apostrophe collisions.
-- WHAT I DO: item headings made larger / heavier for clearer hierarchy.
-- HOW I WORK: TRAINING remains unified; PROBLEM SOLVING added as an additional keyword.
-- Contact desktop: text column widened, button column narrowed and action spacing increased.
-- Contact portrait: headline remains natural text wrapping; 2×2 action grid retained.
-- Contact landscape: page chrome, paddings, type and cards scaled down further for a real zoomed-out landscape composition; contact reuses the desktop-like two-column structure.
-- sonoDGTL mail subject: “Project Enquiry” capitalised. The prefilled body keeps “HOW DID YOU FIND ME” but no longer states sonoDGTL for the visitor.
-- Italian mail body follows the same logic.
+V0.45 CHANGELOG
+- Build hygiene: V0.45 replaces the V0.44 authoritative staging layer; staging overrides are not stacked.
+- Hub responsive reset: removed the V0.44 JS touch-orientation classes that were contributing to stale Android portrait/landscape states. Touch portrait and touch landscape now use direct CSS orientation rules again.
+- Hub mobile proportions: restored a fixed 80vw centred stage in BOTH portrait and landscape, with cards at 100% of that stage and no inherited desktop zoom.
+- Hub hero meta: portrait explicitly uses two-line name and two-line location; landscape/desktop keep the compact one-line layout.
+- Hub hero claim: original user-supplied 740x120 viewBox is kept intact; no custom crop. Portrait uses equal 25px spacing above/below; landscape claim is enlarged to 90% of the hero content width and centred.
+- Hub hero identity typography: mobile BeerBelgio / sonoDGTL title, descriptor and meta sizes restored to the previously approved mobile scale.
+- Hub quick links portrait: fixed 54 / 54 / 66px rows with an identical 18px row gap between icon row 1, icon row 2 and FULL LAVA.
+- Hub quick links landscape: restored the single-row flex layout from the earlier working responsive versions.
+- Hub contact: rebuilt with a reserved right column so smile and text cannot overlap. Portrait is a true 2/3 left content + 1/3 smile area. Desktop/landscape use the same principle. Smile visual bottom/right balance compensates for transparent padding inside the SVG.
+- Hub contact headline: desktop set to 58px to remain prominent without overflowing the reserved text column.
+- Hub final motto: centred on the site's vertical centreline in desktop and touch layouts.
+- Hub WRITE ME fallback: mailto still opens normally when a mail handler exists. If the visitor stays on the page, an in-page panel appears with TO / SUBJECT / MESSAGE as three separate copyable fields, using the site font.
+- Lava root cause found: the autonomous phase increments were accidentally lost during the drag-physics refactor. They are restored in V0.45; this was the main reason deformation amplitude changed but the contour looked frozen.
+- Lava autonomous morph: phase / phase2 / ambient warp advance continuously again, with a stronger living deformation floor.
+- Lava drag: while held, the selected blob stays at least ~50% more deformed and grows toward +20%; the shape continues morphing for the entire hold rather than freezing.
+- Lava release: the +20% grab scale decays after release while proportional release momentum remains uncapped.
+- Lava blank-click attraction/repulsion: still alternates 5 repel / 5 attract; blank clicks change trajectory only and do not inject an instantaneous morphology change.
+- Lava hub scroll sensitivity: reduced again for both wheel/trackpad and touch while preserving deformation response.
+- sonoDGTL typography: explicitly uses the same self-hosted M PLUS Rounded 1c family as the hub; normal body copy returns to natural letter spacing (no forced tracking).
+- sonoDGTL proportions: site shell is 80vw / 10% side margins as requested; portrait and landscape keep the same proportional width while landscape reduces vertical density.
+- sonoDGTL hero: name/role and location/meta share the same font size; portrait uses CONSULTANT; REMOTE FRIENDLY is used in both EN and IT. Claim breathing increased; portrait breathing increased further.
+- sonoDGTL EN claim: two lines, BE HEARD / THE RIGHT WAY.
+- sonoDGTL IT claim: three lines, FATTI SENTIRE / NEL MODO / GIUSTO.
+- sonoDGTL hero copy: uses a full stop between the two thoughts; width/overflow rules tightened to keep copy inside the hero.
+- sonoDGTL orange principle: EN now ends at “a clear message.”; IT ends at “un messaggio chiaro.”; the second sentence explicitly begins It needs / Ha bisogno to preserve the logical link.
+- sonoDGTL WHAT I DO: item headings are larger/heavier relative to body copy.
+- sonoDGTL HOW I WORK: keeps the unified TRAINING tag and PROBLEM SOLVING as the additional ninth tag.
+- sonoDGTL navigation: top HUB control keeps the main-site favicon.
+- sonoDGTL contact: final HUB action now mirrors the navigation idea using the BeerBelgio logo + HUB label; GitHub remains included. Portrait remains a 2x2 action grid; landscape uses the desktop structure at reduced density. IT landscape CTA can break into four explicit lines.
+- sonoDGTL mail: subject remains “sonoDGTL — Project Enquiry”; body keeps the “How did you find me?” field without pre-filling sonoDGTL in the message body.
+- Cache busting updated to ?v=045.
 
 RIGHTS / LICENSING
-- Copyright exists automatically for original material; the visible © notice is informational, not the source of protection.
 - Original website code: PolyForm Noncommercial 1.0.0.
 - Original text / visual design / original creative material: CC BY-NC 4.0.
-- Commercial or monetised reuse is not automatically licensed and requires a separate written agreement with Matteo Belgiovine.
-- COPYRIGHT.md summarises ownership and attribution; LICENSE.md defines reuse permissions; THIRD_PARTY_NOTICES.md covers third-party material.
+- Non-commercial reuse is allowed with attribution to Matteo Belgiovine / BeerBelgio.
+- Commercial or monetised reuse is NOT automatically licensed and requires a separate written agreement with Matteo Belgiovine.
+- COPYRIGHT.md summarises ownership / attribution intent; LICENSE.md contains the operative licensing terms; THIRD_PARTY_NOTICES.md covers third-party material.
 
 STAGING RULES
 - Keep noindex / nofollow / noarchive until public 1.0.
-- Every staging build uses one authoritative staging override layer.
+- Every staging build uses one authoritative staging override block. Replace the previous block rather than stacking another version underneath it.
 - /sonodgtl/ = English primary version.
 - /sonodgtl/it/ = Italian alternative version.
-- /lava/ = standalone lava route.
+- /lava/ remains the standalone lava route.
