@@ -39,3 +39,8 @@ matteo.sonodgtl@gmail.com
 ## 4. Third-party material
 
 These licences do **not** relicense third-party fonts, platform names, trademarks, logos, or other third-party material. Those remain subject to their respective owners' terms and licences. See `THIRD_PARTY_NOTICES.md`.
+
+
+## 5. Copyright notice
+
+See `COPYRIGHT.md` for the concise ownership / reuse notice used alongside this licence file.

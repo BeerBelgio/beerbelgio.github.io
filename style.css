@@ -2244,7 +2244,7 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.41 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   V0.49 PUBLIC STAGING — HUB CSS RESTORED FROM V0.42
    Replaces V0.40 completely. Never stack staging override blocks.
    ========================================================= */
 
@@ -2303,7 +2303,7 @@ html.ios-device #lava-canvas {
 .hero-claim-art-wrap {
   width: 100% !important;
   max-width: 704px !important;
-  margin: 8px auto 12px !important;
+  margin: 4px auto 8px !important;
   display: grid !important;
   grid-template-columns: 1fr !important;
   place-items: center !important;
@@ -2313,7 +2313,7 @@ html.ios-device #lava-canvas {
 }
 .hero-claim-art {
   display: block !important;
-  width: 116% !important;
+  width: 102% !important;
   height: auto !important;
   max-width: none !important;
 }
@@ -2468,7 +2468,7 @@ html.ios-device #lava-canvas {
   width: 68% !important;
   max-width: none !important;
   margin: 0 !important;
-  font-size: 42px !important;
+  font-size: 48px !important;
   line-height: .93 !important;
 }
 .contact-a .contact-lower {
@@ -2494,7 +2494,7 @@ html.ios-device #lava-canvas {
   max-height: none !important;
   justify-self: center !important;
   align-self: center !important;
-  transform: none !important;
+  transform: translateY(-10px) !important;
   object-fit: contain !important;
   pointer-events: none !important;
 }
@@ -2524,8 +2524,8 @@ html.desktop-proportional .site-shell {
 html.desktop-proportional .card { width: 100% !important; max-width: none !important; }
 html.desktop-proportional .hero { min-height: 570px !important; padding: 28px !important; grid-template-rows: auto 1fr auto !important; }
 html.desktop-proportional .hero-meta { display: flex !important; font-size: 18px !important; padding-inline: 8px !important; }
-html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; margin: 8px auto 12px !important; }
-html.desktop-proportional .hero-claim-art { width: 116% !important; max-width: none !important; }
+html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; margin: 4px auto 8px !important; }
+html.desktop-proportional .hero-claim-art { width: 102% !important; max-width: none !important; }
 html.desktop-proportional .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 26px !important; }
 html.desktop-proportional .identity-block { gap: 14px !important; padding-top: 15px !important; }
 html.desktop-proportional .identity-block h2,
@@ -2545,9 +2545,9 @@ html.desktop-proportional .brand-heading { font-size: 50px !important; }
 html.desktop-proportional .links-card > a { font-size: 21.5px !important; }
 html.desktop-proportional .links-card small { font-size: 16px !important; }
 html.desktop-proportional .contact { min-height: 245px !important; }
-html.desktop-proportional .contact h2 { font-size: 42px !important; width: 68% !important; }
+html.desktop-proportional .contact h2 { font-size: 48px !important; width: 68% !important; }
 html.desktop-proportional .contact-a .contact-lower { grid-template-columns: minmax(0,1fr) 205px !important; }
-html.desktop-proportional .contact-smile-full { width: 205px !important; }
+html.desktop-proportional .contact-smile-full { width: 205px !important; transform: translateY(-10px) !important; }
 html.desktop-proportional .mobile-only-break { display: none !important; }
 html.desktop-proportional .sonodgtl-cta-separator { display: inline !important; }
 html.desktop-proportional .contact-line > span { display: inline !important; }
@@ -2556,8 +2556,8 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
 /* TOUCH / PHONE PORTRAIT */
 @media (pointer: coarse) {
   .site-stage {
-    width: 82vw !important;
-    max-width: 82vw !important;
+    width: 84vw !important;
+    max-width: 84vw !important;
     min-width: 0 !important;
     margin-inline: auto !important;
   }
@@ -2572,7 +2572,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .card { width: 100% !important; max-width: 100% !important; }
 
   .hero {
-    padding: 20px 22px 24px !important;
+    padding: 18px 22px 18px !important;
     min-height: 0 !important;
     height: auto !important;
     grid-template-rows: auto auto auto !important;
@@ -2591,12 +2591,12 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .hero-claim-art-wrap {
     width: 100% !important;
     max-width: none !important;
-    margin: 7px auto 8px !important;
+    margin: 2px auto 4px !important;
     grid-template-columns: 1fr !important;
   }
-  .hero-claim-art { width: 156.25% !important; height: auto !important; max-width: none !important; }
+  .hero-claim-art { width: 112% !important; height: auto !important; max-width: none !important; }
 
-  .identity-stack { grid-template-columns: 1fr !important; gap: 20px !important; }
+  .identity-stack { grid-template-columns: 1fr !important; gap: 16px !important; }
   .identity-block { gap: 13px !important; padding-top: 15px !important; }
   .identity-block h2,
   .identity-block p { padding-inline: 14px !important; }
@@ -2610,9 +2610,9 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     grid-auto-rows: 54px !important;
     justify-content: space-between !important;
     align-items: center !important;
-    row-gap: 10px !important;
+    row-gap: 14px !important;
     width: 100% !important;
-    margin: 0 !important;
+    margin: 14px 0 !important;
   }
   .platforms { display: contents !important; }
   .platforms a,
@@ -2685,7 +2685,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     width: 104px !important;
     justify-self: center !important;
     align-self: center !important;
-    transform: none !important;
+    transform: translateY(-8px) translateX(-4px) !important;
   }
 
   .floating-motto { margin-bottom: 0 !important; }
@@ -2707,8 +2707,8 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     font-size: 14px !important;
     padding-inline: 16px !important;
   }
-  .hero-claim-art-wrap { width: 100% !important; margin: 6px auto 8px !important; grid-template-columns: 1fr !important; }
-  .hero-claim-art { width: 116% !important; max-width: none !important; }
+  .hero-claim-art-wrap { width: 100% !important; margin: 4px auto 6px !important; grid-template-columns: 1fr !important; }
+  .hero-claim-art { width: 82% !important; max-width: none !important; }
   .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 20px !important; align-items: start !important; }
   .identity-card-link:first-child .identity-block { text-align: right !important; }
   .identity-card-link:last-child .identity-block { text-align: left !important; }
@@ -2720,46 +2720,57 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
 
   .quick-actions {
     display: grid !important;
-    grid-template-columns: repeat(8, 46px) 118px !important;
-    grid-auto-rows: 46px !important;
+    grid-template-columns: repeat(8, 42px) 112px !important;
+    grid-auto-rows: 42px !important;
     justify-content: space-between !important;
     align-items: center !important;
     width: 100% !important;
-    margin: 0 !important;
+    margin: 10px 0 !important;
   }
   .platforms { display: contents !important; }
   .platforms a,
   .platforms button,
   .platforms a:nth-child(n),
   .platforms button:nth-child(n) {
-    width: 46px !important;
-    min-width: 46px !important;
-    height: 46px !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
     border-radius: 50% !important;
   }
   .platform-icon { width: 50% !important; height: 50% !important; }
   .lava-toggle {
-    width: 118px !important;
-    min-width: 118px !important;
-    height: 46px !important;
+    width: 112px !important;
+    min-width: 112px !important;
+    height: 42px !important;
     margin: 0 !important;
     border-radius: 36px !important;
-    font-size: 15px !important;
-    gap: 5px !important;
+    font-size: 14px !important;
+    gap: 4px !important;
   }
 
   .contact,
   .contact-a { min-height: 230px !important; }
-  .contact h2 { width: 100% !important; font-size: 34px !important; }
+  .contact h2 { width: 100% !important; font-size: 38px !important; }
   .contact-line { display: block !important; }
   .contact-line > span { display: inline !important; white-space: nowrap !important; }
   .contact-a .contact-lower { grid-template-columns: minmax(0,1fr) 160px !important; gap: 18px !important; }
   .contact-smile,
-  .contact-smile-full { width: 146px !important; justify-self: center !important; }
+  .contact-smile-full { width: 160px !important; justify-self: center !important; transform: translateY(-4px) translateX(-18px) !important; }
 
   .mobile-only-break { display: none !important; }
   .sonodgtl-cta-separator { display: inline !important; }
 }
 
+
 /* Direct bubble manipulation: touch drag is captured only in immersive lava. */
 body.lava-mode { touch-action: none; }
+
+@media (pointer: coarse) {
+  #lava-canvas {
+    left: -12vw !important;
+    top: -12svh !important;
+    width: calc(100vw + 24vw) !important;
+    height: calc(100dvh + 24svh) !important;
+    inset: auto !important;
+  }
+}
