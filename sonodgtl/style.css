@@ -19,6 +19,7 @@ body {
   letter-spacing: 0;
 }
 a { color: inherit; }
+.sd-stage { width: 100%; }
 
 /* Cards occupy 80% of the viewport: 10% margin per side. */
 .sd-shell {
@@ -175,7 +176,7 @@ a { color: inherit; }
   font-weight: 850;
   letter-spacing: .01em;
 }
-.sd-contact-hub img { width: 20px; height: 20px; object-fit: contain; display: block; }
+.sd-contact-hub img { width: 40px; height: 40px; object-fit: contain; display: block; }
 .sd-landscape-break { display: none; }
 
 .sd-footer {
@@ -257,7 +258,7 @@ a { color: inherit; }
   .sd-hero { min-height: 0; padding: 15px 18px; }
   .sd-hero-top { grid-template-columns: 1fr auto; gap: 16px; }
   .sd-eyebrow,
-  .sd-hero-meta { font-size: 10.5px; }
+  .sd-hero-meta { font-size: 12.5px; line-height: 1.16; }
   .sd-role-full { display: block; }
   .sd-role-short { display: none; }
   .sd-hero h1 { margin: 22px 0; font-size: clamp(36px, 5.6vw, 58px); max-width: 760px; }
@@ -293,3 +294,35 @@ a { color: inherit; }
   .sd-landscape-break { display: inline; }
   .sd-footer { padding-top: 16px; font-size: 10px; }
 }
+
+
+@media (pointer: coarse) and (orientation: portrait) {
+  html[lang="it"] .sd-principle blockquote {
+    font-size: clamp(27px, 7.25vw, 40px);
+  }
+  .sd-contact-hub img { width: 36px; height: 36px; }
+}
+
+@media (pointer: coarse) and (orientation: landscape) {
+  .sd-contact-hub img { width: 32px; height: 32px; }
+}
+
+/* Fine-pointer narrow windows: preserve the desktop composition and scale it
+   proportionally instead of allowing anchors / columns to collapse. */
+html.sd-desktop-scaled .sd-stage {
+  position: relative;
+  width: 80vw;
+  max-width: 80vw;
+  margin: 0 auto;
+}
+html.sd-desktop-scaled .sd-shell {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1120px;
+  max-width: none;
+  margin: 0;
+  transform-origin: top left;
+}
+
+html.sd-desktop-scaled, html.sd-desktop-scaled body { overflow-x: hidden; }

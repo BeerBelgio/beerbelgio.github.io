@@ -2244,7 +2244,7 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.45 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
+   V0.46 PUBLIC STAGING — SINGLE AUTHORITATIVE OVERRIDE LAYER
    Replaces V0.45 completely. Never stack staging override blocks.
    ========================================================= */
 
@@ -2535,7 +2535,7 @@ html.ios-device #lava-canvas {
    --------------------------------------------------------- */
 html.desktop-proportional .site-stage {
   position: relative !important;
-  width: 45vw !important;
+  width: 52vw !important;
   max-width: none !important;
   margin: 0 auto !important;
 }
@@ -2555,7 +2555,7 @@ html.desktop-proportional .card { width: 100% !important; max-width: none !impor
 html.desktop-proportional .hero { min-height: 570px !important; padding: 28px !important; grid-template-rows: auto 1fr auto !important; }
 html.desktop-proportional .hero-meta { display: flex !important; font-size: 18px !important; padding-inline: 8px !important; }
 html.desktop-proportional .hero-claim-art-wrap { width: 100% !important; max-width: 704px !important; margin: 10px auto !important; }
-html.desktop-proportional .hero-claim-art { width: 100% !important; }
+html.desktop-proportional .hero-claim-art { width: 120% !important; max-width: none !important; justify-self: center !important; }
 html.desktop-proportional .identity-stack { grid-template-columns: 1fr 1fr !important; gap: 26px !important; }
 html.desktop-proportional .identity-block { gap: 14px !important; padding-top: 15px !important; }
 html.desktop-proportional .identity-block h2,
@@ -2585,7 +2585,8 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
 /* ---------------------------------------------------------
    TOUCH PORTRAIT — fixed 80vw stage, no desktop scaling inheritance.
    --------------------------------------------------------- */
-@media (pointer: coarse) and (orientation: portrait) {
+@media (pointer: coarse) and (orientation: portrait),
+       (hover: none) and (orientation: portrait) {
   .site-stage {
     position: relative !important;
     width: 80vw !important;
@@ -2635,20 +2636,21 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     place-items: center !important;
   }
   .hero-claim-art {
-    width: 100% !important;
+    width: 125% !important;
     height: auto !important;
-    max-width: 100% !important;
-    justify-self: center !important;
+    max-width: none !important;
+    justify-self: start !important;
     transform: none !important;
+    transform-origin: left center !important;
   }
 
   .identity-stack { grid-template-columns: 1fr !important; gap: 19px !important; }
   .identity-block { gap: 13px !important; padding-top: 14px !important; }
   .identity-block h2,
   .identity-block p { padding-inline: 10px !important; }
-  .identity-block h2 { font-size: 25px !important; }
-  .identity-tagline { font-size: 11px !important; line-height: 1.15 !important; font-weight: 500 !important; white-space: nowrap !important; }
-  .identity-meta { font-size: 10.4px !important; line-height: 1.16 !important; }
+  .identity-block h2 { font-size: 27px !important; }
+  .identity-tagline { font-size: 12px !important; line-height: 1.15 !important; font-weight: 500 !important; white-space: nowrap !important; }
+  .identity-meta { font-size: 11.2px !important; line-height: 1.16 !important; }
 
   .quick-actions {
     display: grid !important;
@@ -2716,7 +2718,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     grid-column: 1 !important;
     grid-row: 1 !important;
     width: 100% !important;
-    font-size: clamp(18px, 5.5vw, 23px) !important;
+    font-size: clamp(23px, 6.8vw, 29px) !important;
     line-height: .94 !important;
   }
   .contact-a .contact-lower {
@@ -2737,9 +2739,9 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     grid-column: 2 !important;
     grid-row: 1 / 3 !important;
     width: 106px !important;
-    justify-self: end !important;
+    justify-self: center !important;
     align-self: center !important;
-    transform: translateY(7px) !important;
+    transform: none !important;
   }
 
   .floating-motto { margin-top: 28px !important; }
@@ -2748,7 +2750,8 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
 /* ---------------------------------------------------------
    TOUCH LANDSCAPE — same fixed 80vw stage, desktop-like internal composition.
    --------------------------------------------------------- */
-@media (pointer: coarse) and (orientation: landscape) {
+@media (pointer: coarse) and (orientation: landscape),
+       (hover: none) and (orientation: landscape) {
   .site-stage {
     position: relative !important;
     width: 80vw !important;
@@ -2784,7 +2787,7 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     place-items: center !important;
   }
   .hero-claim-art {
-    width: 90% !important;
+    width: 112.5% !important;
     max-width: none !important;
     justify-self: center !important;
     transform: none !important;
@@ -2794,9 +2797,9 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
   .identity-card-link:last-child .identity-block { text-align: left !important; }
   .identity-block h2,
   .identity-block p { padding-inline: 12px !important; }
-  .identity-block h2 { font-size: 24px !important; }
-  .identity-tagline { font-size: 11px !important; }
-  .identity-meta { font-size: 10.4px !important; }
+  .identity-block h2 { font-size: 26px !important; }
+  .identity-tagline { font-size: 12px !important; }
+  .identity-meta { font-size: 11.2px !important; }
 
   .quick-actions {
     display: flex !important;
@@ -2851,9 +2854,9 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
     grid-column:2 !important;
     grid-row:1/3 !important;
     width:160px !important;
-    justify-self:end !important;
-    align-self:end !important;
-    transform:translateY(10px) !important;
+    justify-self:center !important;
+    align-self:center !important;
+    transform:none !important;
   }
 
   .mobile-only-break { display: none !important; }
@@ -2955,3 +2958,22 @@ html.desktop-proportional .floating-motto { width: 100% !important; }
 .share-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
 body.lava-mode { touch-action: none; }
+
+
+/* V0.46 hard guard: even if a mobile browser transiently misreports pointer
+   capabilities, touch devices keep the fixed 80vw composition. */
+@media (pointer: coarse), (hover: none) {
+  html.desktop-proportional .site-stage {
+    position: relative !important;
+    width: 80vw !important;
+    max-width: 80vw !important;
+    margin-inline: auto !important;
+  }
+  html.desktop-proportional .site-shell {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    zoom: 1 !important;
+  }
+}

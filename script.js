@@ -49,14 +49,19 @@
   // because Chrome zoom changes that viewport. A fine pointer + desktop-class
   // screen keeps this active at 25%, 100%, 200%, etc.
   //
-  // The stage is always 45vw and centred.
+  // The stage is 52vw and centred on desktop.
   // The internal 760px design is zoomed to fit the stage exactly.
   // The lava remains a separate full-viewport canvas.
   // ---------------------------------------------------------------
   const DESIGN_WIDTH = 760;
 
   function isDesktopExperience() {
-    return matchMedia("(pointer: fine)").matches && screen.width >= 900;
+    // Touch devices must never inherit desktop proportional scaling. Some mobile
+    // browsers can transiently report a fine pointer during rotation / browser-UI
+    // changes, so maxTouchPoints is the hard guard.
+    return navigator.maxTouchPoints === 0
+      && matchMedia("(hover: hover) and (pointer: fine)").matches
+      && screen.width >= 900;
   }
 
   function updateDesktopStage() {
@@ -73,7 +78,7 @@
 
     // 45% of the CURRENT browser viewport in CSS pixels.
     // Browser page zoom changes innerWidth; this counter-scaling is intentional.
-    const targetWidth = innerWidth * 0.45;
+    const targetWidth = innerWidth * 0.52;
     const scale = targetWidth / DESIGN_WIDTH;
 
     siteShell.style.zoom = String(scale);
