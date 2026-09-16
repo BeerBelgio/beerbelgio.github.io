@@ -5,11 +5,37 @@
   const siteStage = document.getElementById("site-stage");
   const siteShell = document.getElementById("site-shell");
 
+  // Always land at the top / Hero. Internal BeerBelgio scrolling is handled
+  // without leaving a hash in the URL, so refresh cannot restore that anchor.
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  function resetLandingToHero() {
+    if (location.hash) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+    window.scrollTo(0, 0);
+  }
+  resetLandingToHero();
+  const forceHeroLanding = () => {
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
+  addEventListener("pageshow", () => {
+    forceHeroLanding();
+    requestAnimationFrame(forceHeroLanding);
+    setTimeout(forceHeroLanding, 80);
+    setTimeout(forceHeroLanding, 320);
+  }, { passive: true });
+  addEventListener("load", () => {
+    forceHeroLanding();
+    requestAnimationFrame(forceHeroLanding);
+    setTimeout(forceHeroLanding, 120);
+    setTimeout(forceHeroLanding, 500);
+  }, { passive: true });
+
   function setLavaMode(active) {
     body.classList.toggle("lava-mode", active);
     if (lavaToggle) {
       lavaToggle.setAttribute("aria-pressed", String(active));
-      lavaToggle.textContent = "FULL LAVA";
     }
   }
 
@@ -66,104 +92,10 @@
   }
 
   // ---------------------------------------------------------------
-  // HERO CLAIM — equal rectangles + live FUN cutout/window
+  // HERO CLAIM
+  // The claim is now a single user-supplied SVG. No font metrics,
+  // resize observers or orientation-specific text fitting are required.
   // ---------------------------------------------------------------
-  const heroFunBox = document.querySelector(".hero-claim-box-fun");
-  const heroSeriousBox = document.querySelector(".hero-claim-box-serious");
-  const heroFunLabel = document.getElementById("hero-fun-label");
-  const heroSeriousLabel = document.getElementById("hero-serious-label");
-
-  const claimMeasureCanvas = document.createElement("canvas");
-  const claimMeasureCtx = claimMeasureCanvas.getContext("2d");
-
-  function claimFont(el, sizePx) {
-    const cs = getComputedStyle(el);
-    return `${cs.fontWeight || 900} ${sizePx}px ${cs.fontFamily}`;
-  }
-
-  function visualMetrics(el, text, sizePx) {
-    claimMeasureCtx.font = claimFont(el, sizePx);
-    const m = claimMeasureCtx.measureText(text);
-    return {
-      width: m.width,
-      ascent: m.actualBoundingBoxAscent || sizePx * 0.76,
-      descent: m.actualBoundingBoxDescent || sizePx * 0.18
-    };
-  }
-
-  function fitHeroClaim() {
-    if (!heroFunLabel || !heroSeriousLabel || !heroFunBox || !heroSeriousBox) return;
-
-    const mobile = matchMedia("(max-width: 719px)").matches || matchMedia("(pointer: coarse)").matches;
-    let low = 24;
-    let high = 320;
-    const funMaxW = heroFunBox.clientWidth * (mobile ? 1.00 : 1.00);
-    const funMaxH = heroFunBox.clientHeight * (mobile ? 0.99 : 1.00);
-
-    for (let i = 0; i < 22; i++) {
-      const mid = (low + high) / 2;
-      const m = visualMetrics(heroFunLabel, "FUN", mid);
-      const visualH = m.ascent + m.descent;
-      if (m.width <= funMaxW && visualH <= funMaxH) low = mid;
-      else high = mid;
-    }
-
-    const funSize = Math.max(24, low - 0.2);
-    heroFunLabel.style.setProperty("font-size", `${funSize}px`, "important");
-    const fm = visualMetrics(heroFunLabel, "FUN", funSize);
-    const funVisualHeight = fm.ascent + fm.descent;
-
-    // The three-line block is deliberately a touch smaller in perceived mass
-    // than FUN, while sharing the same optical horizontal centre line.
-    const targetVisualHeight = funVisualHeight * (mobile ? 0.985 : 0.99);
-    const lines = ["IS A", "SERIOUS", "THING."];
-    low = 10;
-    high = 160;
-    const seriousMaxW = heroSeriousBox.clientWidth * (mobile ? 0.98 : 0.98);
-    const lineHeight = mobile ? 0.82 : 0.82;
-
-    for (let i = 0; i < 22; i++) {
-      const mid = (low + high) / 2;
-      const ms = lines.map(line => visualMetrics(heroSeriousLabel, line, mid));
-      const maxW = Math.max(...ms.map(m => m.width));
-      const lineAdvance = mid * lineHeight;
-      const totalVisualH = ms[0].ascent + (lineAdvance * 2) + ms[2].descent;
-      if (maxW <= seriousMaxW && totalVisualH <= targetVisualHeight) low = mid;
-      else high = mid;
-    }
-
-    heroSeriousLabel.style.setProperty("font-size", `${Math.max(10, low - 0.2)}px`, "important");
-  }
-
-
-  async function startHeroClaim() {
-    if (document.fonts?.ready) {
-      try { await document.fonts.ready; } catch {}
-    }
-    fitHeroClaim();
-  }
-
-  let heroRefitTimer = 0;
-
-  function scheduleHeroRefit() {
-    clearTimeout(heroRefitTimer);
-    requestAnimationFrame(() => requestAnimationFrame(fitHeroClaim));
-    heroRefitTimer = setTimeout(fitHeroClaim, 140);
-    setTimeout(fitHeroClaim, 360);
-  }
-
-  addEventListener("resize", scheduleHeroRefit, { passive: true });
-  addEventListener("orientationchange", scheduleHeroRefit, { passive: true });
-  if (window.visualViewport) visualViewport.addEventListener("resize", scheduleHeroRefit, { passive: true });
-
-  if (window.ResizeObserver) {
-    const heroClaimObserver = new ResizeObserver(scheduleHeroRefit);
-    if (heroFunBox) heroClaimObserver.observe(heroFunBox);
-    if (heroSeriousBox) heroClaimObserver.observe(heroSeriousBox);
-  }
-
-  startHeroClaim();
-
 
   // ---------------------------------------------------------------
   // HERO BEERBELGIO ANCHOR — centre target card on screen
@@ -182,7 +114,59 @@
     beerbelgioHeroAnchor.addEventListener('click', (event) => {
       event.preventDefault();
       scrollCardToCenter(beerbelgioTarget);
-      history.replaceState(null, '', '#beerbelgio-links');
+    });
+  }
+
+  // ---------------------------------------------------------------
+  // SHARE — native share sheet when available, clipboard fallback otherwise.
+  // ---------------------------------------------------------------
+  const shareSite = document.getElementById("share-site");
+
+  function showShareToast(message) {
+    let toast = document.getElementById("share-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "share-toast";
+      toast.className = "share-toast";
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    clearTimeout(showShareToast.timer);
+    showShareToast.timer = setTimeout(() => toast.classList.remove("is-visible"), 1400);
+  }
+
+  if (shareSite) {
+    shareSite.addEventListener("click", async () => {
+      const shareData = {
+        title: "Matteo Belgiovine",
+        text: "Music, digital strategy and useful ideas from unexpected angles.",
+        url: "https://beerbelgio.github.io/"
+      };
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+          return;
+        }
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(shareData.url);
+        } else {
+          const input = document.createElement("textarea");
+          input.value = shareData.url;
+          input.setAttribute("readonly", "");
+          input.style.position = "fixed";
+          input.style.opacity = "0";
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand("copy");
+          input.remove();
+        }
+        showShareToast("LINK COPIED");
+      } catch (error) {
+        if (error?.name !== "AbortError") showShareToast("COPY THE URL ABOVE");
+      }
     });
   }
 

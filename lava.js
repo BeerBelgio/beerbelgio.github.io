@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.38
+/* BeerBelgio Lava Engine — V0.40
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -47,14 +47,24 @@
   let dpr = Math.min(devicePixelRatio || 1, 2);
   let scrollImpulseX = 0;
   let scrollImpulseY = 0;
+  let scrollWarpBoost = 1;
   let lastTouchX = null;
   let lastTouchY = null;
   let lastFrame = performance.now();
   let hiddenAt = null;
   let portraitScrollRAF = 0;
 
+  let draggedBlob = null;
+  let dragPointerId = null;
+  let dragLastX = 0;
+  let dragLastY = 0;
+  let dragLastT = 0;
+  let dragVx = 0;
+  let dragVy = 0;
+
   function usesPortraitDocumentCanvas() {
-    return isIOS && matchMedia("(pointer: coarse) and (orientation: portrait)").matches;
+    // V0.39: retired. iOS portrait now uses a fixed overscanned canvas.
+    return false;
   }
 
   function syncPortraitCanvasPosition() {
@@ -99,6 +109,17 @@
       morphBase: 0.20 + Math.random() * 0.07,
       deformMag: 0.24 + Math.random() * 0.05,
       deformDir: angle,
+      deformTargetDir: angle,
+      dragging: false,
+      manualMomentumUntil: 0,
+      manualBlendUntil: 0,
+      scrollX: 0,
+      scrollY: 0,
+      scrollGain: 0.78 + Math.random() * 0.48,
+      scrollFollow: 0.00115 + Math.random() * 0.0018,
+      scrollAngleOffset: (Math.random() - 0.5) * 0.28,
+      scrollWarpGain: 0.82 + Math.random() * 0.55,
+      scrollPhaseOffset: Math.random() * Math.PI * 2,
       forceX: 0,
       forceY: 0
     };
@@ -285,6 +306,13 @@
     blob.forceX = 0;
     blob.forceY = 0;
 
+    if (blob.dragging) {
+      blob.deformTargetDir = Math.atan2(dragVy || blob.vy, dragVx || blob.vx);
+      blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * Math.min(0.22, 0.006 * dt);
+      blob.deformMag = Math.max(blob.morphBase || 0.22, Math.min(0.52, 0.27 + Math.hypot(dragVx, dragVy) * 4));
+      return;
+    }
+
     // The direction evolves very slowly, like an autonomous lava lamp.
     const desiredAngle =
       blob.baseAngle +
@@ -293,8 +321,17 @@
     const desiredVx = Math.cos(desiredAngle) * blob.baseSpeed * motionScale;
     const desiredVy = Math.sin(desiredAngle) * blob.baseSpeed * motionScale;
 
-    // After interactions the blob slowly settles back into its own autonomous drift.
-    const settle = 0.00086 * dt;
+    // After a manual drag, keep the release momentum alive for a while.
+    // Then blend gradually back into autonomous motion instead of snapping back.
+    let settleScale = 1;
+    if (time < (blob.manualMomentumUntil || 0)) {
+      settleScale = 0.035;
+    } else if (time < (blob.manualBlendUntil || 0)) {
+      const span = Math.max(1, blob.manualBlendUntil - blob.manualMomentumUntil);
+      const t = Math.max(0, Math.min(1, (time - blob.manualMomentumUntil) / span));
+      settleScale = 0.035 + 0.965 * t;
+    }
+    const settle = 0.00086 * dt * settleScale;
     blob.vx += (desiredVx - blob.vx) * settle;
     blob.vy += (desiredVy - blob.vy) * settle;
 
@@ -309,7 +346,7 @@
     // Persistent liquid memory: the shape keeps wandering instead of snapping back to round.
     blob.morphBase += Math.sin(time * 0.00011 + blob.turnPhase * 1.7) * 0.000010 * dt;
     blob.morphBase = Math.max(0.18, Math.min(0.34, blob.morphBase));
-    blob.deformDir += Math.sin(time * 0.00016 + blob.phase2 * 0.8) * 0.00012 * dt;
+    blob.deformTargetDir += Math.sin(time * 0.00016 + blob.phase2 * 0.8) * 0.000075 * dt;
 
     if (pointer.strength > 0.001) {
       const dx = pointer.x - blob.x;
@@ -324,18 +361,37 @@
       blob.vy += fy;
     }
 
-    // Scroll should be perceptible without permanently accelerating the blobs.
-    // It temporarily nudges their position and organic phase, then decays.
-    const scrollNormX = Math.tanh(scrollImpulseX / 5.8);
-    const scrollNormY = Math.tanh(scrollImpulseY / 5.8);
+    // Each blob has its own delayed / scaled interpretation of the global scroll.
+    // This prevents the whole field from moving like one rigid layer.
+    const globalScrollEnabled = !draggedBlob;
+    const targetScrollX = globalScrollEnabled ? scrollImpulseX * blob.scrollGain : 0;
+    const targetScrollY = globalScrollEnabled ? scrollImpulseY * blob.scrollGain : 0;
+    const follow = Math.min(1, blob.scrollFollow * dt);
+    blob.scrollX += (targetScrollX - blob.scrollX) * follow;
+    blob.scrollY += (targetScrollY - blob.scrollY) * follow;
+
+    let scrollNormX = Math.tanh(blob.scrollX / 5.8);
+    let scrollNormY = Math.tanh(blob.scrollY / 5.8);
+    const ca = Math.cos(blob.scrollAngleOffset);
+    const sa = Math.sin(blob.scrollAngleOffset);
+    const rotatedX = scrollNormX * ca - scrollNormY * sa;
+    const rotatedY = scrollNormX * sa + scrollNormY * ca;
+    scrollNormX = rotatedX;
+    scrollNormY = rotatedY;
+
     const scrollMagnitude = Math.min(1, Math.hypot(scrollNormX, scrollNormY));
     const scrollFx = (scrollNormX * 0.00054
-      + Math.sin(blob.turnPhase + time * 0.0007) * scrollMagnitude * 0.00010) * dt;
-    const scrollFy = scrollNormY * 0.00054 * dt;
+      + Math.sin(blob.scrollPhaseOffset + time * 0.0007) * scrollMagnitude * 0.00011) * dt;
+    const scrollFy = (scrollNormY * 0.00054
+      + Math.cos(blob.scrollPhaseOffset * 0.8 + time * 0.00061) * scrollMagnitude * 0.000055) * dt;
     blob.vx += scrollFx;
     blob.vy += scrollFy;
-    blob.phase += (scrollNormY + scrollNormX * 0.45) * 0.00030 * dt;
-    blob.phase2 -= (scrollNormY - scrollNormX * 0.35) * 0.00026 * dt;
+
+    const warpGain = 0.16 * blob.scrollWarpGain * scrollWarpBoost;
+    blob.forceX += scrollFx * warpGain;
+    blob.forceY += scrollFy * warpGain;
+    blob.phase += (scrollNormY + scrollNormX * 0.45) * (0.00034 + blob.scrollFollow * 0.04) * dt;
+    blob.phase2 -= (scrollNormY - scrollNormX * 0.35) * (0.00029 + blob.scrollFollow * 0.035) * dt;
 
     // Anti-edge / anti-corner disturbance:
     // viscous steering first, tiny pushes second. No flipper kicks.
@@ -408,8 +464,12 @@
 
     const forceMag = Math.hypot(blob.forceX, blob.forceY);
     if (forceMag > 1e-6) {
-      blob.deformDir = Math.atan2(blob.forceY, blob.forceX);
+      blob.deformTargetDir = Math.atan2(blob.forceY, blob.forceX);
     }
+    // Never snap the deformation direction. The old direct atan2 assignment could
+    // visually rotate a whole blob in one frame when the dominant force changed.
+    const turnBlend = Math.min(0.16, 0.0038 * dt);
+    blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * turnBlend;
     const morphFloor = blob.morphBase || 0.22;
     blob.deformMag = Math.min(
       0.62,
@@ -613,6 +673,89 @@
     }
   }
 
+  function blobAt(x, y) {
+    // Later blobs are painted on top, so search from the end first.
+    for (let i = blobs.length - 1; i >= 0; i--) {
+      const blob = blobs[i];
+      if (Math.hypot(x - blob.x, y - blob.y) <= blob.r * 1.08) return blob;
+    }
+    return null;
+  }
+
+  function canDragWithPointer(e) {
+    if (e.target && e.target.closest && e.target.closest("a, button, input, textarea, select, .card")) return false;
+    if (e.pointerType !== "touch") return true;
+    // On touch, direct dragging is limited to immersive lava so normal page
+    // scrolling remains effortless. Mouse/pen can drag bubbles everywhere.
+    return document.body.classList.contains("lava-mode") || location.pathname.includes("/lava/");
+  }
+
+  function startBlobDrag(e) {
+    const x = e.clientX + padX;
+    const y = e.clientY + padY;
+    const hit = blobAt(x, y);
+    if (!hit || !canDragWithPointer(e)) return false;
+
+    draggedBlob = hit;
+    draggedBlob.dragging = true;
+    dragPointerId = e.pointerId;
+    dragLastX = x;
+    dragLastY = y;
+    dragLastT = performance.now();
+    dragVx = 0;
+    dragVy = 0;
+    scrollImpulseX = 0;
+    scrollImpulseY = 0;
+    blobs.forEach((blob) => {
+      blob.scrollX = 0;
+      blob.scrollY = 0;
+    });
+    pointer.impulse = 0;
+    pointer.strength = 0;
+
+    // Bring the selected blob visually to the front without changing its identity.
+    const idx = blobs.indexOf(hit);
+    if (idx >= 0 && idx !== blobs.length - 1) {
+      blobs.splice(idx, 1);
+      blobs.push(hit);
+    }
+    return true;
+  }
+
+  function moveBlobDrag(e) {
+    if (!draggedBlob || e.pointerId !== dragPointerId) return false;
+    const x = e.clientX + padX;
+    const y = e.clientY + padY;
+    const now = performance.now();
+    const dt = Math.max(1, now - dragLastT);
+    dragVx = (x - dragLastX) / dt;
+    dragVy = (y - dragLastY) / dt;
+    draggedBlob.x = x;
+    draggedBlob.y = y;
+    draggedBlob.deformTargetDir = Math.atan2(dragVy || 0.0001, dragVx || 0.0001);
+    dragLastX = x;
+    dragLastY = y;
+    dragLastT = now;
+    return true;
+  }
+
+  function endBlobDrag(e) {
+    if (!draggedBlob || (e && e.pointerId !== dragPointerId)) return false;
+    const maxRelease = 0.105;
+    const scale = 0.090;
+    draggedBlob.vx = Math.max(-maxRelease, Math.min(maxRelease, dragVx * scale));
+    draggedBlob.vy = Math.max(-maxRelease, Math.min(maxRelease, dragVy * scale));
+    draggedBlob.baseAngle = Math.atan2(draggedBlob.vy || 0.0001, draggedBlob.vx || 0.0001);
+    const now = performance.now();
+    draggedBlob.manualMomentumUntil = now + 1900;
+    draggedBlob.manualBlendUntil = now + 4700;
+    draggedBlob.dragging = false;
+    contain(draggedBlob);
+    draggedBlob = null;
+    dragPointerId = null;
+    return true;
+  }
+
   function draw(time) {
     const dt = Math.min(40, time - lastFrame);
     lastFrame = time;
@@ -622,6 +765,7 @@
 
     scrollImpulseX *= 0.86;
     scrollImpulseY *= 0.86;
+    scrollWarpBoost += (1 - scrollWarpBoost) * 0.06;
     pointer.impulse *= 0.84;
     pointer.strength += (pointer.impulse - pointer.strength) * 0.08;
 
@@ -638,7 +782,6 @@
     requestAnimationFrame(draw);
   }
 
-  if (isIOS) addEventListener("scroll", schedulePortraitCanvasPosition, { passive: true });
   addEventListener("resize", () => {
     syncPortraitCanvasPosition();
     resize();
@@ -654,23 +797,40 @@
     pointer.x = e.clientX + padX;
     pointer.y = e.clientY + padY;
     pointer.active = true;
+    if (moveBlobDrag(e)) {
+      pointer.impulse = 0;
+      pointer.strength = 0;
+      if (e.cancelable) e.preventDefault();
+      return;
+    }
     pointer.impulse = 1;
-  }, { passive: true });
+  }, { passive: false });
 
-  addEventListener("pointerleave", () => {
+  addEventListener("pointerleave", (e) => {
     pointer.active = false;
     pointer.impulse = 0;
+    if (e.pointerType !== "touch") endBlobDrag(e);
   });
 
   addEventListener("pointerdown", (e) => {
+    if (startBlobDrag(e)) {
+      if (e.cancelable) e.preventDefault();
+      return;
+    }
+    if (e.target && e.target.closest && e.target.closest("a, button, input, textarea, select, .card")) return;
     burst(e.clientX + padX, e.clientY + padY);
-  }, { passive: true });
+  }, { passive: false });
+
+  addEventListener("pointerup", (e) => { endBlobDrag(e); }, { passive: true });
+  addEventListener("pointercancel", (e) => { endBlobDrag(e); }, { passive: true });
 
   addEventListener("wheel", (e) => {
+    if (draggedBlob) return;
     const dx = Math.max(-34, Math.min(34, e.deltaX * 0.24));
     const dy = Math.max(-34, Math.min(34, e.deltaY * 0.24));
     scrollImpulseX = Math.max(-40, Math.min(40, scrollImpulseX + dx));
     scrollImpulseY = Math.max(-40, Math.min(40, scrollImpulseY + dy));
+    scrollWarpBoost = 1.05;
   }, { passive: true });
 
   addEventListener("touchstart", (e) => {
@@ -683,10 +843,16 @@
   addEventListener("touchmove", (e) => {
     const t = e.touches && e.touches[0];
     if (!t || lastTouchX == null || lastTouchY == null) return;
-    const dx = Math.max(-34, Math.min(34, (lastTouchX - t.clientX) * 0.34));
-    const dy = Math.max(-34, Math.min(34, (lastTouchY - t.clientY) * 0.34));
+    if (draggedBlob) {
+      lastTouchX = t.clientX;
+      lastTouchY = t.clientY;
+      return;
+    }
+    const dx = Math.max(-34, Math.min(34, (lastTouchX - t.clientX) * 0.38));
+    const dy = Math.max(-34, Math.min(34, (lastTouchY - t.clientY) * 0.38));
     scrollImpulseX = Math.max(-40, Math.min(40, scrollImpulseX + dx));
     scrollImpulseY = Math.max(-40, Math.min(40, scrollImpulseY + dy));
+    scrollWarpBoost = 1.75;
     lastTouchX = t.clientX;
     lastTouchY = t.clientY;
   }, { passive: true });

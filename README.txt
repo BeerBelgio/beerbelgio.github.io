@@ -1,25 +1,24 @@
-BEERBELGIO.GITHUB.IO — V0.38 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.40 PUBLIC STAGING
 
 STATUS
 Public staging for the BeerBelgio / Matteo Belgiovine digital hub.
 Search indexing remains disabled until the public 1.0 launch.
 
-V0.38 CHANGELOG
-- Build hygiene: V0.38 REPLACES the V0.37 staging override block. Staging overrides are not stacked from build to build.
-- Hero claim temporary HTML test: gap reduced to 5 px, both halves treated as one centred group, and the complete group enlarged proportionally by ~15%. This is the last HTML-text pass before evaluating Matteo's vector claim.
-- Hero claim orientation robustness: delayed refits plus ResizeObserver prevent portrait → landscape → portrait from keeping stale type sizes from the previous orientation.
-- Hero mobile: reduced dead space above and below the claim again.
-- Hero metadata: MATTEO BELGIOVINE / TORINO, ITALY enlarged and given consistent inset margins.
-- Hero identity copy: added consistent horizontal inset from card edges and tightened the vertical rhythm.
-- Narrow desktop windows: desktop-proportional mode now explicitly reapplies the internal 760 px desktop design rules, so shrinking a desktop browser window does not fall back to mobile/base proportions.
-- Desktop quick links: kept the slightly oval direction, enlarged platform icons by ~15%, restored even distribution, and reduced FULL LAVA type.
-- Touch landscape quick links: restored a compact 4 + 4 block on the left with FULL LAVA spanning both rows on the right.
-- Touch landscape sonoDGTL card: removed mobile forced line breaks and restored the desktop separator.
-- Contact smile: moved left in portrait; landscape smile moved substantially left and enlarged by ~25%.
-- Lava interaction: scrolling is now directional in both axes. Trackpads use WheelEvent deltaX/deltaY; touch gestures derive X/Y scroll direction from finger motion; traditional mouse wheels naturally remain vertical.
-- iPhone portrait canvas workaround retained from V0.37.
-- Android scroll-flicker fix from V0.37 retained pending re-test on the affected devices.
-- Cache busting updated to ?v=038.
+V0.40 CHANGELOG
+- Build hygiene: V0.40 REPLACES the V0.39 staging override block. Staging overrides are not stacked from build to build.
+- Quick links: removed the Email quick-link asset/code and replaced it with a native Share button. On supported devices it opens the system share sheet; otherwise it copies https://beerbelgio.github.io/ to the clipboard.
+- Contact card: WRITE ME is vertically centred in the remaining space between the heading and the lower edge of the card.
+- Lava direct manipulation: dragged bubbles retain their release momentum for roughly 2 seconds, then blend back progressively into autonomous motion over the following ~3 seconds.
+- Lava interaction isolation: while a bubble is being dragged, global scroll/pointer impulses are suppressed for the other blobs.
+- Lava touch warping: stronger touch deformation and per-blob scroll response gains/delays/directional offsets. Blobs now react less uniformly and with more individual timing/shape variation.
+- Hero claim: still uses Matteo's supplied SVG. Desktop now explicitly resets the old two-column H1 grid and scales the SVG artwork to compensate for transparent artboard margins; portrait mobile is +25% versus V0.39, landscape uses the desktop-like scale.
+- Hero landing: strengthened top-of-page reset on load/pageshow so refresh always returns to the Hero rather than preserving an internal scroll position.
+- Hero mobile: name/location increased again, more coherent inner margin, more lower-card breathing.
+- Lower BeerBelgio / sonoDGTL cards: descriptors enlarged to better match the Hero hierarchy.
+- Quick links landscape: one-row layout retained and buttons increased to 42 px with equal spacing, including the Share button.
+- Desktop narrow-window mode: reinforced the complete desktop-proportional rule set so old viewport-width media rules cannot remap individual components while the 760 px composition is being scaled.
+- Mobile page end: bottom padding reduced to keep the final claim closer to the desktop ending behaviour.
+- Cache busting updated to ?v=040.
 
 RIGHTS / LICENSING
 - Original website code: PolyForm Noncommercial 1.0.0.
