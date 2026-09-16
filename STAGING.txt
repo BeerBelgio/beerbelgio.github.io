@@ -1,6 +1,6 @@
 PUBLIC STAGING — BeerBelgio
 
-Current build: V0.39
+Current build: V0.38
 
 This repository is intentionally public for device testing.
 
