@@ -219,6 +219,9 @@
       const deformDir = blob.deformDir || 0;
       const ambientMorph = blob.morphBase || 0.22;
       const morphBoost = blob.morphBoost || 1;
+      // L3: selected size follows the SAME held/release envelope as the liquid boost.
+      // morphBoost 1.0 -> normal size, 1.5 -> +5%. No extra timer/state is introduced.
+      const selectedScale = 1 + Math.max(0, morphBoost - 1) * 0.10;
 
       // L2.3: scale the COMPLETE deviation from the neutral contour.
       // At 1.5 this is a true +50% baseline warp even while the held blob is still.
@@ -239,7 +242,7 @@
         + deformMag * 0.07 * Math.sin((a - deformDir) * 4 - blob.phase * 0.45);
       const stretch = 1 + (stretchBase - 1) * morphBoost;
 
-      radii.push(blob.r * Math.max(0.62, Math.min(1.46, breathing * stretch)));
+      radii.push(blob.r * selectedScale * Math.max(0.62, Math.min(1.46, breathing * stretch)));
     }
 
     // Low-pass the radial contour so deformation stays liquid instead of pointy/clipped.

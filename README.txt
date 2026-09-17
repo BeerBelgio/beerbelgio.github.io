@@ -1,3 +1,26 @@
+BEERBELGIO.GITHUB.IO — V0.54.3 / L3
+
+STATUS
+V0.54.2.3 is the approved L2 baseline: responsive geometry is correct, proportional release/momentum is approved, stronger throws retain longer user influence, and a held blob has a +50% base liquid/morph boost with matching release decay.
+This build completes L3 by adding only the missing selected-blob size behaviour.
+
+V0.54.3 CHANGES
+- Keeps all approved L1 and L2 behaviour unchanged.
+- Selected/held blob grows to exactly +5% at the full 1.5x liquid boost.
+- Size uses the EXISTING morphBoost envelope instead of introducing another timer or state machine: morphBoost 1.0 = normal size; morphBoost 1.5 = 1.05x size.
+- A stationary held blob therefore ramps toward +5% over the same ~120 ms selection ramp already used by the +50% liquid boost.
+- During a real drag, size remains +5% while the selected liquid boost remains at 1.5x.
+- On release, size decays smoothly back to 1.0x along exactly the same strength-dependent release window as the warp/morph boost.
+- A short press that never crosses the 4 px drag threshold may still show the selection growth while held, but translation/heading remain the approved L1 no-op.
+- No L4 5+5 attraction/repulsion logic yet.
+- No changes to canvas geometry, overscan, visualViewport, resize/orientation logic, HUB responsive layout or sonoDGTL.
+
+TEST TARGET
+- Hold a blob still: it should become visibly but subtly ~5% larger while its liquid morph is +50%.
+- Drag a blob: +5% size should remain stable during the drag, without squeeze/shrink behaviour.
+- Release: size and liquid boost should relax together, using the already-approved strength-dependent decay.
+- iPhone portrait geometry must remain identical to V0.54.2.3.
+
 BEERBELGIO.GITHUB.IO — V0.54.2.3 / L2
 
 STATUS
