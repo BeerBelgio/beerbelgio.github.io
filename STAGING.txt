@@ -1,1 +1,1 @@
-V0.54.2 / L2 staging. V0.54 UI/responsive baseline frozen; approved L1 retained; gesture-proportional release + residual momentum + gradual autonomous return + release-warp decay only. Indexing disabled.
+V0.54.2A / L2A diagnostic staging. Starts from approved V0.54.1B; translational gesture-proportional release + existing V0.40 momentum/blend only. Rejected L2 manual-warp/per-frame morph branch removed. UI/responsive frozen. Indexing disabled.

@@ -1,26 +1,30 @@
-BEERBELGIO.GITHUB.IO — V0.54.2 / L2
+BEERBELGIO.GITHUB.IO — V0.54.2A / L2A
 
 STATUS
-V0.54 remains the frozen UI/responsive baseline.
-V0.54.1B is the approved completed L1 baseline.
-This build adds ONLY L2 release / momentum behaviour on top of L1.
+V0.54.1B remains the approved L1 baseline.
+The first V0.54.2 attempt is rejected: it reintroduced the iPhone portrait/compositing regression and its release momentum was too weak, especially for slow desktop gestures.
+This diagnostic L2A restarts directly from V0.54.1B and isolates TRANSLATIONAL release/momentum only.
 
-V0.54.2 / L2 CHANGES
-- Keeps the approved L1 scroll sensitivity, click-vs-drag 4 px threshold and no abrupt blank-click phase jump unchanged.
-- Release velocity now uses a short weighted history (~140 ms), with recent samples weighted more heavily: slow gestures release slowly, faster gestures release faster.
-- Release momentum duration is proportional to gesture energy, then blends gradually back into autonomous lava motion rather than snapping back.
-- Residual liquid warping follows the same hold + blend timeline as release momentum, so the release deformation fades together with the manual motion.
-- A click/tap below the L1 4 px threshold remains a true no-op and never enters the L2 release system.
-- L3 is NOT present: no +5% selected-blob size and no +50% selected-blob warping during drag.
-- No L4 5+5 attraction/repulsion logic.
-- No changes to canvas geometry, overscan, visualViewport, resize/orientation logic, HUB responsive layout, HUB UI or sonoDGTL.
+V0.54.2A CHANGES
+- Keeps all approved L1 behaviour unchanged: reduced scroll sensitivity, 4 px click-vs-drag threshold, simple blob click as no-op, no abrupt blank-click phase jump.
+- Adds a 180 ms weighted drag-velocity history.
+- Release velocity blends recent velocity (72%) with the whole gesture average (28%), so slow deliberate movement still produces a visible release vector.
+- Release gain raised to 0.30 with a 0.16 px/ms safety cap. This is intentionally more perceptible than the rejected first L2 attempt.
+- Reuses the EXISTING V0.40 manualMomentumUntil/manualBlendUntil mechanism already present in update(); no new per-frame momentum architecture is introduced.
+- Momentum hold/blend duration scales moderately with release energy.
+- IMPORTANT: the rejected first L2 manualWarp fields / per-frame phase mutation are NOT present. No new per-frame morph branch has been added.
+- Warping-decay work is deliberately deferred to a separate L2B only if this translational L2A passes responsive + release tests.
+- No changes to canvas geometry, overscan, visualViewport, resize/orientation logic, HUB responsive layout or sonoDGTL.
+
+WHY L2 WAS SPLIT
+The rejected V0.54.2 changed two systems at once: release/momentum and a new manual-warp branch executed every frame. Because V0.54.1B was responsive-correct and V0.54.2 was not, L2 is now split to isolate the suspect morph branch instead of continuing with a mixed implementation.
 
 TEST TARGET
-- Slow drag + release should result in visibly slower residual motion.
-- Fast drag + release should result in stronger residual motion, but remain controlled.
-- The blob should retain manual momentum briefly and then return gradually to autonomous movement without a visible snap.
-- Release warping should fade on the same curve as the residual momentum.
-- Portrait/landscape/desktop geometry must remain identical to V0.54.1B.
+- iPhone portrait geometry must remain identical to V0.54.1B.
+- Slow desktop drag/release must visibly continue in the gesture direction.
+- Faster gesture must create proportionally stronger motion up to the safety cap.
+- The blob must then return gradually to autonomous motion, without a hard snap.
+- Ignore warping-decay quality for this build: that is intentionally NOT part of L2A.
 
 BEERBELGIO.GITHUB.IO — V0.54.1B / L1
 
