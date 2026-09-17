@@ -120,6 +120,9 @@
       dragging: false,
       manualMomentumUntil: 0,
       manualBlendUntil: 0,
+      manualWarpPeak: 0,
+      manualWarpStart: 0,
+      manualWarpEnd: 0,
       scrollX: 0,
       scrollY: 0,
       scrollGain: 0.78 + Math.random() * 0.48,
@@ -316,7 +319,15 @@
     if (blob.dragging) {
       blob.deformTargetDir = Math.atan2(dragVy || blob.vy, dragVx || blob.vx);
       blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * Math.min(0.22, 0.006 * dt);
-      blob.deformMag = Math.max(blob.morphBase || 0.22, Math.min(0.52, 0.27 + Math.hypot(dragVx, dragVy) * 4));
+
+      // L2B: preserve the proven V0.40 drag shape logic, but amplify its
+      // deformation by 50% for the entire time the blob is actually held.
+      // No extra phase changes are injected here: only the warp amplitude changes.
+      const normalDragWarp = Math.max(
+        blob.morphBase || 0.22,
+        Math.min(0.52, 0.27 + Math.hypot(dragVx, dragVy) * 4)
+      );
+      blob.deformMag = Math.min(0.78, normalDragWarp * 1.5);
       return;
     }
 
@@ -479,12 +490,23 @@
     blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * turnBlend;
     const morphFloor = blob.morphBase || 0.22;
     blob.deformMag = Math.min(
-      0.62,
+      0.78,
       Math.max(
         morphFloor,
         (blob.deformMag || morphFloor) * Math.pow(0.997, dt) + forceMag * 62
       )
     );
+
+    // L2B: after release, let the extra held-warp fade continuously back to the
+    // autonomous morph floor across the same overall release window. This only
+    // changes amplitude; phase/phase2 and the canvas/viewport path are untouched.
+    if (time < (blob.manualWarpEnd || 0) && (blob.manualWarpPeak || 0) > morphFloor) {
+      const warpSpan = Math.max(1, blob.manualWarpEnd - blob.manualWarpStart);
+      const warpT = Math.max(0, Math.min(1, (time - blob.manualWarpStart) / warpSpan));
+      const eased = warpT * warpT * (3 - 2 * warpT);
+      const releaseWarpFloor = blob.manualWarpPeak + (morphFloor - blob.manualWarpPeak) * eased;
+      blob.deformMag = Math.max(blob.deformMag, releaseWarpFloor);
+    }
 
     // Only excess interaction energy is damped; base drift remains alive.
     blob.vx *= Math.pow(0.99984, dt);
@@ -772,7 +794,7 @@
     const instantVx = (x - dragLastX) / dt;
     const instantVy = (y - dragLastY) / dt;
 
-    // L2A: keep a short recent history for a stable gesture velocity.
+    // L2B: keep the promoted L2A short history for a stable gesture velocity.
     // This replaces the noisy single-final-frame release measurement only;
     // no extra morph / canvas / viewport work is introduced.
     dragHistory.push({ vx: instantVx, vy: instantVy, t: now });
@@ -784,7 +806,7 @@
     draggedBlob.x = x;
     draggedBlob.y = y;
     // Keep the original V0.40 deformation behaviour during a REAL drag.
-    // L2A changes translation only.
+    // L2B keeps the same translation logic; warp amplification is handled in update().
     draggedBlob.deformTargetDir = Math.atan2(dragVy || 0.0001, dragVx || 0.0001);
     dragLastX = x;
     dragLastY = y;
@@ -815,7 +837,7 @@
       return true;
     }
 
-    // L2A — translation/momentum only.
+    // L2B — promoted L2A translation/momentum + controlled warp release.
     // Blend the recent weighted velocity with the whole drag gesture so slow,
     // deliberate moves still leave a visible perturbation on desktop.
     const now = performance.now();
@@ -836,12 +858,19 @@
     }
 
     // Reuse the V0.40 momentum/blend mechanism already present in update().
-    // Stronger gestures hold a little longer; no new per-frame morph system is added.
+    // L2B: fast throws remain energetic, but return to autonomous motion sooner.
+    // Slow gestures keep a little more settling time so their perturbation remains legible.
     const gesture = Math.min(1, releaseSpeed / maxRelease);
-    const holdMs = 1800 + gesture * 1000;
-    const blendMs = 3000 + gesture * 1800;
+    const holdMs = 1350 - gesture * 650;   // ~1350 ms slow -> ~700 ms fast
+    const blendMs = 2400 - gesture * 900; // ~2400 ms slow -> ~1500 ms fast
     draggedBlob.manualMomentumUntil = now + holdMs;
     draggedBlob.manualBlendUntil = now + holdMs + blendMs;
+
+    // Carry the +50% held-warp into release, then decay it smoothly across the
+    // same total release window. No new phase or direction impulses are added.
+    draggedBlob.manualWarpPeak = Math.max(draggedBlob.deformMag || 0, draggedBlob.morphBase || 0.22);
+    draggedBlob.manualWarpStart = now;
+    draggedBlob.manualWarpEnd = draggedBlob.manualBlendUntil;
     draggedBlob.dragging = false;
     contain(draggedBlob);
     clearBlobPointerState();

@@ -1,3 +1,28 @@
+BEERBELGIO.GITHUB.IO — V0.54.2B / L2B
+
+STATUS
+V0.54.1B remains the approved L1 baseline.
+V0.54.2A is the approved translational L2A baseline: portrait responsive geometry is correct and gesture-proportional release is perceptible.
+This L2B keeps that exact release model, shortens the return-to-autonomous timing for fast throws, and adds a controlled +50% held-warp with release decay.
+
+V0.54.2B CHANGES
+- Keeps all approved L1 behaviour unchanged.
+- Keeps V0.54.2A release velocity, 180 ms weighted history, 72/28 recent-vs-whole-gesture blend, 0.30 release gain and 0.16 px/ms cap unchanged.
+- Faster gestures now return to autonomous motion sooner instead of holding their manual trajectory longer: hold is about 1350 ms for slow releases down to about 700 ms for fast releases; blend is about 2400 ms down to about 1500 ms.
+- Selected/dragged blob warp amplitude is +50% over the proven V0.40 drag-warp calculation for the full duration of a real drag.
+- On release, that extra warp decays smoothly back toward the autonomous morph floor across the same overall release window.
+- The warp implementation changes ONLY deformation amplitude. It does not inject extra phase / phase2 changes, does not rotate the deformation axis, and does not introduce a new visualViewport/canvas/resize path.
+- No +5% size growth yet. Size remains unchanged in this build.
+- No L4 5+5 attraction/repulsion logic yet.
+- No changes to canvas geometry, overscan, visualViewport, resize/orientation logic, HUB responsive layout or sonoDGTL.
+
+TEST TARGET
+- iPhone portrait geometry must remain identical to approved V0.54.2A.
+- Fast throw: momentum should still be clearly visible, but the return to autonomous motion should happen noticeably sooner.
+- Slow throw: should remain readable and not disappear immediately.
+- While a blob is held: liquid deformation should be visibly about 50% stronger.
+- On release: the extra deformation should fade smoothly instead of snapping off.
+
 BEERBELGIO.GITHUB.IO — V0.54.2A / L2A
 
 STATUS
