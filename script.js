@@ -83,7 +83,9 @@
   // screen keeps this active at 25%, 100%, 200%, etc.
   //
   // The stage is always 45vw and centred.
-  // The internal 760px design is zoomed to fit the stage exactly.
+  // The internal 760px design remains a fixed layout and is PAINT-scaled with
+  // transform instead of CSS zoom. This keeps text wrapping / card proportions
+  // unchanged even when the desktop browser window becomes very narrow.
   // The lava remains a separate full-viewport canvas.
   // ---------------------------------------------------------------
   const DESIGN_WIDTH = 760;
@@ -97,6 +99,7 @@
 
     if (!isDesktopExperience()) {
       document.documentElement.classList.remove("desktop-proportional");
+      document.documentElement.style.removeProperty("--desktop-stage-scale");
       siteShell.style.removeProperty("zoom");
       siteStage.style.removeProperty("height");
       return;
@@ -104,22 +107,29 @@
 
     document.documentElement.classList.add("desktop-proportional");
 
-    // 45% of the CURRENT browser viewport in CSS pixels.
-    // Browser page zoom changes innerWidth; this counter-scaling is intentional.
+    // 45% of the CURRENT browser viewport in CSS pixels. The internal layout
+    // stays exactly 760px wide; only its painted output is scaled. This avoids
+    // narrow-window reflow / line-break changes caused by CSS zoom.
     const targetWidth = innerWidth * 0.45;
     const scale = targetWidth / DESIGN_WIDTH;
 
-    siteShell.style.zoom = String(scale);
+    siteShell.style.removeProperty("zoom");
+    document.documentElement.style.setProperty("--desktop-stage-scale", String(scale));
 
     requestAnimationFrame(() => {
-      // The stage owns the document flow; shell itself is absolutely positioned.
-      const visualHeight = siteShell.getBoundingClientRect().height;
-      siteStage.style.height = `${Math.max(1, visualHeight)}px`;
+      // transform does not participate in layout, so stage height is derived
+      // from the fixed 760px composition multiplied by the same visual scale.
+      const layoutHeight = siteShell.scrollHeight;
+      siteStage.style.height = `${Math.max(1, layoutHeight * scale)}px`;
     });
   }
 
   updateDesktopStage();
   addEventListener("resize", updateDesktopStage, { passive: true });
+  addEventListener("load", updateDesktopStage, { passive: true });
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(updateDesktopStage).catch(() => {});
+  }
   if (window.visualViewport) {
     visualViewport.addEventListener("resize", updateDesktopStage, { passive: true });
   }
@@ -407,7 +417,9 @@
       const footerStyle = getComputedStyle(footer);
       const padLeft = parseFloat(footerStyle.paddingLeft) || 0;
       const padRight = parseFloat(footerStyle.paddingRight) || 0;
-      const target = (footer.clientWidth - padLeft - padRight) * 0.985;
+      const footerRect = footer.getBoundingClientRect();
+      const visualScale = footer.clientWidth > 0 ? (footerRect.width / footer.clientWidth) : 1;
+      const target = (footer.clientWidth - padLeft - padRight) * visualScale * 0.985;
 
       let low = 10;
       let high = 140;

@@ -1,3 +1,23 @@
+BEERBELGIO.GITHUB.IO — V0.55 / RESPONSIVE SHELL
+
+STATUS
+V0.54.4 / L4 is the frozen functional baseline: HUB, sonoDGTL and lava behaviour are approved. V0.55 changes ONLY two non-lava presentation behaviours: proportional desktop-window scaling and the mobile final-claim scroll/sticky zone. lava.js remains byte-for-byte V0.54.4.
+
+V0.55 CHANGES
+- Desktop proportional stage: replaces CSS `zoom` with a fixed 760px internal layout painted via `transform: scale(...)`. The 45vw stage ratio is unchanged, but text wrapping/card geometry no longer reflow when the browser window becomes narrow.
+- Desktop shell height is now computed from the fixed unscaled `scrollHeight × scale`, matching the transform model.
+- Desktop proportional mode explicitly locks the canonical desktop page gap/radius variables.
+- Final motto fitting is now transform-aware: its visual fit calculation compares visual units to visual units instead of mixing scaled getBoundingClientRect() width with unscaled clientWidth.
+- Mobile final claim: `FUN IS A SERIOUS THING.` scrolls normally until its centre reaches the vertical middle of the viewport, then remains sticky there while the rest of the cards continue to scroll away.
+- Mobile tail/play zone: adds 72svh of scroll space after the final claim so the cards can disappear completely and the claim can remain alone over the lava for a while.
+- No change to lava.js, canvas geometry, mobile stage width, hero responsive rules, sonoDGTL or L1–L4 behaviour.
+
+TEST TARGET
+- Desktop: resize the browser continuously from wide to very narrow; cards and all text should preserve the same internal composition and line breaks, only scaling proportionally.
+- Mobile: scroll to the final claim; it should rise naturally, stop with its centre at mid-screen, and remain there while the cards disappear above.
+- Mobile: continue scrolling after the last card is gone; there should be a clean claim + lava play zone.
+- Lava behaviour must be indistinguishable from V0.54.4.
+
 BEERBELGIO.GITHUB.IO — V0.54.4 / L4
 
 STATUS

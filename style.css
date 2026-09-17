@@ -2245,9 +2245,14 @@ html.desktop-proportional .site-shell {
 }
 
 /* =========================================================
-   V0.54 PUBLIC STAGING — V0.42 HUB BASE + CONTROLLED UI REFINEMENTS
-   Replaces V0.53 completely. Never stack staging override blocks.
+   V0.55 PUBLIC STAGING — V0.54.4 FROZEN BASE + RESPONSIVE SHELL REFINEMENTS
+   Replaces V0.54 staging label in-place. V0.54.4 lava behaviour remains frozen; never stack staging override blocks.
    ========================================================= */
+
+html.desktop-proportional {
+  --page-gap: 18px !important;
+  --radius: 34px !important;
+}
 
 .site-stage,
 .site-shell,
@@ -2538,6 +2543,11 @@ html.desktop-proportional .site-shell {
   padding-bottom: 60px !important;
   gap: 18px !important;
   transform-origin: top left !important;
+  transform: scale(var(--desktop-stage-scale, 1)) !important;
+  transition: opacity 420ms ease !important;
+}
+html.desktop-proportional body.lava-mode .site-shell {
+  transform: scale(var(--desktop-stage-scale, 1)) !important;
 }
 html.desktop-proportional .card { width: 100% !important; max-width: none !important; }
 html.desktop-proportional .hero { min-height: 570px !important; padding: 28px !important; grid-template-rows: auto 1fr auto !important; }
@@ -2740,7 +2750,24 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
     transform: none !important;
   }
 
-  .floating-motto { margin-bottom: max(24px, calc(50svh - 28px)) !important; }
+  /* MOBILE FINAL CLAIM: scrolls naturally up, then pins at viewport centre.
+     The tail spacer lets the cards disappear completely while the claim stays
+     alone over the lava for an additional play area. */
+  .floating-motto {
+    position: sticky !important;
+    top: 50svh !important;
+    z-index: 6 !important;
+    margin-bottom: 0 !important;
+    transform: translateY(-50%) !important;
+    pointer-events: none !important;
+  }
+  .site-shell::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 72svh;
+    pointer-events: none;
+  }
 }
 
 /* TOUCH LANDSCAPE */
@@ -2831,7 +2858,14 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
 
   .mobile-only-break { display: none !important; }
   .sonodgtl-cta-separator { display: inline !important; }
-  .floating-motto { margin-bottom: 0 !important; }
+  .floating-motto {
+    position: sticky !important;
+    top: 50svh !important;
+    z-index: 6 !important;
+    margin-bottom: 0 !important;
+    transform: translateY(-50%) !important;
+    pointer-events: none !important;
+  }
 }
 
 
