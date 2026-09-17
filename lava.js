@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.54.1 / L1
+/* BeerBelgio Lava Engine — V0.54.1A / L1 diagnostic
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -307,9 +307,8 @@
     blob.forceY = 0;
 
     if (blob.dragging) {
-      // L1: preserve the blob's existing deformation axis while it is held.
-      // Drag speed may change deformation amount, but a click/drag must not
-      // rotate the whole shape simply because the pointer changed direction.
+      blob.deformTargetDir = Math.atan2(dragVy || blob.vy, dragVx || blob.vx);
+      blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * Math.min(0.22, 0.006 * dt);
       blob.deformMag = Math.max(blob.morphBase || 0.22, Math.min(0.52, 0.27 + Math.hypot(dragVx, dragVy) * 4));
       return;
     }
@@ -504,8 +503,8 @@
       blob.vy += fy;
       blob.forceX += fx;
       blob.forceY += fy;
-      // L1: click impulses affect trajectory only. Do not jump phase/phase2,
-      // which caused an abrupt apparent rotation/morph change on every click.
+      blob.phase += force * 0.8;
+      blob.phase2 -= force * 0.5;
     });
   }
 
@@ -733,7 +732,7 @@
     dragVy = (y - dragLastY) / dt;
     draggedBlob.x = x;
     draggedBlob.y = y;
-    // L1: do not steer the deformation axis from pointer direction.
+    draggedBlob.deformTargetDir = Math.atan2(dragVy || 0.0001, dragVx || 0.0001);
     dragLastX = x;
     dragLastY = y;
     dragLastT = now;
@@ -827,13 +826,14 @@
 
   addEventListener("wheel", (e) => {
     if (draggedBlob) return;
-    // L1: reduce scroll sensitivity only. Keep the V0.40 warp gain unchanged.
+    // V0.54.1A diagnostic: ONLY reduce the lava field response to page scroll.
+    // No drag, click, morph, phase, canvas or viewport behaviour is changed.
     const immersive = document.body.classList.contains("lava-mode") || location.pathname.includes("/lava/");
-    const modeScale = immersive ? 0.30 : 0.48;
-    const dx = Math.max(-28, Math.min(28, e.deltaX * 0.20 * modeScale));
-    const dy = Math.max(-28, Math.min(28, e.deltaY * 0.20 * modeScale));
-    scrollImpulseX = Math.max(-34, Math.min(34, scrollImpulseX + dx));
-    scrollImpulseY = Math.max(-34, Math.min(34, scrollImpulseY + dy));
+    const modeScale = immersive ? 0.50 : 0.75;
+    const dx = Math.max(-34, Math.min(34, e.deltaX * 0.24 * modeScale));
+    const dy = Math.max(-34, Math.min(34, e.deltaY * 0.24 * modeScale));
+    scrollImpulseX = Math.max(-40, Math.min(40, scrollImpulseX + dx));
+    scrollImpulseY = Math.max(-40, Math.min(40, scrollImpulseY + dy));
     scrollWarpBoost = 1.05;
   }, { passive: true });
 
@@ -852,13 +852,13 @@
       lastTouchY = t.clientY;
       return;
     }
-    // L1: same sensitivity reduction for touch scroll. No canvas/viewport changes.
+    // V0.54.1A diagnostic: ONLY reduce the lava field response to touch scrolling.
     const immersive = document.body.classList.contains("lava-mode") || location.pathname.includes("/lava/");
-    const modeScale = immersive ? 0.34 : 0.52;
-    const dx = Math.max(-28, Math.min(28, (lastTouchX - t.clientX) * 0.31 * modeScale));
-    const dy = Math.max(-28, Math.min(28, (lastTouchY - t.clientY) * 0.31 * modeScale));
-    scrollImpulseX = Math.max(-34, Math.min(34, scrollImpulseX + dx));
-    scrollImpulseY = Math.max(-34, Math.min(34, scrollImpulseY + dy));
+    const modeScale = immersive ? 0.55 : 0.75;
+    const dx = Math.max(-34, Math.min(34, (lastTouchX - t.clientX) * 0.38 * modeScale));
+    const dy = Math.max(-34, Math.min(34, (lastTouchY - t.clientY) * 0.38 * modeScale));
+    scrollImpulseX = Math.max(-40, Math.min(40, scrollImpulseX + dx));
+    scrollImpulseY = Math.max(-40, Math.min(40, scrollImpulseY + dy));
     scrollWarpBoost = 1.75;
     lastTouchX = t.clientX;
     lastTouchY = t.clientY;

@@ -1,31 +1,21 @@
-BEERBELGIO.GITHUB.IO — V0.54.1 / L1 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.54.1A / L1 DIAGNOSTIC
 
 STATUS
-V0.54 is the frozen UI/responsive baseline. V0.54.1 is the first isolated LAVA-only test.
-All HUB layout/responsive behaviour and all sonoDGTL UI remain V0.54.
+V0.54 remains the frozen UI/responsive baseline.
+This diagnostic build changes ONLY lava scroll sensitivity.
+All click/drag/morph/canvas/viewport behaviour is restored byte-for-byte to the V0.40 lava baseline.
 
-V0.54.1 / L1 — LAVA ONLY
-- Reduced scroll sensitivity for wheel and touch.
-  - Normal HUB wheel response: mode scale 0.48, input multiplier 0.20, per-event cap 28, accumulated cap 34.
-  - Immersive/FULL LAVA wheel response: mode scale 0.30 with the same multiplier/caps.
-  - Normal HUB touch response: mode scale 0.52, input multiplier 0.31, per-event cap 28, accumulated cap 34.
-  - Immersive/FULL LAVA touch response: mode scale 0.34 with the same multiplier/caps.
-  - V0.40 scroll-warp boost values are deliberately unchanged in L1; only movement sensitivity is being tested.
-- Removed abrupt click-driven morphology changes: blank-space burst clicks no longer jump phase/phase2. Clicks still retain the V0.40 motion impulse.
-- Removed drag-direction shape-axis steering: selecting/dragging a blob no longer rotates its deformation axis toward pointer direction. Existing V0.40 deformation amount remains otherwise unchanged.
+WHY THIS BUILD EXISTS
+V0.54.1 unexpectedly showed a portrait layout/compositing regression even though style.css and script.js were unchanged from V0.54.
+It also exposed that a simple blob click is treated by V0.40 as a zero-distance drag: on release vx/vy are overwritten with ~0 and the manual-momentum hold makes the blob appear stationary. The old deformation-axis movement visually masked that pause.
 
-FROZEN / EXPLICITLY NOT TOUCHED
-- HUB geometry, responsive stage, Hero, quick links, Contact, mail fallback and rotation-to-Hero behaviour: V0.54 exactly.
-- sonoDGTL: V0.54 exactly.
-- Canvas sizing, overscan, visualViewport logic and resize/orientation behaviour: unchanged from the V0.40 lava baseline used by V0.54.
-- L2 release/momentum behaviour: NOT introduced.
-- L3 +5% selected size / +50% liquid warp: NOT introduced.
-- L4 5+5 attraction/repulsion: NOT introduced.
+V0.54.1A CHANGES
+- Lava scroll response only: wheel and touch impulses reduced to 75% of V0.40 in the normal hub.
+- FULL LAVA response reduced further (wheel 50%, touch 55% of V0.40).
+- V0.40 scrollWarpBoost values are unchanged.
+- The attempted no-rotation edits from V0.54.1 are completely removed for this diagnostic.
+- No changes to style.css, script.js, sonoDGTL, canvas geometry, overscan, resize, orientation or visualViewport.
 
-CACHE
-- Only lava.js loaders are bumped to ?v=0541. Other V0.54 UI assets retain ?v=054 because they are frozen.
-
---- V0.54 BASELINE NOTES (frozen) ---
 BEERBELGIO.GITHUB.IO — V0.54 PUBLIC STAGING
 
 STATUS
