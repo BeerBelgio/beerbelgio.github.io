@@ -1,1 +1,7 @@
-V0.55 staging. V0.54.4 is frozen functional baseline. lava.js is unchanged. This build changes only desktop proportional resizing (fixed 760px composition + transform scaling) and mobile final-claim sticky/play-zone behaviour. Indexing disabled.
+V0.55.1 PUBLIC STAGING
+
+Frozen lava baseline: V0.54.4.
+Desktop: V0.54.4 sizing/alignment restored; narrow-window desktop CSS is locked to the same proportional composition.
+Mobile portrait: midpoint-sticky final motto with 144svh lava play tail.
+Mobile landscape: V0.54.4 normal ending.
+Search indexing remains disabled.

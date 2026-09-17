@@ -1,3 +1,23 @@
+BEERBELGIO.GITHUB.IO — V0.55.1 PUBLIC STAGING
+
+STATUS
+V0.54.4 remains the frozen lava / interaction baseline. V0.55.1 corrects the V0.55 desktop shell regression and makes the final-motto play tail portrait-only.
+
+V0.55.1 CHANGES
+- Wide desktop sizing/alignment is restored to the exact V0.54.4 mechanism: the canonical 760px shell again uses CSS zoom into the centred 45vw stage. The transform-scale experiment from V0.55 is removed.
+- Narrow desktop windows keep the DESKTOP CSS state even below the historical 720px viewport breakpoint. A desktop-only lock replays the existing desktop media rules only when JS has positively identified a fine-pointer desktop. Touch/mobile layouts are unaffected.
+- Target: wide desktop must look exactly like V0.54.4; narrowing the browser should shrink the same composition proportionally instead of reflowing text/cards.
+- Final motto sticky midpoint behavior is now MOBILE PORTRAIT ONLY. Mobile landscape returns to the V0.54.4 normal ending.
+- Portrait lava-only play tail doubled from 72svh to 144svh.
+- lava.js remains byte-for-byte V0.54.4/V0.55. No changes to L1-L4, canvas, overscan, viewport, drag, warping or 5+5.
+- sonoDGTL unchanged.
+
+TEST TARGET
+- Desktop full width: exact V0.54.4 card size and alignment.
+- Desktop narrow window: same composition scales down with no text/card reflow.
+- Mobile portrait: motto stays at vertical midpoint and extra play area is about twice V0.55.
+- Mobile landscape: page ending behaves as V0.54.4, with no midpoint-sticky motto and no extra play tail.
+
 BEERBELGIO.GITHUB.IO — V0.55 / RESPONSIVE SHELL
 
 STATUS
