@@ -1,3 +1,27 @@
+BEERBELGIO.GITHUB.IO — V0.54.2 / L2
+
+STATUS
+V0.54 remains the frozen UI/responsive baseline.
+V0.54.1B is the approved completed L1 baseline.
+This build adds ONLY L2 release / momentum behaviour on top of L1.
+
+V0.54.2 / L2 CHANGES
+- Keeps the approved L1 scroll sensitivity, click-vs-drag 4 px threshold and no abrupt blank-click phase jump unchanged.
+- Release velocity now uses a short weighted history (~140 ms), with recent samples weighted more heavily: slow gestures release slowly, faster gestures release faster.
+- Release momentum duration is proportional to gesture energy, then blends gradually back into autonomous lava motion rather than snapping back.
+- Residual liquid warping follows the same hold + blend timeline as release momentum, so the release deformation fades together with the manual motion.
+- A click/tap below the L1 4 px threshold remains a true no-op and never enters the L2 release system.
+- L3 is NOT present: no +5% selected-blob size and no +50% selected-blob warping during drag.
+- No L4 5+5 attraction/repulsion logic.
+- No changes to canvas geometry, overscan, visualViewport, resize/orientation logic, HUB responsive layout, HUB UI or sonoDGTL.
+
+TEST TARGET
+- Slow drag + release should result in visibly slower residual motion.
+- Fast drag + release should result in stronger residual motion, but remain controlled.
+- The blob should retain manual momentum briefly and then return gradually to autonomous movement without a visible snap.
+- Release warping should fade on the same curve as the residual momentum.
+- Portrait/landscape/desktop geometry must remain identical to V0.54.1B.
+
 BEERBELGIO.GITHUB.IO — V0.54.1B / L1
 
 STATUS

@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.54.1B / L1
+/* BeerBelgio Lava Engine — V0.54.2 / L2
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -65,6 +65,7 @@
   let dragLastT = 0;
   let dragVx = 0;
   let dragVy = 0;
+  let dragHistory = [];
   const DRAG_THRESHOLD_PX = 4;
 
   function usesPortraitDocumentCanvas() {
@@ -118,6 +119,9 @@
       dragging: false,
       manualMomentumUntil: 0,
       manualBlendUntil: 0,
+      manualWarpMag: 0,
+      manualWarpUntil: 0,
+      manualWarpBlendUntil: 0,
       scrollX: 0,
       scrollY: 0,
       scrollGain: 0.78 + Math.random() * 0.48,
@@ -471,15 +475,29 @@
     if (forceMag > 1e-6) {
       blob.deformTargetDir = Math.atan2(blob.forceY, blob.forceX);
     }
-    // Never snap the deformation direction. The old direct atan2 assignment could
-    // visually rotate a whole blob in one frame when the dominant force changed.
+    // L2 keeps the approved L1 direction behaviour. Release adds only a decaying
+    // liquid-memory amount; L3 will decide how much extra warping a selected blob gets.
     const turnBlend = Math.min(0.16, 0.0038 * dt);
     blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * turnBlend;
+
+    let manualWarp = 0;
+    if (time < (blob.manualWarpUntil || 0)) {
+      manualWarp = blob.manualWarpMag || 0;
+    } else if (time < (blob.manualWarpBlendUntil || 0)) {
+      const span = Math.max(1, blob.manualWarpBlendUntil - blob.manualWarpUntil);
+      const t = Math.max(0, Math.min(1, (time - blob.manualWarpUntil) / span));
+      manualWarp = (blob.manualWarpMag || 0) * (1 - t);
+    }
+    if (manualWarp > 0) {
+      blob.phase += manualWarp * 0.00038 * dt;
+      blob.phase2 -= manualWarp * 0.00031 * dt;
+    }
+
     const morphFloor = blob.morphBase || 0.22;
     blob.deformMag = Math.min(
-      0.62,
+      0.64,
       Math.max(
-        morphFloor,
+        morphFloor + manualWarp,
         (blob.deformMag || morphFloor) * Math.pow(0.997, dt) + forceMag * 62
       )
     );
@@ -723,6 +741,7 @@
     dragLastX = dragStartX;
     dragLastY = dragStartY;
     dragLastT = dragLastT || performance.now();
+    dragHistory = [];
     return true;
   }
 
@@ -745,6 +764,7 @@
     dragLastT = performance.now();
     dragVx = 0;
     dragVy = 0;
+    dragHistory = [];
     return true;
   }
 
@@ -765,12 +785,20 @@
 
     const now = performance.now();
     const dt = Math.max(1, now - dragLastT);
-    dragVx = (x - dragLastX) / dt;
-    dragVy = (y - dragLastY) / dt;
+    const instantVx = (x - dragLastX) / dt;
+    const instantVy = (y - dragLastY) / dt;
+
+    // L2: use a short weighted history rather than one noisy final frame.
+    // Recent samples count more, so a slow / fast release stays proportional to the gesture.
+    dragHistory.push({ vx: instantVx, vy: instantVy, t: now });
+    dragHistory = dragHistory.filter(sample => now - sample.t <= 140);
+    const weightSum = dragHistory.reduce((sum, _, i) => sum + (i + 1), 0) || 1;
+    dragVx = dragHistory.reduce((sum, sample, i) => sum + sample.vx * (i + 1), 0) / weightSum;
+    dragVy = dragHistory.reduce((sum, sample, i) => sum + sample.vy * (i + 1), 0) / weightSum;
+
     draggedBlob.x = x;
     draggedBlob.y = y;
-    // Keep the original V0.40 deformation behaviour during a REAL drag.
-    // The click glitch is removed by the threshold, not by deleting drag morphology.
+    // Keep the approved L1/V0.40 drag morphology. L3 will amplify selected-blob warping.
     draggedBlob.deformTargetDir = Math.atan2(dragVy || 0.0001, dragVx || 0.0001);
     dragLastX = x;
     dragLastY = y;
@@ -786,6 +814,7 @@
     pendingPointerId = null;
     dragVx = 0;
     dragVy = 0;
+    dragHistory = [];
   }
 
   function endBlobDrag(e) {
@@ -799,15 +828,31 @@
       return true;
     }
 
-    // Genuine drag release remains exactly the V0.40 behaviour. L2 comes later.
-    const maxRelease = 0.105;
-    const scale = 0.090;
-    draggedBlob.vx = Math.max(-maxRelease, Math.min(maxRelease, dragVx * scale));
-    draggedBlob.vy = Math.max(-maxRelease, Math.min(maxRelease, dragVy * scale));
-    draggedBlob.baseAngle = Math.atan2(draggedBlob.vy || 0.0001, draggedBlob.vx || 0.0001);
+    // L2: release velocity follows the final gesture measured over a short weighted history.
+    // Slow gestures release slowly; faster gestures retain more momentum, with the historical V0.41 safety cap.
     const now = performance.now();
-    draggedBlob.manualMomentumUntil = now + 1900;
-    draggedBlob.manualBlendUntil = now + 4700;
+    const dragSpeed = Math.hypot(dragVx, dragVy);
+    const releaseGain = 0.085;
+    const maxRelease = 0.165;
+    draggedBlob.vx = Math.max(-maxRelease, Math.min(maxRelease, dragVx * releaseGain));
+    draggedBlob.vy = Math.max(-maxRelease, Math.min(maxRelease, dragVy * releaseGain));
+    if (Math.hypot(draggedBlob.vx, draggedBlob.vy) > 0.0001) {
+      draggedBlob.baseAngle = Math.atan2(draggedBlob.vy, draggedBlob.vx);
+    }
+
+    // Stronger gestures hold manual momentum a little longer, then blend smoothly back to autonomy.
+    const gesture = Math.min(1, dragSpeed / 1.15);
+    const holdMs = 1200 + gesture * 1800;
+    const blendMs = 2200 + gesture * 2600;
+    draggedBlob.manualMomentumUntil = now + holdMs;
+    draggedBlob.manualBlendUntil = now + holdMs + blendMs;
+
+    // The release also leaves a liquid memory that decays on exactly the same hold/blend curve.
+    // This is the V0.41-style residual warp only; the +50% selected-blob boost belongs to L3.
+    draggedBlob.manualWarpMag = 0.10 + gesture * 0.24;
+    draggedBlob.manualWarpUntil = now + holdMs;
+    draggedBlob.manualWarpBlendUntil = now + holdMs + blendMs;
+
     draggedBlob.dragging = false;
     contain(draggedBlob);
     clearBlobPointerState();

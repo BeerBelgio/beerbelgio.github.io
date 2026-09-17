@@ -1,1 +1,1 @@
-V0.54.1B / L1 staging. V0.54 UI/responsive baseline frozen; 0.54.1A scroll sensitivity retained; click-vs-drag threshold + no abrupt click phase jump only. Indexing disabled.
+V0.54.2 / L2 staging. V0.54 UI/responsive baseline frozen; approved L1 retained; gesture-proportional release + residual momentum + gradual autonomous return + release-warp decay only. Indexing disabled.
