@@ -1,1 +1,1 @@
-V0.54.1A / L1 diagnostic staging. V0.54 UI/responsive baseline frozen. Only lava scroll sensitivity differs. Indexing disabled.
+V0.54.1B / L1 staging. V0.54 UI/responsive baseline frozen; 0.54.1A scroll sensitivity retained; click-vs-drag threshold + no abrupt click phase jump only. Indexing disabled.

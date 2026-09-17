@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.54.1A / L1 diagnostic
+/* BeerBelgio Lava Engine — V0.54.1B / L1
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -56,11 +56,16 @@
 
   let draggedBlob = null;
   let dragPointerId = null;
+  let pendingBlob = null;
+  let pendingPointerId = null;
+  let dragStartX = 0;
+  let dragStartY = 0;
   let dragLastX = 0;
   let dragLastY = 0;
   let dragLastT = 0;
   let dragVx = 0;
   let dragVy = 0;
+  const DRAG_THRESHOLD_PX = 4;
 
   function usesPortraitDocumentCanvas() {
     // V0.39: retired. iOS portrait now uses a fixed overscanned canvas.
@@ -503,8 +508,7 @@
       blob.vy += fy;
       blob.forceX += fx;
       blob.forceY += fy;
-      blob.phase += force * 0.8;
-      blob.phase2 -= force * 0.5;
+      // L1: clicks may move the field, but must not inject an abrupt morph/phase jump.
     });
   }
 
@@ -690,20 +694,15 @@
     return document.body.classList.contains("lava-mode") || location.pathname.includes("/lava/");
   }
 
-  function startBlobDrag(e) {
-    const x = e.clientX + padX;
-    const y = e.clientY + padY;
-    const hit = blobAt(x, y);
-    if (!hit || !canDragWithPointer(e)) return false;
+  function beginActualBlobDrag(e, x, y) {
+    if (!pendingBlob || e.pointerId !== pendingPointerId) return false;
 
-    draggedBlob = hit;
+    draggedBlob = pendingBlob;
     draggedBlob.dragging = true;
     dragPointerId = e.pointerId;
-    dragLastX = x;
-    dragLastY = y;
-    dragLastT = performance.now();
-    dragVx = 0;
-    dragVy = 0;
+
+    // Only now — after real pointer travel — do we enter drag mode.
+    // This keeps a simple click/tap from zeroing velocity or changing the shape axis.
     scrollImpulseX = 0;
     scrollImpulseY = 0;
     blobs.forEach((blob) => {
@@ -713,25 +712,65 @@
     pointer.impulse = 0;
     pointer.strength = 0;
 
-    // Bring the selected blob visually to the front without changing its identity.
-    const idx = blobs.indexOf(hit);
+    // Bring the selected blob visually to the front only for a genuine drag.
+    const idx = blobs.indexOf(draggedBlob);
     if (idx >= 0 && idx !== blobs.length - 1) {
       blobs.splice(idx, 1);
-      blobs.push(hit);
+      blobs.push(draggedBlob);
     }
+
+    // Preserve V0.40 drag/release physics. L2 has NOT been introduced here.
+    dragLastX = dragStartX;
+    dragLastY = dragStartY;
+    dragLastT = dragLastT || performance.now();
+    return true;
+  }
+
+  function startBlobDrag(e) {
+    const x = e.clientX + padX;
+    const y = e.clientY + padY;
+    const hit = blobAt(x, y);
+    if (!hit || !canDragWithPointer(e)) return false;
+
+    // L1B: a press on a blob is only a drag candidate. The blob keeps its normal
+    // autonomous motion until the pointer actually travels beyond the threshold.
+    pendingBlob = hit;
+    pendingPointerId = e.pointerId;
+    draggedBlob = null;
+    dragPointerId = null;
+    dragStartX = x;
+    dragStartY = y;
+    dragLastX = x;
+    dragLastY = y;
+    dragLastT = performance.now();
+    dragVx = 0;
+    dragVy = 0;
     return true;
   }
 
   function moveBlobDrag(e) {
-    if (!draggedBlob || e.pointerId !== dragPointerId) return false;
+    if (!pendingBlob || e.pointerId !== pendingPointerId) return false;
+
     const x = e.clientX + padX;
     const y = e.clientY + padY;
+
+    if (!draggedBlob) {
+      const moved = Math.hypot(x - dragStartX, y - dragStartY);
+      if (moved < DRAG_THRESHOLD_PX) {
+        // Consume tiny pointer jitter without changing blob velocity, heading or morph.
+        return true;
+      }
+      beginActualBlobDrag(e, x, y);
+    }
+
     const now = performance.now();
     const dt = Math.max(1, now - dragLastT);
     dragVx = (x - dragLastX) / dt;
     dragVy = (y - dragLastY) / dt;
     draggedBlob.x = x;
     draggedBlob.y = y;
+    // Keep the original V0.40 deformation behaviour during a REAL drag.
+    // The click glitch is removed by the threshold, not by deleting drag morphology.
     draggedBlob.deformTargetDir = Math.atan2(dragVy || 0.0001, dragVx || 0.0001);
     dragLastX = x;
     dragLastY = y;
@@ -739,8 +778,28 @@
     return true;
   }
 
+  function clearBlobPointerState() {
+    if (draggedBlob) draggedBlob.dragging = false;
+    draggedBlob = null;
+    dragPointerId = null;
+    pendingBlob = null;
+    pendingPointerId = null;
+    dragVx = 0;
+    dragVy = 0;
+  }
+
   function endBlobDrag(e) {
-    if (!draggedBlob || (e && e.pointerId !== dragPointerId)) return false;
+    if (!pendingBlob && !draggedBlob) return false;
+    if (e && pendingPointerId !== null && e.pointerId !== pendingPointerId) return false;
+
+    // A click/tap that never crossed the drag threshold is intentionally a no-op:
+    // do not overwrite vx/vy, baseAngle, deformDir or phase.
+    if (!draggedBlob) {
+      clearBlobPointerState();
+      return true;
+    }
+
+    // Genuine drag release remains exactly the V0.40 behaviour. L2 comes later.
     const maxRelease = 0.105;
     const scale = 0.090;
     draggedBlob.vx = Math.max(-maxRelease, Math.min(maxRelease, dragVx * scale));
@@ -751,8 +810,7 @@
     draggedBlob.manualBlendUntil = now + 4700;
     draggedBlob.dragging = false;
     contain(draggedBlob);
-    draggedBlob = null;
-    dragPointerId = null;
+    clearBlobPointerState();
     return true;
   }
 

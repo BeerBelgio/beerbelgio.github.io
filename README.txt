@@ -1,3 +1,24 @@
+BEERBELGIO.GITHUB.IO — V0.54.1B / L1
+
+STATUS
+V0.54 remains the frozen UI/responsive baseline.
+V0.54.1A is the promoted scroll-sensitivity baseline.
+This build completes L1 by separating a real drag from a simple click/tap, without introducing any L2 release/momentum changes.
+
+V0.54.1B CHANGES
+- Keeps V0.54.1A scroll sensitivity exactly as approved.
+- Adds a 4 px drag threshold: pressing a blob does NOT immediately put it into drag mode.
+- A click/tap that stays below the threshold is a true no-op on the blob: it does not overwrite vx/vy, baseAngle, deformation direction or phase. This removes the V0.40 zero-distance-drag behaviour that could park a clicked blob.
+- A genuine drag, once the threshold is crossed, uses the original V0.40 drag and release physics unchanged. No gesture-history / proportional-release logic from L2 is included.
+- Blank-space burst clicks keep their movement impulse but no longer inject abrupt phase / phase2 jumps, removing the visible morph/rotation glitch without removing the motion impulse.
+- No changes to canvas geometry, overscan, visualViewport, resize/orientation logic, HUB responsive layout or sonoDGTL.
+
+TEST TARGET
+- Portrait responsive geometry must remain identical to V0.54 / V0.54.1A.
+- Simple click on a blob: blob should keep moving autonomously rather than stopping.
+- Blank click: movement impulse remains, but without an abrupt shape jump.
+- Real drag: should still feel like V0.40. L2 is deliberately not present yet.
+
 BEERBELGIO.GITHUB.IO — V0.54.1A / L1 DIAGNOSTIC
 
 STATUS
