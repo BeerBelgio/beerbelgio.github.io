@@ -1,3 +1,30 @@
+BEERBELGIO.GITHUB.IO — V0.54.2.3 / L2
+
+STATUS
+V0.54.1B remains the approved L1 baseline.
+For orderly numbering, the previous experimental labels map as follows: V0.54.2A = V0.54.2.1 and V0.54.2B = V0.54.2.2. From this build onward the numeric subversion scheme is canonical.
+V0.54.2.3 starts from the responsive-correct V0.54.2.2 behaviour and changes only LAVA release timing + selected-blob morphology.
+
+V0.54.2.3 CHANGES
+- Keeps the approved L1 scroll sensitivity, click-vs-drag threshold and no-abrupt-click-morph behaviour unchanged.
+- Keeps the approved 180 ms weighted release history, 72/28 recent-vs-whole-gesture blend, 0.30 release gain and 0.16 px/ms cap unchanged.
+- Release decay now grows progressively with throw strength instead of shrinking: weak throws settle quickly; strong throws remain visibly influenced by the user's gesture for longer.
+- Strength mapping uses a smooth curve: hold is about 450 ms for weak throws up to about 1150 ms for strong throws; blend is about 850 ms up to about 2350 ms.
+- A selected/held blob now receives a true +50% BASE liquid-morph boost even when the pointer/finger is stationary. The boost affects the whole contour deviation and morph phase speed, not only gesture-speed deformation.
+- The held boost ramps in over ~120 ms, avoiding a hard shape jump on pointer-down.
+- On release, the selected-blob morph boost decays smoothly back from its held value to 1.0 across the same strength-dependent release window.
+- A stationary hold that never crosses the 4 px drag threshold still gets the morph boost while held, but translation remains a true L1 no-op; its morph boost relaxes over ~900 ms after release.
+- No +5% selected-blob size growth yet.
+- No L4 5+5 attraction/repulsion logic yet.
+- No changes to canvas geometry, overscan, visualViewport, resize/orientation logic, HUB responsive layout or sonoDGTL.
+
+TEST TARGET
+- iPhone portrait geometry must remain identical to V0.54.2.2.
+- Weak throw: brief residual influence, then quick return to autonomous movement.
+- Strong throw: clearly longer residual trajectory/decay than a weak throw.
+- Grab a blob and stop moving: it must continue visibly morphing about 50% more than neighbouring blobs.
+- Release after holding: that extra morph must fade smoothly rather than switch off.
+
 BEERBELGIO.GITHUB.IO — V0.54.2B / L2B
 
 STATUS

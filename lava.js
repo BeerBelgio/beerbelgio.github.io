@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.54.2A / L2A
+/* BeerBelgio Lava Engine — V0.54.2.3 / L2
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -121,6 +121,7 @@
       manualMomentumUntil: 0,
       manualBlendUntil: 0,
       manualWarpPeak: 0,
+      manualWarpBoostStart: 1,
       manualWarpStart: 0,
       manualWarpEnd: 0,
       scrollX: 0,
@@ -217,21 +218,26 @@
       const deformMag = blob.deformMag || 0;
       const deformDir = blob.deformDir || 0;
       const ambientMorph = blob.morphBase || 0.22;
+      const morphBoost = blob.morphBoost || 1;
 
-      const breathing =
+      // L2.3: scale the COMPLETE deviation from the neutral contour.
+      // At 1.5 this is a true +50% baseline warp even while the held blob is still.
+      const breathingBase =
         1
         + wobbleNow * Math.sin(a * 3 + blob.phase + time * 0.00018)
         + wobbleNow * 0.62 * Math.sin(a * 5 - blob.phase2 + time * 0.00012)
         + ambientMorph * 0.08 * Math.sin(a * 2 + blob.phase2 * 0.6);
+      const breathing = 1 + (breathingBase - 1) * morphBoost;
 
       const directional = Math.cos(a - deformDir);
-      const stretch = 1
+      const stretchBase = 1
         + ambientMorph * 0.18 * Math.sin((a - deformDir) * 2 + blob.phase * 0.55)
         + ambientMorph * 0.12 * Math.sin((a - deformDir) * 3 - blob.phase2 * 0.42)
         + deformMag * 0.34 * directional
         - deformMag * 0.20 * Math.cos((a - deformDir) * 2)
         + deformMag * 0.12 * Math.sin((a - deformDir) * 3 + blob.phase2 * 0.55)
         + deformMag * 0.07 * Math.sin((a - deformDir) * 4 - blob.phase * 0.45);
+      const stretch = 1 + (stretchBase - 1) * morphBoost;
 
       radii.push(blob.r * Math.max(0.62, Math.min(1.46, breathing * stretch)));
     }
@@ -311,8 +317,27 @@
   function update(blob, dt, time) {
     const motionScale = prefersReducedMotion ? 0.18 : 1;
 
-    blob.phase += dt * 0.000070 * motionScale;
-    blob.phase2 -= dt * 0.000052 * motionScale;
+    // L2.3: selecting/holding a blob boosts its BASE liquid behaviour, not just
+    // gesture-speed deformation. A stationary held blob therefore keeps morphing
+    // 50% more strongly/faster than its neighbours. The same boost decays after release.
+    let morphBoost = 1;
+    const pendingHeld = blob === pendingBlob && pendingPointerId !== null;
+    if (blob.dragging) {
+      morphBoost = 1.5;
+    } else if (pendingHeld) {
+      const heldFor = Math.max(0, time - (dragStartT || time));
+      const heldRamp = Math.max(0, Math.min(1, heldFor / 120));
+      morphBoost = 1 + 0.5 * heldRamp;
+    } else if (time < (blob.manualWarpEnd || 0) && (blob.manualWarpBoostStart || 1) > 1) {
+      const span = Math.max(1, blob.manualWarpEnd - blob.manualWarpStart);
+      const t = Math.max(0, Math.min(1, (time - blob.manualWarpStart) / span));
+      const eased = t * t * (3 - 2 * t);
+      morphBoost = blob.manualWarpBoostStart + (1 - blob.manualWarpBoostStart) * eased;
+    }
+    blob.morphBoost = morphBoost;
+
+    blob.phase += dt * 0.000070 * motionScale * morphBoost;
+    blob.phase2 -= dt * 0.000052 * motionScale * morphBoost;
     blob.forceX = 0;
     blob.forceY = 0;
 
@@ -320,14 +345,13 @@
       blob.deformTargetDir = Math.atan2(dragVy || blob.vy, dragVx || blob.vx);
       blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * Math.min(0.22, 0.006 * dt);
 
-      // L2B: preserve the proven V0.40 drag shape logic, but amplify its
-      // deformation by 50% for the entire time the blob is actually held.
-      // No extra phase changes are injected here: only the warp amplitude changes.
+      // Keep the proven V0.40 gesture-speed deformation. The +50% selected
+      // liquid boost is applied uniformly by morphBoost, so we do not double-count it here.
       const normalDragWarp = Math.max(
         blob.morphBase || 0.22,
         Math.min(0.52, 0.27 + Math.hypot(dragVx, dragVy) * 4)
       );
-      blob.deformMag = Math.min(0.78, normalDragWarp * 1.5);
+      blob.deformMag = Math.min(0.52, normalDragWarp);
       return;
     }
 
@@ -497,9 +521,8 @@
       )
     );
 
-    // L2B: after release, let the extra held-warp fade continuously back to the
-    // autonomous morph floor across the same overall release window. This only
-    // changes amplitude; phase/phase2 and the canvas/viewport path are untouched.
+    // L2.3: preserve gesture deformation during release while the global morphBoost
+    // simultaneously decays from its held value back to 1. No canvas/viewport changes.
     if (time < (blob.manualWarpEnd || 0) && (blob.manualWarpPeak || 0) > morphFloor) {
       const warpSpan = Math.max(1, blob.manualWarpEnd - blob.manualWarpStart);
       const warpT = Math.max(0, Math.min(1, (time - blob.manualWarpStart) / warpSpan));
@@ -833,6 +856,17 @@
     // A click/tap that never crossed the drag threshold is intentionally a no-op:
     // do not overwrite vx/vy, baseAngle, deformDir or phase.
     if (!draggedBlob) {
+      // A stationary press is still a held selection for morphology. Let that
+      // temporary +50% liquid boost relax smoothly after release, while keeping
+      // translation/heading untouched (the L1 click no-op contract).
+      const now = performance.now();
+      const heldBoost = pendingBlob ? (pendingBlob.morphBoost || 1) : 1;
+      if (pendingBlob && heldBoost > 1.001) {
+        pendingBlob.manualWarpPeak = Math.max(pendingBlob.deformMag || 0, pendingBlob.morphBase || 0.22);
+        pendingBlob.manualWarpBoostStart = heldBoost;
+        pendingBlob.manualWarpStart = now;
+        pendingBlob.manualWarpEnd = now + 900;
+      }
       clearBlobPointerState();
       return true;
     }
@@ -858,17 +892,19 @@
     }
 
     // Reuse the V0.40 momentum/blend mechanism already present in update().
-    // L2B: fast throws remain energetic, but return to autonomous motion sooner.
-    // Slow gestures keep a little more settling time so their perturbation remains legible.
+    // L2.3: decay duration now grows progressively with throw strength. A weak
+    // release settles quickly; a strong throw keeps more of the user's perturbation longer.
     const gesture = Math.min(1, releaseSpeed / maxRelease);
-    const holdMs = 1350 - gesture * 650;   // ~1350 ms slow -> ~700 ms fast
-    const blendMs = 2400 - gesture * 900; // ~2400 ms slow -> ~1500 ms fast
+    const gestureCurve = gesture * gesture * (3 - 2 * gesture);
+    const holdMs = 450 + gestureCurve * 700;    // ~450 ms weak -> ~1150 ms strong
+    const blendMs = 850 + gestureCurve * 1500; // ~850 ms weak -> ~2350 ms strong
     draggedBlob.manualMomentumUntil = now + holdMs;
     draggedBlob.manualBlendUntil = now + holdMs + blendMs;
 
-    // Carry the +50% held-warp into release, then decay it smoothly across the
-    // same total release window. No new phase or direction impulses are added.
+    // Carry the selected +50% base liquid behaviour into release, then decay it
+    // across exactly the same strength-dependent release window.
     draggedBlob.manualWarpPeak = Math.max(draggedBlob.deformMag || 0, draggedBlob.morphBase || 0.22);
+    draggedBlob.manualWarpBoostStart = Math.max(1, draggedBlob.morphBoost || 1.5);
     draggedBlob.manualWarpStart = now;
     draggedBlob.manualWarpEnd = draggedBlob.manualBlendUntil;
     draggedBlob.dragging = false;
