@@ -1,25 +1,25 @@
-BEERBELGIO.GITHUB.IO — V0.54.3 / L3
+BEERBELGIO.GITHUB.IO — V0.54.4 / L4
 
 STATUS
-V0.54.2.3 is the approved L2 baseline: responsive geometry is correct, proportional release/momentum is approved, stronger throws retain longer user influence, and a held blob has a +50% base liquid/morph boost with matching release decay.
-This build completes L3 by adding only the missing selected-blob size behaviour.
+V0.54.2.3 is the approved L2/L3-without-size-growth baseline. V0.54.3 is rejected because the selected-blob +5% render scaling coincided with a mobile proportion regression and worse blob behaviour; that size-growth experiment is fully removed here.
+V0.54.4 restarts directly from V0.54.2.3 and adds ONLY the 5+5 blank-click attraction/repulsion behaviour.
 
-V0.54.3 CHANGES
-- Keeps all approved L1 and L2 behaviour unchanged.
-- Selected/held blob grows to exactly +5% at the full 1.5x liquid boost.
-- Size uses the EXISTING morphBoost envelope instead of introducing another timer or state machine: morphBoost 1.0 = normal size; morphBoost 1.5 = 1.05x size.
-- A stationary held blob therefore ramps toward +5% over the same ~120 ms selection ramp already used by the +50% liquid boost.
-- During a real drag, size remains +5% while the selected liquid boost remains at 1.5x.
-- On release, size decays smoothly back to 1.0x along exactly the same strength-dependent release window as the warp/morph boost.
-- A short press that never crosses the 4 px drag threshold may still show the selection growth while held, but translation/heading remain the approved L1 no-op.
-- No L4 5+5 attraction/repulsion logic yet.
-- No changes to canvas geometry, overscan, visualViewport, resize/orientation logic, HUB responsive layout or sonoDGTL.
+V0.54.4 CHANGES
+- Restores lava.js directly from approved V0.54.2.3 before adding L4; no +5% selected-blob size growth is present.
+- Keeps all approved L1/L2 behaviour unchanged: reduced scroll sensitivity, click-vs-drag threshold, gesture-proportional release, strength-dependent momentum/decay and +50% held liquid morph with release decay.
+- Blank-space clicks now run a 5+5 cycle: first five clicks REPULSE blobs from the click point; next five ATTRACT blobs toward it; then the cycle repeats.
+- L4 changes trajectory only. It does NOT inject phase/phase2 jumps, rotate the morph axis, alter morphBoost, resize blobs, or touch canvas/viewport/responsive geometry.
+- Clicks on blobs remain governed by the existing click-vs-drag logic and do not count toward the 5+5 blank-click cycle.
+- Clicks on cards/buttons/links/form controls remain excluded.
+- Desktop browser-window resize issue is intentionally NOT addressed in this lava-isolation build; UI/responsive files remain frozen to the V0.54 baseline.
 
 TEST TARGET
-- Hold a blob still: it should become visibly but subtly ~5% larger while its liquid morph is +50%.
-- Drag a blob: +5% size should remain stable during the drag, without squeeze/shrink behaviour.
-- Release: size and liquid boost should relax together, using the already-approved strength-dependent decay.
-- iPhone portrait geometry must remain identical to V0.54.2.3.
+- iPhone/mobile proportions must remain identical to V0.54.2.3.
+- Click blank lava five times: blobs should move away from each click point.
+- Click blank lava five more times: blobs should move toward each click point.
+- Eleventh click must begin a new repulsion block.
+- No abrupt morph/rotation glitch should occur on blank clicks.
+- Existing blob drag/release and +50% held morph behaviour must remain unchanged.
 
 BEERBELGIO.GITHUB.IO — V0.54.2.3 / L2
 

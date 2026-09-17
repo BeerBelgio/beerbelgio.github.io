@@ -67,6 +67,11 @@
   let dragVy = 0;
   let dragHistory = [];
   let dragStartT = 0;
+
+  // L4: blank-space clicks alternate in five-click blocks.
+  // Start with five repulsive clicks, then five attractive clicks, repeat.
+  let blankClickCount = 0;
+  let blankClickMode = "repel";
   const DRAG_THRESHOLD_PX = 4;
 
   function usesPortraitDocumentCanvas() {
@@ -219,9 +224,6 @@
       const deformDir = blob.deformDir || 0;
       const ambientMorph = blob.morphBase || 0.22;
       const morphBoost = blob.morphBoost || 1;
-      // L3: selected size follows the SAME held/release envelope as the liquid boost.
-      // morphBoost 1.0 -> normal size, 1.5 -> +5%. No extra timer/state is introduced.
-      const selectedScale = 1 + Math.max(0, morphBoost - 1) * 0.10;
 
       // L2.3: scale the COMPLETE deviation from the neutral contour.
       // At 1.5 this is a true +50% baseline warp even while the held blob is still.
@@ -242,7 +244,7 @@
         + deformMag * 0.07 * Math.sin((a - deformDir) * 4 - blob.phase * 0.45);
       const stretch = 1 + (stretchBase - 1) * morphBoost;
 
-      radii.push(blob.r * selectedScale * Math.max(0.62, Math.min(1.46, breathing * stretch)));
+      radii.push(blob.r * Math.max(0.62, Math.min(1.46, breathing * stretch)));
     }
 
     // Low-pass the radial contour so deformation stays liquid instead of pointy/clipped.
@@ -560,6 +562,32 @@
       blob.forceY += fy;
       // L1: clicks may move the field, but must not inject an abrupt morph/phase jump.
     });
+  }
+
+  // L4: non-blob clicks affect trajectory only. Five clicks repel blobs
+  // from the click point, the next five attract them, then the cycle repeats.
+  // No phase, morph, canvas or viewport state is touched here.
+  function pointImpulse(x, y, mode = "repel") {
+    const polarity = mode === "attract" ? -1 : 1;
+    blobs.forEach((blob) => {
+      const dx = blob.x - x;
+      const dy = blob.y - y;
+      const dist = Math.hypot(dx, dy) || 1;
+      const force = Math.max(0, 1 - dist / Math.max(width, height));
+
+      const fx = (dx / dist) * force * 0.15 * polarity;
+      const fy = (dy / dist) * force * 0.15 * polarity;
+      blob.vx += fx;
+      blob.vy += fy;
+    });
+  }
+
+  function handleBlankClick(x, y) {
+    pointImpulse(x, y, blankClickMode);
+    blankClickCount += 1;
+    if (blankClickCount % 5 === 0) {
+      blankClickMode = blankClickMode === "repel" ? "attract" : "repel";
+    }
   }
 
 
@@ -978,7 +1006,7 @@
       return;
     }
     if (e.target && e.target.closest && e.target.closest("a, button, input, textarea, select, .card")) return;
-    burst(e.clientX + padX, e.clientY + padY);
+    handleBlankClick(e.clientX + padX, e.clientY + padY);
   }, { passive: false });
 
   addEventListener("pointerup", (e) => { endBlobDrag(e); }, { passive: true });
