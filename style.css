@@ -3330,3 +3330,69 @@ body.privacy-open { overflow: hidden; }
   .privacy-intro { font-size: 13px; }
   .privacy-copy p { font-size: 12.5px; }
 }
+
+
+/* =========================================================
+   V0.55.1.12 — PRIVACY UI POLISH
+   Promoted: portrait identity typography + lava scroll behaviour from V0.55.1.11.
+   This section changes privacy presentation only.
+   ========================================================= */
+
+/* Landscape: keep the privacy control outside the Hero but move it to the
+   right-hand margin. Desktop fine pointer remains on the left; portrait remains above. */
+@media (pointer: coarse) and (orientation: landscape) {
+  .privacy-launch {
+    left: auto !important;
+    right: -58px !important;
+  }
+}
+
+/* Keep modal content scrollable on short viewports, but remove platform/browser
+   scrollbar chrome from the card and overlay. */
+.privacy-overlay,
+.privacy-card {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.privacy-overlay::-webkit-scrollbar,
+.privacy-card::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* External privacy links use the repository's own SVG arrow asset instead of
+   a Unicode/emoji arrow. */
+.privacy-copy a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .24em;
+}
+.privacy-link-arrow {
+  width: .82em;
+  height: .82em;
+  flex: 0 0 auto;
+  display: inline-block;
+  transform: translateY(.04em);
+}
+
+/* Draw the close mark geometrically so it is centred independently of font
+   metrics/browser rendering. The textual × remains in the DOM for fallback,
+   while the button already has its explicit aria-label. */
+.privacy-close {
+  display: grid;
+  place-items: center;
+  font-size: 0 !important;
+  line-height: 1 !important;
+}
+.privacy-close::before,
+.privacy-close::after {
+  content: "";
+  grid-area: 1 / 1;
+  width: 15px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+.privacy-close::before { transform: rotate(45deg); }
+.privacy-close::after  { transform: rotate(-45deg); }

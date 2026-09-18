@@ -1,3 +1,25 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.12 STAGING / PRE-V1
+
+STATUS
+V0.55.1.11 is promoted for mobile portrait Hero typography and the current LAVA separation / no-scroll-rotation behaviour. V0.55.1.12 changes only privacy presentation and social-title wording; search indexing remains disabled until explicit V1.0 promotion.
+
+V0.55.1.12 CHANGES
+- HUB Open Graph + Twitter title: “Matteo Belgiovine — Digital Hub”. og:site_name remains “Matteo Belgiovine”; canonical / og:url remain https://beerbelgio.github.io/.
+- HUB privacy panel: visible scrollbars removed while wheel/touch scrolling remains available on short viewports.
+- HUB + sonoDGTL privacy external links now use assets/icon-arrow-up-right.svg instead of a Unicode arrow.
+- HUB + sonoDGTL privacy close control now draws a geometric centred X, avoiding browser/font baseline drift.
+- HUB touch landscape: privacy opener moved from the left Hero margin to the right Hero margin. Desktop remains left; portrait remains above Hero.
+- sonoDGTL EN + IT: PRIVACY is now an independent footer element. Desktop/landscape place it in the mathematical centre between legal copy and the motto. Portrait gives PRIVACY its own centred line, with no dash/separator.
+- No change to portrait Hero typography, LAVA physics, desktop resize, sticky final claim, FULL LAVA help behaviour, /lava/, or sonoDGTL content/card geometry.
+
+V1.0 STILL REQUIRES
+- User approval of V0.55.1.12 privacy/footer presentation.
+- Remove robots noindex/nofollow/noarchive from public pages.
+- Change GitHub repository description to “My Digital Hub”.
+- Final upload verification including .nojekyll visibility and social-preview asset URLs.
+
+---
+
 BEERBELGIO.GITHUB.IO — V0.55.1.11 STAGING / PRE-V1
 
 STATUS

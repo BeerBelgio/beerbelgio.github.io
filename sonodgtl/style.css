@@ -429,3 +429,85 @@ body.privacy-open { overflow: hidden; }
   .privacy-intro { font-size: 13px; }
   .privacy-copy p { font-size: 12.5px; }
 }
+
+
+/* =========================================================
+   V0.55.1.12 — FOOTER + PRIVACY UI POLISH
+   No sonoDGTL content/card geometry changes.
+   ========================================================= */
+
+/* Three independent footer elements: legal at left, privacy mathematically
+   centred, motto at right. */
+.sd-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 24px;
+}
+.sd-footer-legal {
+  display: block;
+  justify-self: start;
+}
+.sd-privacy-link {
+  justify-self: center;
+}
+.sd-footer-motto {
+  justify-self: end;
+  text-align: right;
+}
+
+/* Portrait keeps the footer stacked; PRIVACY is its own centred line and no
+   separator is used. */
+@media (pointer: coarse) and (orientation: portrait) {
+  .sd-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sd-footer-legal { align-self: stretch; }
+  .sd-privacy-link { align-self: center; }
+  .sd-footer-motto { align-self: stretch; text-align: left; }
+}
+
+.privacy-overlay,
+.privacy-card {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.privacy-overlay::-webkit-scrollbar,
+.privacy-card::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.privacy-copy a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .24em;
+}
+.privacy-link-arrow {
+  width: .82em;
+  height: .82em;
+  flex: 0 0 auto;
+  display: inline-block;
+  transform: translateY(.04em);
+}
+
+.privacy-close {
+  display: grid;
+  place-items: center;
+  font-size: 0 !important;
+  line-height: 1 !important;
+}
+.privacy-close::before,
+.privacy-close::after {
+  content: "";
+  grid-area: 1 / 1;
+  width: 15px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+.privacy-close::before { transform: rotate(45deg); }
+.privacy-close::after  { transform: rotate(-45deg); }
