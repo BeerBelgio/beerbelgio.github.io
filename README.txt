@@ -1,3 +1,18 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.3 PUBLIC STAGING
+
+STATUS
+Desktop-resize correction + FULL LAVA help-copy refinement.
+Base is V0.55.1.2; lava physics remains frozen at V0.54.4.
+
+V0.55.1.3 CHANGES
+- Desktop fine-pointer windows no longer lose the historical desktop CSS when viewport width crosses below 720px.
+- The canonical 760px desktop composition therefore remains structurally identical and is scaled only as one centred unit when the window becomes too narrow.
+- Desktop detection now follows the same fine-pointer criterion used by the CSS lock, avoiding a mismatch between JS stage scaling and CSS layout mode.
+- FULL LAVA info button changed from “i” to “?”.
+- FULL LAVA instructions changed from a command list to one flowing paragraph; interaction keywords are bold.
+- The same help treatment is used in HUB FULL LAVA and the standalone /lava/ route.
+- No lava-engine, mobile portrait/landscape, canvas, sonoDGTL or interaction-physics changes.
+
 BEERBELGIO.GITHUB.IO — V0.55.1.2 PUBLIC STAGING
 
 STATUS

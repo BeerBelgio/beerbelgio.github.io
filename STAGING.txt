@@ -1,8 +1,8 @@
-V0.55.1.2 PUBLIC STAGING
+V0.55.1.3 PUBLIC STAGING
 
-Base: V0.55.1.1. Rejected V0.55.2 scroll-polarity experiment remains excluded.
-Desktop: canonical 760px composition; stable approved size while it fits, then centre-anchored transform scaling with symmetric gutters.
-FULL LAVA: new circular info control + HUB-style instructions popup, also available at /lava/.
+Base: V0.55.1.2. Rejected V0.55.2 scroll-polarity experiment remains excluded.
+Desktop resize: fine-pointer desktops now retain the complete historical desktop rule set below the old 720px breakpoint; the canonical 760px composition scales as one centred unit instead of falling back to mobile/base geometry.
+FULL LAVA: circular help control is now “?”; instructions are a single flowing paragraph with bold interaction words instead of a command list.
 Mobile portrait: unchanged V0.55.1 midpoint-sticky final motto + 144svh lava play tail.
 Mobile landscape: unchanged V0.54.4 normal ending.
 Frozen lava engine: V0.54.4 byte-for-byte.

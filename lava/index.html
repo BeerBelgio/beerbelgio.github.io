@@ -107,9 +107,8 @@
       letter-spacing: -.045em;
     }
 
-    .lava-info-card dl { margin: 0; display: grid; gap: 16px; }
-    .lava-info-card dt { margin: 0 0 3px; font-size: 12px; font-weight: 900; letter-spacing: .055em; }
-    .lava-info-card dd { margin: 0; font-size: 13px; line-height: 1.35; font-weight: 500; }
+    .lava-info-copy { margin: 0; font-size: 14px; line-height: 1.52; font-weight: 500; }
+    .lava-info-copy strong { font-weight: 900; }
 
     .lava-info-close {
       position: absolute;
@@ -134,20 +133,14 @@
 
   <div class="hud">
     <a href="../"><img src="../assets/icon-arrow-left.svg?v=054" alt=""> HUB</a>
-    <button class="lava-info" id="lava-info" type="button" aria-label="Full Lava controls" aria-expanded="false" aria-controls="lava-info-panel">i</button>
+    <button class="lava-info" id="lava-info" type="button" aria-label="Full Lava controls" aria-expanded="false" aria-controls="lava-info-panel">?</button>
   </div>
 
   <div class="lava-info-panel card" id="lava-info-panel" hidden role="dialog" aria-modal="true" aria-labelledby="lava-info-title">
     <section class="lava-info-card">
       <button class="lava-info-close" id="lava-info-close" type="button" aria-label="Close Full Lava controls">×</button>
       <h1 id="lava-info-title">FULL LAVA</h1>
-      <dl>
-        <div><dt>MOVE</dt><dd>Move the pointer through the field to create a local fluid perturbation.</dd></div>
-        <div><dt>SCROLL</dt><dd>Scroll to push the whole lava field and disturb the blobs.</dd></div>
-        <div><dt>GRAB + DRAG</dt><dd>Select a blob, move it, then release it. The throw keeps part of your gesture before returning to autonomous motion.</dd></div>
-        <div><dt>HOLD</dt><dd>Keep a blob selected and still: its liquid warping increases while you hold it, then fades after release.</dd></div>
-        <div><dt>5 + 5 CLICKS</dt><dd>Five clicks on empty space repel the blobs. The next five attract them. Then the cycle starts again.</dd></div>
-      </dl>
+      <p class="lava-info-copy"><strong>move</strong> the pointer through the field to create a perturbation. <strong>scroll</strong> around to push the whole field and affect the blobs. <strong>grab &amp; drag</strong> a blob, move it and release it — throw it, play with it. <strong>5+5</strong> clicks on empty space will repel the blobs, then attract them. Drive ’em crazy.</p>
     </section>
   </div>
 

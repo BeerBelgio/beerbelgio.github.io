@@ -96,7 +96,9 @@
   // DESKTOP PROPORTIONAL STAGE
   //
   // Keep one canonical 760px desktop layout and scale only its painted output.
-  // The approved full-size width is still 45% of the physical desktop screen;
+  // Fine-pointer desktops keep the full desktop CSS at every browser width;
+  // the historical 720px breakpoint must never switch a resized desktop into
+  // the mobile/base geometry. The approved full-size width is still 45% of the physical desktop screen;
   // narrowing the browser therefore does not shrink the site until it actually
   // needs to fit. When fitting is required, the shell is scaled around its OWN
   // horizontal centre, removing the left/right drift produced by CSS zoom.
@@ -106,7 +108,7 @@
   const DESKTOP_MIN_GUTTER = 18;
 
   function isDesktopExperience() {
-    return matchMedia("(pointer: fine)").matches && screen.width >= 900;
+    return matchMedia("(pointer: fine)").matches;
   }
 
   function updateDesktopStage() {
