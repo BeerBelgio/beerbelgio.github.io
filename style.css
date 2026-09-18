@@ -3138,3 +3138,195 @@ html.desktop-proportional .floating-motto {
   }
 }
 
+
+
+/* =========================================================
+   V0.55.1.11 — PRE-V1 UI / PRIVACY
+   - Mobile portrait identity typography restored to the larger visual scale.
+   - Privacy control is integrated without changing card geometry.
+   ========================================================= */
+
+.hero { position: relative; }
+
+/* Portrait identity typography: scale relative to the actual phone viewport,
+   with safe caps for small/large phones. Landscape keeps its existing rules. */
+@media (pointer: coarse) and (orientation: portrait) {
+  .identity-block h2 {
+    font-size: clamp(40px, 10.8vw, 46px) !important;
+    line-height: .98 !important;
+  }
+  .identity-tagline {
+    font-size: clamp(17px, 4.7vw, 20px) !important;
+    line-height: 1.14 !important;
+  }
+  .identity-meta {
+    font-size: clamp(13.5px, 3.8vw, 16px) !important;
+    line-height: 1.18 !important;
+  }
+}
+
+/* Privacy opener: same visual language as the Full Lava "?", but labelled so
+   the destination is explicit. It lives outside the card edge without
+   participating in Hero layout. */
+.privacy-launch {
+  position: absolute;
+  z-index: 12;
+  left: -86px;
+  top: 30px;
+  width: 64px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.privacy-launch-mark {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+}
+.privacy-launch-label {
+  color: var(--cream);
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .075em;
+}
+.privacy-launch:focus-visible .privacy-launch-mark {
+  outline: 3px solid var(--cream);
+  outline-offset: 4px;
+}
+body.lava-mode .privacy-launch { display: none !important; }
+
+@media (pointer: coarse) and (orientation: portrait) {
+  .privacy-launch {
+    left: 0;
+    top: -70px;
+    width: 58px;
+  }
+  .privacy-launch-mark { width: 42px; height: 42px; font-size: 19px; }
+}
+
+@media (pointer: coarse) and (orientation: landscape) {
+  .privacy-launch {
+    left: -58px;
+    top: 12px;
+    width: 50px;
+    gap: 5px;
+  }
+  .privacy-launch-mark { width: 40px; height: 40px; font-size: 18px; }
+  .privacy-launch-label { font-size: 8px; }
+}
+
+/* Click-open privacy panel. The overlay deliberately carries .card in the DOM,
+   so lava.js treats every pointer press inside it as UI rather than a 5+5 click. */
+.privacy-overlay[hidden] { display: none !important; }
+.privacy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(28, 23, 19, .56) !important;
+  border-radius: 0 !important;
+  overflow: auto;
+}
+.privacy-card {
+  position: relative;
+  width: min(640px, calc(100vw - 40px));
+  max-height: min(82svh, 760px);
+  overflow: auto;
+  padding: 30px 30px 28px;
+  border-radius: 28px;
+  background: var(--cream);
+  color: var(--ink);
+}
+.privacy-card h2 {
+  margin: 0 46px 6px 0;
+  font-size: 34px;
+  line-height: .95;
+  letter-spacing: -.035em;
+}
+.privacy-intro {
+  margin: 0 46px 22px 0;
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+.privacy-copy {
+  display: grid;
+  gap: 0;
+  border-top: 2px solid var(--ink);
+}
+.privacy-copy section {
+  padding: 15px 0;
+  border-bottom: 1.5px solid rgba(28,23,19,.36);
+}
+.privacy-copy h3 {
+  margin: 0 0 5px;
+  font-size: 11px;
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: .07em;
+}
+.privacy-copy p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 500;
+}
+.privacy-copy a { font-weight: 800; text-underline-offset: 2px; }
+.privacy-copy code {
+  font-family: var(--ui-font), sans-serif;
+  font-size: .95em;
+  font-weight: 700;
+}
+.privacy-updated {
+  margin: 16px 0 0;
+  font-size: 10px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: .03em;
+  opacity: .70;
+}
+.privacy-close {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--cream);
+  font: inherit;
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+}
+body.privacy-open { overflow: hidden; }
+
+@media (pointer: coarse) {
+  .privacy-card {
+    width: min(88vw, 640px);
+    max-height: min(82svh, 720px);
+    padding: 25px 22px 24px;
+    border-radius: 24px;
+  }
+  .privacy-card h2 { font-size: 30px; }
+  .privacy-intro { font-size: 13px; }
+  .privacy-copy p { font-size: 12.5px; }
+}

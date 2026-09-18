@@ -36,11 +36,18 @@ For commercial licensing, contact Matteo Belgiovine to discuss permission and co
 
 matteo.sonodgtl@gmail.com
 
-## 4. Third-party material
+## 4. GitHub platform permissions
+
+The licences in this file govern reuse granted by the repository owner. They do not limit separate rights granted to GitHub, its Affiliates, or GitHub users under the GitHub Terms of Service solely through the GitHub Service. Those platform permissions do not constitute a broader licence for third-party commercial reuse outside those Terms.
+
+GitHub Terms of Service:
+https://docs.github.com/en/site-policy/github-terms/github-terms-of-service
+
+## 5. Third-party material
 
 These licences do **not** relicense third-party fonts, platform names, trademarks, logos, or other third-party material. Those remain subject to their respective owners' terms and licences. See `THIRD_PARTY_NOTICES.md`.
 
 
-## 5. Copyright notice
+## 6. Copyright notice
 
 See `COPYRIGHT.md` for the concise ownership / reuse notice used alongside this licence file.

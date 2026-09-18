@@ -428,9 +428,16 @@
     blob.vx += scrollFx;
     blob.vy += scrollFy;
 
-    const warpGain = 0.16 * blob.scrollWarpGain * scrollWarpBoost;
-    blob.forceX += scrollFx * warpGain;
-    blob.forceY += scrollFy * warpGain;
+    // Scroll may increase liquid deformation, but it must NOT steer the
+    // deformation axis. Coupling scrollFx/scrollFy into forceX/forceY made
+    // every blob turn its shape toward the scroll direction; reversing scroll
+    // then looked like a coordinated rotation of the whole field. Keep only a
+    // scalar warp amount and let the existing autonomous/physical forces own
+    // deformTargetDir.
+    const scrollWarpMag = Math.min(
+      0.12,
+      Math.hypot(scrollNormX, scrollNormY) * 0.075 * blob.scrollWarpGain * scrollWarpBoost
+    );
 
     // Anti-edge / anti-corner disturbance:
     // viscous steering first, tiny pushes second. No flipper kicks.
@@ -510,10 +517,11 @@
     const turnBlend = Math.min(0.16, 0.0038 * dt);
     blob.deformDir += angleDelta(blob.deformDir, blob.deformTargetDir) * turnBlend;
     const morphFloor = blob.morphBase || 0.22;
+    const scrollMorphFloor = Math.min(0.46, morphFloor + scrollWarpMag);
     blob.deformMag = Math.min(
       0.78,
       Math.max(
-        morphFloor,
+        scrollMorphFloor,
         (blob.deformMag || morphFloor) * Math.pow(0.997, dt) + forceMag * 62
       )
     );

@@ -1,3 +1,26 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.11 STAGING / PRE-V1
+
+STATUS
+V0.55.1.10 is the immediate visual/physics baseline. V0.55.1.11 addresses the remaining portrait typography and scroll-rotation feedback, and stages the privacy/social/licensing work requested before V1.0. Search indexing remains disabled until explicit V1.0 promotion.
+
+V0.55.1.11 CHANGES
+- HUB mobile portrait only: BeerBelgio / sonoDGTL identity typography now uses viewport-relative sizing with safe min/max caps (titles 40–46px, taglines 17–20px, meta 13.5–16px). Landscape and desktop identity geometry are unchanged.
+- LAVA: V0.55.1.10 universal/same-family repulsion values are preserved. Scroll still produces directional translation, but its vector is no longer injected into forceX/forceY and therefore no longer steers deformTargetDir. Scroll warp is retained as magnitude-only deformation along the blob's existing axis.
+- HUB privacy: labelled ? / PRIVACY control sits above Hero in touch portrait and in the left Hero margin on desktop/touch landscape. It is hidden in FULL LAVA. Click opens an accessible modal; automatic popups/banners are not used.
+- sonoDGTL privacy: EN + IT footer gains a PRIVACY control opening the same information in the page language. /lava/ deliberately has no privacy control, per project decision.
+- Privacy wording covers site-side tracking, GitHub Pages hosting/IP logging, YouTube privacy-enhanced loading on HUB, external links, mailto contact, retention/rights and controller contact.
+- Social metadata staged on HUB: canonical, og:url, og:image (+ dimensions/type/alt) and Twitter summary_large_image metadata. User-supplied BeerBelgio-preview SVG is included as assets/og-image.svg and converted to assets/og-image.png at exactly 1200×630.
+- LICENSE.md now explicitly separates repository-owner licences from rights granted under the GitHub Terms of Service; those platform permissions are not a broader commercial licence to third parties outside those Terms.
+- noindex/nofollow/noarchive remain active. Repo description is not changed by this ZIP.
+
+V1.0 STILL REQUIRES
+- User approval of V0.55.1.11 visual/interaction behaviour.
+- Remove robots noindex/nofollow/noarchive from public pages.
+- Change GitHub repository description from staging wording to “My Digital Hub”.
+- Final upload verification including .nojekyll visibility and social-preview asset URLs.
+
+---
+
 BEERBELGIO.GITHUB.IO — V0.55.1.10 STAGING
 
 PORTRAIT TYPE + LAVA SEPARATION / NO-SWIRL SCROLL
