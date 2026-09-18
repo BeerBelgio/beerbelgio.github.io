@@ -3422,23 +3422,24 @@ body.privacy-open { overflow: hidden; }
 
 
 /* =========================================================
-   V0.55.2 — UNIVERSAL FINAL CLAIM / VIEWPORT-TRUE STICKY TAIL
+   V0.55.2.1 — UNIVERSAL FINAL CLAIM / PROMOTED CLAIM-END ENGINE
 
-   The final claim now lives outside .site-shell, so desktop scaling cannot
-   distort sticky coordinates. Desktop, touch portrait and touch landscape
-   use the same portrait-Hero SVG, the same reactive blob masks and the same
-   midpoint + play-tail behaviour.
+   Reuses the exact V0.55.1.15 portrait final-claim construction based on
+   claim-portrait-end.svg. The claim remains outside the transformed desktop
+   shell so sticky coordinates are viewport-true in every orientation.
    ========================================================= */
 
-/* Retire the old in-shell pseudo tail from the portrait implementation. */
+/* The universal tail replaces the older portrait-only pseudo-tail. */
 .site-shell::after {
   content: none !important;
   display: none !important;
 }
 
-/* One final-claim geometry for every mode. 147.2% compensates exactly for
-   the artwork's internal viewBox breathing room (502.7px visible / 740px),
-   making the visible claim span the same horizontal width as the cards. */
+/* All modes use the promoted SVG/reactive construction. */
+.motto-fit {
+  display: none !important;
+}
+
 .floating-motto {
   position: sticky !important;
   top: 50svh !important;
@@ -3452,16 +3453,14 @@ body.privacy-open { overflow: hidden; }
   overflow: visible !important;
 }
 
-.motto-fit {
-  display: none !important;
-}
-
+/* claim-portrait-end.svg has symmetrical internal breathing room. The 147%
+   compensation is copied from the already-approved portrait implementation. */
 .motto-portrait-art {
   position: relative !important;
   display: block !important;
-  width: 147.2% !important;
-  margin-left: -23.6% !important;
-  margin-right: -23.6% !important;
+  width: 147% !important;
+  margin-left: -23.5% !important;
+  margin-right: -23.5% !important;
   overflow: visible !important;
   pointer-events: none !important;
 }
@@ -3474,8 +3473,7 @@ body.privacy-open { overflow: hidden; }
   pointer-events: none !important;
 }
 
-/* Long blank field after the claim. Because the sticky claim is now a direct
-   body child, this tail is measured in true viewport units in every mode. */
+/* Long lava-only play field while the claim remains at viewport midpoint. */
 .motto-scroll-tail {
   display: block;
   width: 100%;
@@ -3483,20 +3481,24 @@ body.privacy-open { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Match the final claim to the exact rendered width of the scaled desktop
-   card stage (clientWidth-based, excluding the scrollbar). */
+/* Desktop: larger normal-flow gap from the contact card. The transform still
+   pulls the visual claim upward by half its own height when sticky. */
 html.desktop-proportional .floating-motto {
   width: var(--desktop-stage-width, 45vw) !important;
+  margin-top: clamp(120px, 10vw, 190px) !important;
 }
 
 @media (pointer: coarse) and (orientation: portrait) {
   .floating-motto {
     width: 84vw !important;
+    margin-top: 34px !important;
   }
 }
 
+/* Landscape: add enough base separation to prevent overlap with CONTACT. */
 @media (pointer: coarse) and (orientation: landscape) {
   .floating-motto {
     width: 80vw !important;
+    margin-top: clamp(120px, 18vw, 190px) !important;
   }
 }

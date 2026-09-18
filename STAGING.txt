@@ -1,21 +1,20 @@
-V0.55.2 STAGING / FINAL CLAIM UNIFICATION TEST
+V0.55.2.1 STAGING / FINAL CLAIM REPAIR
 
 BASELINE
-- Starts from user-approved V0.55.1.15.
+- V0.55.1.15 remains the approved full-site baseline.
 - +30% autonomous LAVA morphing remains approved and unchanged.
-- Desktop resize, portrait resize, Hero typography, privacy UI and sonoDGTL remain on the approved baseline.
+- V0.55.2 universal midpoint sticky/tail concept is retained.
 
-V0.55.2 TEST
-- Final claim now uses the exact portrait-Hero SVG geometry and colours in desktop, touch portrait and touch landscape.
-- Visible SVG artwork is fitted to the full card width in every mode.
-- Reactive blob colour masks remain active in every mode.
-- Final claim is moved outside the transformed desktop shell so sticky coordinates are viewport-true.
-- In all three modes, the claim sticks with its visual centre at mid-screen and the page continues through a 144svh lava-only play tail.
+V0.55.2.1 REPAIR
+- Final claim reuses the exact V0.55.1.15 claim-portrait-end.svg path geometry and black/white base colours.
+- The exact promoted reactive mask/palette engine now runs on desktop, portrait and landscape.
+- Desktop final claim receives a larger base gap from the CONTACT card.
+- Landscape final claim receives a larger base gap so translateY(-50%) cannot pull it over CONTACT.
+- Portrait claim geometry remains the previously approved construction.
 
 CACHE COHERENCE
-- Every local runtime CSS / JS / SVG / PNG reference in the HTML uses one build-wide ?v=0552 token.
-- This prevents a browser from mixing assets from different staging builds after refresh, tab restoration or orientation changes.
-- Orientation changes themselves use live media queries; no alternate cached layout bundle is involved.
+- Every local runtime reference in every HTML file uses one build-wide ?v=05521 token.
+- Orientation changes use live media queries; there is no alternate portrait/landscape asset bundle.
 
 PRE-V1 STATE
 - Search-engine noindex directives remain removed.
@@ -23,4 +22,4 @@ PRE-V1 STATE
 - robots.txt and sitemap.xml remain intentionally deferred.
 - Repository description still needs to be changed manually on GitHub to: My Digital Hub
 
-If this final-claim behaviour is approved, the next package is V1.0 RELEASE after repository/code cleanup and a final GitHub audit.
+If this repaired universal final claim is approved, the next package can be V1.0 RELEASE after final cleanup and GitHub audit.

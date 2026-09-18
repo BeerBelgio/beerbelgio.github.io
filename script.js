@@ -524,12 +524,12 @@
   }
 
   // ---------------------------------------------------------------
-  // UNIVERSAL FINAL CLAIM — V0.55.2
+  // UNIVERSAL FINAL CLAIM — V0.55.2.1
   //
-  // Uses the exact portrait-Hero SVG geometry in every responsive mode.
-  // The base artwork keeps the Hero orange + ink colours; live duplicate SVG
-  // paths are softly masked by each lava blob so the colour-shift interaction
-  // remains tied to the actual field underneath without changing lava.js.
+  // Reuses the exact V0.55.1.15 / claim-portrait-end.svg construction.
+  // The base artwork is black + white; live duplicate SVG paths are softly
+  // masked by each lava blob so the promoted per-family reactive palette is
+  // preserved identically on desktop, portrait and landscape.
   // ---------------------------------------------------------------
   const portraitMottoSvg = document.getElementById("motto-portrait-svg");
   const portraitMottoDefs = document.getElementById("motto-portrait-defs");
@@ -537,7 +537,6 @@
 
   if (portraitMottoSvg && portraitMottoDefs && portraitMottoRoot && window.BeerBelgioLava?.getBlobs) {
     const SVG_NS = "http://www.w3.org/2000/svg";
-    const PORTRAIT_VIEWBOX_X = -56;
     const PORTRAIT_VIEWBOX_W = 740;
     const PORTRAIT_VIEWBOX_H = 150;
 
@@ -597,13 +596,13 @@
         mask.id = maskId;
         mask.setAttribute("maskUnits", "userSpaceOnUse");
         mask.setAttribute("maskContentUnits", "userSpaceOnUse");
-        mask.setAttribute("x", String(PORTRAIT_VIEWBOX_X));
+        mask.setAttribute("x", "0");
         mask.setAttribute("y", "0");
         mask.setAttribute("width", String(PORTRAIT_VIEWBOX_W));
         mask.setAttribute("height", String(PORTRAIT_VIEWBOX_H));
 
         const maskRect = svgEl("rect");
-        maskRect.setAttribute("x", String(PORTRAIT_VIEWBOX_X));
+        maskRect.setAttribute("x", "0");
         maskRect.setAttribute("y", "0");
         maskRect.setAttribute("width", String(PORTRAIT_VIEWBOX_W));
         maskRect.setAttribute("height", String(PORTRAIT_VIEWBOX_H));
@@ -628,33 +627,31 @@
     }
 
     function renderPortraitMotto(time) {
-      if (isTouchPortrait()) {
-        const rect = portraitMottoSvg.getBoundingClientRect();
-        if (rect.width > 1 && rect.height > 1) {
-          const blobs = window.BeerBelgioLava.getBlobs();
-          ensurePortraitLayers(blobs.length);
+      const rect = portraitMottoSvg.getBoundingClientRect();
+      if (rect.width > 1 && rect.height > 1) {
+        const blobs = window.BeerBelgioLava.getBlobs();
+        ensurePortraitLayers(blobs.length);
 
-          const sx = PORTRAIT_VIEWBOX_W / rect.width;
-          const sy = PORTRAIT_VIEWBOX_H / rect.height;
+        const sx = PORTRAIT_VIEWBOX_W / rect.width;
+        const sy = PORTRAIT_VIEWBOX_H / rect.height;
 
-          for (let i = 0; i < blobs.length; i++) {
-            const blob = blobs[i];
-            const layer = portraitLayers[i];
-            const palette = PORTRAIT_PALETTE[blob.family] || PORTRAIT_PALETTE.default;
+        for (let i = 0; i < blobs.length; i++) {
+          const blob = blobs[i];
+          const layer = portraitLayers[i];
+          const palette = PORTRAIT_PALETTE[blob.family] || PORTRAIT_PALETTE.default;
 
-            layer.funUse.setAttribute("fill", palette.fun);
-            layer.restUse.setAttribute("fill", palette.rest);
+          layer.funUse.setAttribute("fill", palette.fun);
+          layer.restUse.setAttribute("fill", palette.rest);
 
-            const cx = PORTRAIT_VIEWBOX_X + (blob.x - rect.left) * sx;
-            const cy = (blob.y - rect.top) * sy;
-            const rx = Math.max(0.01, blob.r * sx * (0.92 + 0.045 * Math.sin(blob.phase + time * 0.00018)));
-            const ry = Math.max(0.01, blob.r * sy * (0.92 + 0.045 * Math.sin(blob.phase2 - time * 0.00014)));
+          const cx = (blob.x - rect.left) * sx;
+          const cy = (blob.y - rect.top) * sy;
+          const rx = Math.max(0.01, blob.r * sx * (0.92 + 0.045 * Math.sin(blob.phase + time * 0.00018)));
+          const ry = Math.max(0.01, blob.r * sy * (0.92 + 0.045 * Math.sin(blob.phase2 - time * 0.00014)));
 
-            layer.gradient.setAttribute(
-              "gradientTransform",
-              `translate(${cx} ${cy}) scale(${rx} ${ry})`
-            );
-          }
+          layer.gradient.setAttribute(
+            "gradientTransform",
+            `translate(${cx} ${cy}) scale(${rx} ${ry})`
+          );
         }
       }
 
