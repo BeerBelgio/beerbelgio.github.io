@@ -7,3 +7,7 @@ Mobile portrait: unchanged V0.55.1 midpoint-sticky final motto + 144svh lava pla
 Mobile landscape: unchanged V0.54.4 normal ending.
 Frozen lava engine: V0.54.4 byte-for-byte.
 Search indexing remains disabled.
+
+V0.55.1.4 STAGING
+Test only: (1) continuous, symmetric desktop resize from full width to very narrow windows; (2) Full Lava ? copy line spacing. Mobile behavior and lava physics are intentionally unchanged.
+

@@ -292,3 +292,11 @@ STAGING RULES
 - /sonodgtl/ = English primary version.
 - /sonodgtl/it/ = Italian alternative version.
 - /lava/ = standalone lava route.
+
+V0.55.1.4 — desktop proportional resize + Full Lava copy spacing
+- Based on V0.55.1.3, with lava physics unchanged from the frozen V0.54.4 baseline.
+- Desktop: the canonical 760px composition now scales continuously to 45% of the current layout viewport at every fine-pointer desktop width. No midpoint threshold.
+- Desktop: historical >=720px desktop rules remain active for fine pointers; <=560px phone-only overrides are now coarse-pointer only. This prevents a narrow desktop window from silently reflowing into mobile/base geometry.
+- Desktop: transform origin remains top-center and stage width is derived from documentElement.clientWidth to keep left/right gutters symmetrical.
+- Full Lava help: ? retained; copy is split into four roomy lines/paragraph-like blocks.
+

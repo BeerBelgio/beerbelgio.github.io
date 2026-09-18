@@ -107,7 +107,8 @@
       letter-spacing: -.045em;
     }
 
-    .lava-info-copy { margin: 0; font-size: 14px; line-height: 1.52; font-weight: 500; }
+    .lava-info-copy { margin: 0; display: grid; gap: 14px; font-size: 14px; line-height: 1.42; font-weight: 500; }
+    .lava-info-copy span { display: block; }
     .lava-info-copy strong { font-weight: 900; }
 
     .lava-info-close {
@@ -140,7 +141,7 @@
     <section class="lava-info-card">
       <button class="lava-info-close" id="lava-info-close" type="button" aria-label="Close Full Lava controls">×</button>
       <h1 id="lava-info-title">FULL LAVA</h1>
-      <p class="lava-info-copy"><strong>move</strong> the pointer through the field to create a perturbation. <strong>scroll</strong> around to push the whole field and affect the blobs. <strong>grab &amp; drag</strong> a blob, move it and release it — throw it, play with it. <strong>5+5</strong> clicks on empty space will repel the blobs, then attract them. Drive ’em crazy.</p>
+      <p class="lava-info-copy"><span><strong>move</strong> the pointer through the field to create a perturbation.</span><span><strong>scroll</strong> around to push the whole field and affect the blobs.</span><span><strong>grab &amp; drag</strong> a blob, move it and release it — throw it, play with it.</span><span><strong>5+5</strong> clicks on empty space will repel the blobs, then attract them. Drive ’em crazy.</span></p>
     </section>
   </div>
 

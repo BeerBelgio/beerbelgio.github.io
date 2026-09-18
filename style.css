@@ -1279,9 +1279,15 @@ body.lava-mode .lava-info {
 
 .lava-info-copy {
   margin: 0;
+  display: grid;
+  gap: 14px;
   font-size: 14px;
-  line-height: 1.52;
+  line-height: 1.42;
   font-weight: 500;
+}
+
+.lava-info-copy span {
+  display: block;
 }
 
 .lava-info-copy strong {
@@ -1617,7 +1623,7 @@ select {
   mix-blend-mode: difference;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 560px) and (pointer: coarse) {
   .contact h2 {
     width: 72% !important;
     font-size: clamp(24px, 7vw, 34px) !important;
@@ -1671,7 +1677,7 @@ select {
   bottom: 4px !important;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 560px) and (pointer: coarse) {
   .contact-smile-full {
     width: 140px !important;
     right: 15px !important;
@@ -1710,7 +1716,7 @@ select {
   right: 32px !important;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 560px) and (pointer: coarse) {
   .contact-smile-full {
     right: 24px !important;
   }
@@ -1744,7 +1750,7 @@ select {
   right: 40px !important;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 560px) and (pointer: coarse) {
   .contact-smile-full {
     right: 32px !important;
   }

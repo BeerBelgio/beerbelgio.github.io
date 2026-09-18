@@ -95,20 +95,17 @@
   // ---------------------------------------------------------------
   // DESKTOP PROPORTIONAL STAGE
   //
-  // Keep one canonical 760px desktop layout and scale only its painted output.
-  // Fine-pointer desktops keep the full desktop CSS at every browser width;
-  // the historical 720px breakpoint must never switch a resized desktop into
-  // the mobile/base geometry. The approved full-size width is still 45% of the physical desktop screen;
-  // narrowing the browser therefore does not shrink the site until it actually
-  // needs to fit. When fitting is required, the shell is scaled around its OWN
-  // horizontal centre, removing the left/right drift produced by CSS zoom.
+  // One fixed 760px desktop composition is painted at 45% of the CURRENT
+  // browser viewport. Resizing therefore changes only one global scale value:
+  // no child layout is allowed to reflow into a narrow/mobile geometry.
+  // The fixed shell is transformed around its own horizontal centre so the
+  // left and right gutters remain symmetrical at every desktop width.
   // ---------------------------------------------------------------
   const DESIGN_WIDTH = 760;
-  const DESKTOP_REFERENCE_RATIO = 0.45;
-  const DESKTOP_MIN_GUTTER = 18;
+  const DESKTOP_VIEWPORT_RATIO = 0.45;
 
   function isDesktopExperience() {
-    return matchMedia("(pointer: fine)").matches;
+    return matchMedia("(pointer: fine)").matches && screen.width >= 900;
   }
 
   function updateDesktopStage() {
@@ -125,13 +122,11 @@
 
     document.documentElement.classList.add("desktop-proportional");
 
-    const referenceScreenWidth = Math.max(1, screen.width || innerWidth);
-    const preferredWidth = referenceScreenWidth * DESKTOP_REFERENCE_RATIO;
-    // clientWidth follows the real CSS layout area and excludes the vertical
-    // scrollbar, so the two gutters remain genuinely symmetrical.
+    // clientWidth excludes the vertical scrollbar, giving a truly centred
+    // visual stage. The width always follows the viewport: no threshold and
+    // no change of layout mode halfway through a resize.
     const layoutViewportWidth = Math.max(1, document.documentElement.clientWidth || innerWidth);
-    const availableWidth = Math.max(1, layoutViewportWidth - DESKTOP_MIN_GUTTER * 2);
-    const targetWidth = Math.min(preferredWidth, availableWidth);
+    const targetWidth = layoutViewportWidth * DESKTOP_VIEWPORT_RATIO;
     const scale = targetWidth / DESIGN_WIDTH;
 
     siteShell.style.removeProperty("zoom");
@@ -139,8 +134,6 @@
     document.documentElement.style.setProperty("--desktop-stage-scale", String(scale));
 
     requestAnimationFrame(() => {
-      // transform does not participate in document flow. The stage reserves the
-      // scaled height while the shell keeps the fixed 760px internal geometry.
       const layoutHeight = siteShell.scrollHeight;
       siteStage.style.height = `${Math.max(1, layoutHeight * scale)}px`;
     });
