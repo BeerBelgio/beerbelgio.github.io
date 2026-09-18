@@ -1,6 +1,6 @@
-/* BeerBelgio Lava Engine — V0.54.2.3 / L2
+/* BeerBelgio Lava Engine — V0.55.1.14 PRE-V1
+   V0.54.4 interaction baseline + later approved separation / scroll tuning.
    Slow autonomous base motion + external perturbations.
-   Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
 
 (() => {
@@ -9,6 +9,10 @@
 
   const ctx = canvas.getContext("2d", { alpha: false });
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // V0.55.1.14: stronger autonomous contour motion without changing
+  // drag, scroll, repulsion or directional interaction forces.
+  const AMBIENT_SHAPE_GAIN = 1.30;
 
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -227,15 +231,15 @@
       // At 1.5 this is a true +50% baseline warp even while the held blob is still.
       const breathingBase =
         1
-        + wobbleNow * Math.sin(a * 3 + blob.phase + time * 0.00018)
-        + wobbleNow * 0.62 * Math.sin(a * 5 - blob.phase2 + time * 0.00012)
-        + ambientMorph * 0.08 * Math.sin(a * 2 + blob.phase2 * 0.6);
+        + wobbleNow * AMBIENT_SHAPE_GAIN * Math.sin(a * 3 + blob.phase + time * 0.00018)
+        + wobbleNow * 0.62 * AMBIENT_SHAPE_GAIN * Math.sin(a * 5 - blob.phase2 + time * 0.00012)
+        + ambientMorph * 0.08 * AMBIENT_SHAPE_GAIN * Math.sin(a * 2 + blob.phase2 * 0.6);
       const breathing = 1 + (breathingBase - 1) * morphBoost;
 
       const directional = Math.cos(a - deformDir);
       const stretchBase = 1
-        + ambientMorph * 0.18 * Math.sin((a - deformDir) * 2 + blob.phase * 0.55)
-        + ambientMorph * 0.12 * Math.sin((a - deformDir) * 3 - blob.phase2 * 0.42)
+        + ambientMorph * 0.18 * AMBIENT_SHAPE_GAIN * Math.sin((a - deformDir) * 2 + blob.phase * 0.55)
+        + ambientMorph * 0.12 * AMBIENT_SHAPE_GAIN * Math.sin((a - deformDir) * 3 - blob.phase2 * 0.42)
         + deformMag * 0.34 * directional
         - deformMag * 0.20 * Math.cos((a - deformDir) * 2)
         + deformMag * 0.12 * Math.sin((a - deformDir) * 3 + blob.phase2 * 0.55)

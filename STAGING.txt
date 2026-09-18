@@ -1,2 +1,8 @@
-V0.55.1.13 STAGING / PRE-V1
-V0.55.1.11 portrait Hero typography and LAVA behaviour remain promoted and unchanged. V0.55.1.13 changes only two privacy presentation details: the privacy-panel close X is mathematically centred with absolute 50%/50% CSS positioning, and sonoDGTL portrait PRIVACY is left-aligned on its own line. noindex remains active pending explicit V1.0 promotion.
+V0.55.1.14 STAGING / PRE-V1
+
+Changes in this build:
+- LAVA autonomous morphology only: ambient contour deformation is increased by 30% so blobs visibly change shape more even without user interaction. Repulsion, scroll behaviour, drag/release, selected-blob boost and 5+5 logic are unchanged.
+- README is rewritten as repository documentation rather than a development diary. README.md is now the primary presentation document; README.txt is retained only as a short compatibility pointer for the pre-V1 transition.
+
+Everything promoted in V0.55.1.13 remains otherwise unchanged.
+Search indexing remains disabled until explicit V1.0 promotion.
