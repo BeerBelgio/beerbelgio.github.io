@@ -1,3 +1,21 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.5 PUBLIC STAGING
+
+STATUS
+Starts from V0.55.1.4. This is a desktop-resize geometry correction only; mobile behavior, FULL LAVA help copy and the frozen V0.54.4 lava engine remain unchanged.
+
+V0.55.1.5 CHANGES
+- Desktop scaling keeps the same canonical 760px composition and the same continuous 45% viewport target used by V0.55.1.4.
+- The scaled shell is no longer re-centred internally with `left:50%`, a -380px layout offset and a centre transform-origin.
+- The shell now starts at the stage's own left edge and scales from `top left`; the stage itself remains `margin:auto` and is the only centring mechanism.
+- This removes the double-centering geometry visible in the resize video, especially once the window becomes narrower than roughly half the physical screen.
+- No desktop typography, card dimensions, breakpoints or internal layout values change.
+- FULL LAVA help copy remains four spaced lines with bold interaction keywords.
+- Mobile portrait/landscape, sonoDGTL and lava physics are unchanged.
+
+TEST TARGET
+- Desktop: resize continuously from full width to a very narrow window. The stage must remain centred and the complete HUB must behave like one uniformly scaled picture, with equal left/right gutters.
+- Mobile: must be indistinguishable from V0.55.1.4.
+
 BEERBELGIO.GITHUB.IO — V0.55.1.3 PUBLIC STAGING
 
 STATUS
