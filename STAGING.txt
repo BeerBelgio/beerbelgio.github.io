@@ -1,2 +1,2 @@
-V0.55.1.9 RELEASE CANDIDATE
-V0.55.1.8 promoted functionality is preserved. Mobile portrait Hero identity typography is enlarged; FULL LAVA help action labels are uppercase/larger in both entry modes; third-party icon provenance and repository hygiene are tightened. noindex remains active pending explicit V1.0 promotion. Desktop resize, final-claim behaviour, frozen lava.js and sonoDGTL are unchanged.
+V0.55.1.10 STAGING
+V0.55.1.9 UI/audit baseline preserved. Mobile portrait Hero identity typography is enlarged again. Lava pair separation is strengthened globally and more strongly within the same colour family; scroll-induced vector rotation/transverse swirl/morph-phase drive are removed. The rejected opposite-scroll experiment is not reintroduced. noindex remains active pending explicit V1.0 promotion.

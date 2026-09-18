@@ -133,9 +133,7 @@
       scrollY: 0,
       scrollGain: 0.78 + Math.random() * 0.48,
       scrollFollow: 0.00115 + Math.random() * 0.0018,
-      scrollAngleOffset: (Math.random() - 0.5) * 0.28,
       scrollWarpGain: 0.82 + Math.random() * 0.55,
-      scrollPhaseOffset: Math.random() * Math.PI * 2,
       forceX: 0,
       forceY: 0
     };
@@ -417,28 +415,22 @@
     blob.scrollX += (targetScrollX - blob.scrollX) * follow;
     blob.scrollY += (targetScrollY - blob.scrollY) * follow;
 
-    let scrollNormX = Math.tanh(blob.scrollX / 5.8);
-    let scrollNormY = Math.tanh(blob.scrollY / 5.8);
-    const ca = Math.cos(blob.scrollAngleOffset);
-    const sa = Math.sin(blob.scrollAngleOffset);
-    const rotatedX = scrollNormX * ca - scrollNormY * sa;
-    const rotatedY = scrollNormX * sa + scrollNormY * ca;
-    scrollNormX = rotatedX;
-    scrollNormY = rotatedY;
+    const scrollNormX = Math.tanh(blob.scrollX / 5.8);
+    const scrollNormY = Math.tanh(blob.scrollY / 5.8);
 
-    const scrollMagnitude = Math.min(1, Math.hypot(scrollNormX, scrollNormY));
-    const scrollFx = (scrollNormX * 0.00054
-      + Math.sin(blob.scrollPhaseOffset + time * 0.0007) * scrollMagnitude * 0.00011) * dt;
-    const scrollFy = (scrollNormY * 0.00054
-      + Math.cos(blob.scrollPhaseOffset * 0.8 + time * 0.00061) * scrollMagnitude * 0.000055) * dt;
+    // Scroll is a directional field push only. Do not rotate the scroll vector,
+    // add transverse oscillation, or advance the morph phases from scroll input.
+    // Those components made repeated up/down scrolling read as a coordinated
+    // rotation of the whole lava field. Per-blob gain/follow still prevents a
+    // rigid-layer feel without adding swirl.
+    const scrollFx = scrollNormX * 0.00054 * dt;
+    const scrollFy = scrollNormY * 0.00054 * dt;
     blob.vx += scrollFx;
     blob.vy += scrollFy;
 
     const warpGain = 0.16 * blob.scrollWarpGain * scrollWarpBoost;
     blob.forceX += scrollFx * warpGain;
     blob.forceY += scrollFy * warpGain;
-    blob.phase += (scrollNormY + scrollNormX * 0.45) * (0.00034 + blob.scrollFollow * 0.04) * dt;
-    blob.phase2 -= (scrollNormY - scrollNormX * 0.35) * (0.00029 + blob.scrollFollow * 0.035) * dt;
 
     // Anti-edge / anti-corner disturbance:
     // viscous steering first, tiny pushes second. No flipper kicks.
@@ -626,7 +618,7 @@
         const ny = dy / dist;
 
         const surfaceGap = dist - (a.r + b.r);
-        const surfaceBuffer = Math.min(a.r, b.r) * 0.33;
+        const surfaceBuffer = Math.min(a.r, b.r) * 0.58;
 
         if (surfaceGap >= surfaceBuffer) continue;
 
@@ -639,7 +631,7 @@
         // This changes direction, not raw speed.
         const awayA = Math.atan2(-ny, -nx);
         const awayB = Math.atan2(ny, nx);
-        const steering = 0.00075 * dt * proximity;
+        const steering = 0.00105 * dt * proximity;
 
         a.baseAngle += angleDelta(a.baseAngle, awayA) * steering;
         b.baseAngle += angleDelta(b.baseAngle, awayB) * steering;
@@ -651,7 +643,7 @@
         const closing = relVx * nx + relVy * ny;
 
         if (closing < 0) {
-          const cancel = (-closing) * 0.42 * proximity;
+          const cancel = (-closing) * 0.55 * proximity;
           a.vx -= nx * cancel * 0.5;
           a.vy -= ny * cancel * 0.5;
           b.vx += nx * cancel * 0.5;
@@ -670,7 +662,7 @@
         // Positional relaxation separates them smoothly without extra speed.
         if (surfaceGap < 0) {
           const penetration = -surfaceGap;
-          const correction = Math.min(1.25, penetration * 0.055);
+          const correction = Math.min(1.60, penetration * 0.075);
 
           a.x -= nx * correction;
           a.y -= ny * correction;
@@ -714,21 +706,33 @@
 
         const minR = Math.min(a.r, b.r);
         const surfaceGap = dist - (a.r + b.r);
+        const sameFamily = a.family === b.family;
 
-        // Coarse "at least ~25% still perceivable" rule.
-        // Negative gap is overlap. We tolerate some, but not too much.
-        const maxAllowedOverlap = minR * 0.52;
+        // Soft universal separation starts before contact so the field does not
+        // spend long periods travelling as one packed cluster. Same-family pairs
+        // also receive the dedicated stronger rule above.
+        const softBuffer = minR * (sameFamily ? 0.34 : 0.20);
+        if (surfaceGap < softBuffer) {
+          const softProximity = Math.max(0, Math.min(1, (softBuffer - surfaceGap) / Math.max(1, softBuffer + minR * 0.20)));
+          const awayA = Math.atan2(-ny, -nx);
+          const awayB = Math.atan2(ny, nx);
+          const softSteering = (sameFamily ? 0.00042 : 0.00026) * dt * softProximity;
+          a.baseAngle += angleDelta(a.baseAngle, awayA) * softSteering;
+          b.baseAngle += angleDelta(b.baseAngle, awayB) * softSteering;
+        }
+
+        // Allow only modest overlap. Same-family blobs are kept more distinct.
+        const maxAllowedOverlap = minR * (sameFamily ? 0.14 : 0.28);
         const worstAllowedGap = -maxAllowedOverlap;
 
         if (surfaceGap >= worstAllowedGap) continue;
 
-        const sameFamily = a.family === b.family;
         const penetration = worstAllowedGap - surfaceGap;
-        const proximity = Math.max(0, Math.min(1, penetration / Math.max(1, minR * 0.55)));
+        const proximity = Math.max(0, Math.min(1, penetration / Math.max(1, minR * 0.42)));
 
         // Mostly positional correction, not acceleration.
-        const baseCorrection = sameFamily ? 0.060 : 0.026;
-        const correction = Math.min(1.30, penetration * baseCorrection);
+        const baseCorrection = sameFamily ? 0.085 : 0.045;
+        const correction = Math.min(1.55, penetration * baseCorrection);
 
         a.x -= nx * correction;
         a.y -= ny * correction;
@@ -741,7 +745,7 @@
         const closing = relVx * nx + relVy * ny;
 
         if (closing < 0) {
-          const cancel = (-closing) * (sameFamily ? 0.25 : 0.12) * proximity;
+          const cancel = (-closing) * (sameFamily ? 0.38 : 0.20) * proximity;
           a.vx -= nx * cancel * 0.5;
           a.vy -= ny * cancel * 0.5;
           b.vx += nx * cancel * 0.5;

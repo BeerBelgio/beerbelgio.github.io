@@ -1,3 +1,21 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.10 STAGING
+
+PORTRAIT TYPE + LAVA SEPARATION / NO-SWIRL SCROLL
+- Based directly on V0.55.1.9. Desktop proportional resize, Hero/final-claim desktop fixes, mobile sticky final artwork, FULL LAVA help styling and sonoDGTL remain unchanged.
+- Mobile portrait Hero identity typography is increased again to 34px titles / 14px taglines / 12.5px meta. The historical V0.42/V0.54 CSS values were numerically smaller, so this is an explicit visual rebalancing rather than a numeric revert.
+- Lava: universal pair separation is stronger so blobs retain more individual space instead of travelling as one packed cluster.
+- Lava: same-family/same-colour separation is stronger still: larger pre-contact buffer, stronger steering, closing-speed cancellation and overlap correction.
+- Lava scroll: removed per-blob scroll-vector rotation, transverse scroll oscillation and scroll-driven morph-phase advance. Wheel/touch scroll still pushes the field, with the existing per-blob gain/follow differences, but no longer adds the coordinated swirl/rotation-like component.
+- The rejected V0.55.2 opposite-scroll experiment is NOT reintroduced.
+- Drag/release momentum, +50% selected warping, 5+5 blank-click cycle, canvas geometry, desktop resize and mobile portrait sticky tail are otherwise unchanged.
+- noindex/nofollow/noarchive remain active; this is not yet V1.0.
+
+TEST TARGET
+- Mobile portrait: BeerBelgio / sonoDGTL identity copy should recover a visibly stronger scale without changing card order or sticky-tail behaviour.
+- Lava idle/scroll: blobs should spend less time piled together; same-colour pairs should separate most strongly.
+- Repeated up/down scrolling should push rather than make the whole field appear to rotate.
+- Drag, throw, warping and 5+5 must remain recognisably V0.54.4 behaviour.
+
 BEERBELGIO.GITHUB.IO — V0.55.1.9 RELEASE CANDIDATE
 
 FINAL UI POLISH + PRE-V1 AUDIT
