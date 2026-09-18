@@ -430,7 +430,16 @@
       const footerStyle = getComputedStyle(footer);
       const padLeft = parseFloat(footerStyle.paddingLeft) || 0;
       const padRight = parseFloat(footerStyle.paddingRight) || 0;
-      const target = (footer.clientWidth - padLeft - padRight) * 0.985;
+      const availableWidth = footer.clientWidth - padLeft - padRight;
+      const fitRatio = document.documentElement.classList.contains("desktop-proportional") ? 1 : 0.985;
+      const target = availableWidth * fitRatio;
+
+      // getBoundingClientRect() includes the ancestor transform used by the
+      // proportional desktop stage, while clientWidth above does not. Convert
+      // the measured motto back into the same untransformed coordinate space.
+      const footerRect = footer.getBoundingClientRect();
+      const visualScale = footer.clientWidth > 0 ? (footerRect.width / footer.clientWidth) : 1;
+      const safeScale = Number.isFinite(visualScale) && visualScale > 0 ? visualScale : 1;
 
       let low = 10;
       let high = 140;
@@ -439,7 +448,8 @@
         const mid = (low + high) / 2;
         mottoFit.style.fontSize = `${mid}px`;
 
-        if (mottoFit.getBoundingClientRect().width <= target) low = mid;
+        const measuredWidth = mottoFit.getBoundingClientRect().width / safeScale;
+        if (measuredWidth <= target) low = mid;
         else high = mid;
       }
 
@@ -473,15 +483,19 @@
     }
 
     function renderMotto(time) {
-      const blobs = window.BeerBelgioLava.getBlobs();
-      ensureLayers(blobs.length);
+      // Portrait uses the dedicated SVG engine below. Avoid animating the
+      // hidden HTML duplicate layers at the same time on mobile.
+      if (!isTouchPortrait()) {
+        const blobs = window.BeerBelgioLava.getBlobs();
+        ensureLayers(blobs.length);
 
-      const funRect = mottoFun.getBoundingClientRect();
-      const restRect = mottoRest.getBoundingClientRect();
+        const funRect = mottoFun.getBoundingClientRect();
+        const restRect = mottoRest.getBoundingClientRect();
 
-      for (let i = 0; i < blobs.length; i++) {
-        updateRoleLayer(funLayers[i], blobs[i], funRect, "fun", time);
-        updateRoleLayer(restLayers[i], blobs[i], restRect, "rest", time);
+        for (let i = 0; i < blobs.length; i++) {
+          updateRoleLayer(funLayers[i], blobs[i], funRect, "fun", time);
+          updateRoleLayer(restLayers[i], blobs[i], restRect, "rest", time);
+        }
       }
 
       requestAnimationFrame(renderMotto);
@@ -503,6 +517,147 @@
       document.fonts.addEventListener("loadingdone", fitMotto);
     }
 
+
     startMotto();
+  }
+
+  // ---------------------------------------------------------------
+  // MOBILE PORTRAIT FINAL CLAIM — V0.55.1.8
+  //
+  // Uses the exact user-supplied SVG path geometry. The base artwork is
+  // black + white; live duplicate SVG paths are softly masked by each lava
+  // blob so the existing per-family reactive palette is preserved without
+  // changing lava.js.
+  // ---------------------------------------------------------------
+  const portraitMottoSvg = document.getElementById("motto-portrait-svg");
+  const portraitMottoDefs = document.getElementById("motto-portrait-defs");
+  const portraitMottoRoot = document.getElementById("motto-portrait-reactive-root");
+
+  if (portraitMottoSvg && portraitMottoDefs && portraitMottoRoot && window.BeerBelgioLava?.getBlobs) {
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const PORTRAIT_VIEWBOX_W = 740;
+    const PORTRAIT_VIEWBOX_H = 150;
+
+    const PORTRAIT_PALETTE = {
+      cream:   { fun: "#d1442d", rest: "#1c1713" },
+      ink:     { fun: "#ffffff", rest: "#ec6b2d" },
+      warm:    { fun: "#ffffff", rest: "#1c1713" },
+      mustard: { fun: "#ffffff", rest: "#1c1713" },
+      default: { fun: "#ffffff", rest: "#1c1713" }
+    };
+
+    let portraitLayers = [];
+    let portraitLayerCount = -1;
+
+    function svgEl(name) {
+      return document.createElementNS(SVG_NS, name);
+    }
+
+    function ensurePortraitLayers(count) {
+      if (count === portraitLayerCount) return;
+      portraitLayerCount = count;
+
+      for (const layer of portraitLayers) {
+        layer.mask.remove();
+        layer.gradient.remove();
+      }
+      portraitMottoRoot.replaceChildren();
+      portraitLayers = [];
+
+      for (let i = 0; i < count; i++) {
+        const gradientId = `motto-portrait-gradient-${i}`;
+        const maskId = `motto-portrait-mask-${i}`;
+
+        const gradient = svgEl("radialGradient");
+        gradient.id = gradientId;
+        gradient.setAttribute("gradientUnits", "userSpaceOnUse");
+        gradient.setAttribute("cx", "0");
+        gradient.setAttribute("cy", "0");
+        gradient.setAttribute("r", "1");
+
+        const stops = [
+          ["0%", "1"],
+          ["74%", "1"],
+          ["82%", ".96"],
+          ["90%", ".55"],
+          ["100%", "0"]
+        ];
+        for (const [offset, opacity] of stops) {
+          const stop = svgEl("stop");
+          stop.setAttribute("offset", offset);
+          stop.setAttribute("stop-color", "#ffffff");
+          stop.setAttribute("stop-opacity", opacity);
+          gradient.appendChild(stop);
+        }
+
+        const mask = svgEl("mask");
+        mask.id = maskId;
+        mask.setAttribute("maskUnits", "userSpaceOnUse");
+        mask.setAttribute("maskContentUnits", "userSpaceOnUse");
+        mask.setAttribute("x", "0");
+        mask.setAttribute("y", "0");
+        mask.setAttribute("width", String(PORTRAIT_VIEWBOX_W));
+        mask.setAttribute("height", String(PORTRAIT_VIEWBOX_H));
+
+        const maskRect = svgEl("rect");
+        maskRect.setAttribute("x", "0");
+        maskRect.setAttribute("y", "0");
+        maskRect.setAttribute("width", String(PORTRAIT_VIEWBOX_W));
+        maskRect.setAttribute("height", String(PORTRAIT_VIEWBOX_H));
+        maskRect.setAttribute("fill", `url(#${gradientId})`);
+        mask.appendChild(maskRect);
+
+        portraitMottoDefs.appendChild(gradient);
+        portraitMottoDefs.appendChild(mask);
+
+        const group = svgEl("g");
+        group.setAttribute("mask", `url(#${maskId})`);
+
+        const funUse = svgEl("use");
+        funUse.setAttribute("href", "#motto-portrait-fun-shape");
+        const restUse = svgEl("use");
+        restUse.setAttribute("href", "#motto-portrait-rest-shape");
+        group.append(funUse, restUse);
+        portraitMottoRoot.appendChild(group);
+
+        portraitLayers.push({ gradient, mask, funUse, restUse });
+      }
+    }
+
+    function renderPortraitMotto(time) {
+      if (isTouchPortrait()) {
+        const rect = portraitMottoSvg.getBoundingClientRect();
+        if (rect.width > 1 && rect.height > 1) {
+          const blobs = window.BeerBelgioLava.getBlobs();
+          ensurePortraitLayers(blobs.length);
+
+          const sx = PORTRAIT_VIEWBOX_W / rect.width;
+          const sy = PORTRAIT_VIEWBOX_H / rect.height;
+
+          for (let i = 0; i < blobs.length; i++) {
+            const blob = blobs[i];
+            const layer = portraitLayers[i];
+            const palette = PORTRAIT_PALETTE[blob.family] || PORTRAIT_PALETTE.default;
+
+            layer.funUse.setAttribute("fill", palette.fun);
+            layer.restUse.setAttribute("fill", palette.rest);
+
+            const cx = (blob.x - rect.left) * sx;
+            const cy = (blob.y - rect.top) * sy;
+            const rx = Math.max(0.01, blob.r * sx * (0.92 + 0.045 * Math.sin(blob.phase + time * 0.00018)));
+            const ry = Math.max(0.01, blob.r * sy * (0.92 + 0.045 * Math.sin(blob.phase2 - time * 0.00014)));
+
+            layer.gradient.setAttribute(
+              "gradientTransform",
+              `translate(${cx} ${cy}) scale(${rx} ${ry})`
+            );
+          }
+        }
+      }
+
+      requestAnimationFrame(renderPortraitMotto);
+    }
+
+    requestAnimationFrame(renderPortraitMotto);
   }
 })();

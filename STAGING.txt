@@ -1,2 +1,2 @@
-V0.55.1.7 STAGING
-Desktop resize root-cause fix: the canonical 760px shell now has an explicit minmax(0,1fr) grid track so intrinsic child widths cannot expand the cards beyond the shell. Desktop scale is continuous at 45% of the current layout viewport, with proportional symmetric gutters at every width. Mobile, FULL LAVA copy, sonoDGTL and frozen V0.54.4 lava physics are unchanged.
+V0.55.1.8 STAGING
+V0.55.1.7 desktop resize is preserved. Desktop Hero claim is reduced to 118%; desktop final motto fitting is corrected for the transformed 760px stage and aligned to card width. Mobile portrait final motto now uses the supplied claim-portrait-end.svg geometry at card-filling scale while preserving midpoint stickiness, the 144svh tail and blob-driven reactive colours. Mobile landscape, FULL LAVA, sonoDGTL and frozen V0.54.4 lava physics are unchanged.

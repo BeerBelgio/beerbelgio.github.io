@@ -3076,3 +3076,60 @@ body.lava-mode { touch-action: none; }
     inset: auto !important;
   }
 }
+
+/* =========================================================
+   V0.55.1.8 — CLAIM GEOMETRY ONLY
+   Desktop resize architecture from V0.55.1.7 stays untouched.
+   ========================================================= */
+
+/* Mobile portrait gets the dedicated final-claim artwork; every other mode
+   keeps the existing live HTML motto engine. */
+.motto-portrait-art {
+  display: none;
+}
+
+/* Desktop hero: keep the exact same SVG/composition, only pull the oversized
+   artwork back inside the hero content geometry. */
+html.desktop-proportional .hero-claim-picture {
+  width: 118% !important;
+}
+
+/* Desktop final claim must visually span the same width as the 760px cards.
+   Padding is removed here only; JS fits against the untransformed canvas. */
+html.desktop-proportional .floating-motto {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+@media (pointer: coarse) and (orientation: portrait) {
+  /* The old text stays in the DOM for rotation back to landscape, but the
+     supplied SVG is the visible portrait artwork. */
+  .motto-fit {
+    display: none !important;
+  }
+
+  .motto-portrait-art {
+    position: relative;
+    display: block !important;
+    width: 147% !important;
+    margin-left: -23.5% !important;
+    margin-right: -23.5% !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+  }
+
+  .motto-portrait-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    pointer-events: none;
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape) {
+  .motto-portrait-art {
+    display: none !important;
+  }
+}
+

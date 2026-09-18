@@ -1,3 +1,21 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.8 STAGING
+
+CLAIM GEOMETRY + MOBILE PORTRAIT FINAL ART
+- Based directly on V0.55.1.7, whose desktop resize behaviour is promoted and left structurally untouched.
+- Desktop Hero only: the existing claim.svg is reduced from 122% to 118% inside the same 704px claim wrapper so FUN no longer pushes past the Hero content margin.
+- Desktop final motto: fixed the transform-space measurement mismatch in fitMotto(). The text is now measured in the same unscaled 760px coordinate system as the card, and desktop-only footer side padding is removed so the final claim fits the same visual width as the cards.
+- Mobile portrait only: the final motto now uses the supplied claim-portrait-end.svg path geometry instead of the one-line HTML typography. Its visible glyph bounds are scaled to the card width while the sticky midpoint behaviour and the 144svh lava-only tail remain unchanged.
+- Mobile portrait reactive colour behaviour is preserved with duplicate SVG path layers softly masked by the live blob positions and the same BeerBelgio per-family palette. This reads BeerBelgioLava.getBlobs() only; lava.js is not modified.
+- Mobile landscape keeps the previous final motto and previous non-sticky ending.
+- assets/claim-portrait-end.svg is included byte-for-byte from the supplied file.
+- FULL LAVA UI/copy, sonoDGTL and all frozen V0.54.4 lava physics remain unchanged.
+
+TEST TARGET
+- Desktop: Hero FUN should sit inside the Hero content geometry; final claim should be approximately card-wide, not oversized.
+- Desktop resize: V0.55.1.7 proportional centring/scaling must remain unchanged.
+- Mobile portrait: final claim should use the new black/white SVG, visually fill the card width, stick at the vertical midpoint and keep live blob-driven colour shifts.
+- Mobile landscape: must remain visually/behaviourally V0.55.1.7.
+
 BEERBELGIO.GITHUB.IO — V0.55.1.7 STAGING
 
 DESKTOP RESIZE ROOT-CAUSE FIX
