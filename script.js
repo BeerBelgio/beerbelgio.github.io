@@ -82,11 +82,16 @@
   // because Chrome zoom changes that viewport. A fine pointer + desktop-class
   // screen keeps this active at 25%, 100%, 200%, etc.
   //
-  // The stage is always 45vw and centred.
-  // The internal 760px design is zoomed to fit the stage exactly.
+  // The internal 760px design is kept canonical at every desktop window width.
+  // Its APPROVED display width is derived from the physical desktop screen (45%),
+  // so narrowing the browser does not continuously shrink/recompose the site.
+  // Only when the window can no longer contain that width do we scale uniformly
+  // just enough to fit, preserving all line breaks and card proportions.
   // The lava remains a separate full-viewport canvas.
   // ---------------------------------------------------------------
   const DESIGN_WIDTH = 760;
+  const DESKTOP_REFERENCE_RATIO = 0.45;
+  const DESKTOP_MIN_GUTTER = 18;
 
   function isDesktopExperience() {
     return matchMedia("(pointer: fine)").matches && screen.width >= 900;
@@ -99,16 +104,19 @@
       document.documentElement.classList.remove("desktop-proportional");
       siteShell.style.removeProperty("zoom");
       siteStage.style.removeProperty("height");
+      siteStage.style.removeProperty("--desktop-stage-width");
       return;
     }
 
     document.documentElement.classList.add("desktop-proportional");
 
-    // 45% of the CURRENT browser viewport in CSS pixels.
-    // Browser page zoom changes innerWidth; this counter-scaling is intentional.
-    const targetWidth = innerWidth * 0.45;
+    const referenceScreenWidth = Math.max(1, screen.width || innerWidth);
+    const preferredWidth = referenceScreenWidth * DESKTOP_REFERENCE_RATIO;
+    const availableWidth = Math.max(1, innerWidth - DESKTOP_MIN_GUTTER * 2);
+    const targetWidth = Math.min(preferredWidth, availableWidth);
     const scale = targetWidth / DESIGN_WIDTH;
 
+    siteStage.style.setProperty("--desktop-stage-width", `${targetWidth}px`);
     siteShell.style.zoom = String(scale);
 
     requestAnimationFrame(() => {

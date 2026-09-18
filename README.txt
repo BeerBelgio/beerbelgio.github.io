@@ -1,3 +1,26 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.1 PUBLIC STAGING
+
+STATUS
+V0.55.2 scroll-polarity experiment is rejected. This build restarts directly from the approved V0.55.1 and changes ONLY desktop-window resize behavior. Mobile portrait/landscape behavior and the frozen V0.54.4 lava engine remain unchanged.
+
+V0.55.1.1 CHANGES
+- Removes the accumulated historical NARROW DESKTOP LOCK block entirely; desktop no longer replays old sub-720px typography/card overrides.
+- Keeps one canonical 760px desktop composition at all fine-pointer window widths.
+- The approved desktop display width is now anchored to 45% of the physical desktop screen width, so simply narrowing the browser window does not continuously make the cards smaller.
+- When the browser becomes too narrow to contain that approved width, the complete 760px composition scales down uniformly only as much as required to fit, leaving an 18px gutter on each side.
+- Text wrapping, card geometry and internal alignment therefore stay fixed; there is no alternate narrow-desktop layout state.
+- Full-width desktop appearance remains the same as V0.55.1 / V0.54.4.
+- Mobile portrait midpoint-sticky motto + 144svh play tail remain exactly V0.55.1.
+- Mobile landscape remains exactly V0.54.4/V0.55.1.
+- lava.js remains byte-for-byte the frozen V0.54.4 baseline. No scroll-polarity experiment from rejected V0.55.2 is present.
+- sonoDGTL unchanged.
+
+TEST TARGET
+- Desktop full width: must look exactly like V0.55.1.
+- Narrow the desktop browser gradually: card size should remain stable while it still fits; once space runs out, the whole composition should shrink uniformly with no reflow or misalignment.
+- Mobile portrait and landscape: must be indistinguishable from V0.55.1.
+- Lava behavior: must be indistinguishable from V0.54.4/V0.55.1.
+
 BEERBELGIO.GITHUB.IO — V0.55.1 PUBLIC STAGING
 
 STATUS
@@ -229,10 +252,3 @@ STAGING RULES
 - /sonodgtl/ = English primary version.
 - /sonodgtl/it/ = Italian alternative version.
 - /lava/ = standalone lava route.
-
-V0.55.2 — LAVA PAIRED SCROLL COUNTERFLOW TEST
-- Baseline: V0.55.1 UI/layout and the frozen V0.54.4 interaction stack.
-- Lava-only experiment: each colour keeps its two existing blobs, but one copy follows scroll perturbation with normal polarity and the same-colour twin uses the inverse polarity.
-- The counterflow applies only to the scroll-derived force/warp input. Autonomous movement, drag/release physics, held +50% morph boost, 5+5 blank-click behaviour, canvas sizing, viewport/orientation logic and all HUB/sonoDGTL layout files are unchanged.
-- Purpose: reduce the tendency of repeated scrolling to herd the entire field into one area while preserving the existing visual language and colour pairing.
-- Desktop narrow-window layout remains a known separate issue and is intentionally NOT changed in this lava experiment.

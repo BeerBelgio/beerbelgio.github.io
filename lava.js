@@ -1,4 +1,4 @@
-/* BeerBelgio Lava Engine — V0.55.2 / paired scroll counterflow
+/* BeerBelgio Lava Engine — V0.54.2.3 / L2
    Slow autonomous base motion + external perturbations.
    Proper fragmentation / tilt / shake come in the dedicated lava session.
 */
@@ -131,11 +131,6 @@
       manualWarpEnd: 0,
       scrollX: 0,
       scrollY: 0,
-      // V0.55.2: there are two blobs per palette colour. The first copy
-      // follows page scroll normally; its same-colour twin responds with the
-      // opposite polarity. This only affects the scroll perturbation, not
-      // autonomous motion, drag/release physics, 5+5 clicks or morph logic.
-      scrollPolarity: i < palette.length ? 1 : -1,
       scrollGain: 0.78 + Math.random() * 0.48,
       scrollFollow: 0.00115 + Math.random() * 0.0018,
       scrollAngleOffset: (Math.random() - 0.5) * 0.28,
@@ -416,8 +411,8 @@
     // Each blob has its own delayed / scaled interpretation of the global scroll.
     // This prevents the whole field from moving like one rigid layer.
     const globalScrollEnabled = !draggedBlob;
-    const targetScrollX = globalScrollEnabled ? scrollImpulseX * blob.scrollGain * blob.scrollPolarity : 0;
-    const targetScrollY = globalScrollEnabled ? scrollImpulseY * blob.scrollGain * blob.scrollPolarity : 0;
+    const targetScrollX = globalScrollEnabled ? scrollImpulseX * blob.scrollGain : 0;
+    const targetScrollY = globalScrollEnabled ? scrollImpulseY * blob.scrollGain : 0;
     const follow = Math.min(1, blob.scrollFollow * dt);
     blob.scrollX += (targetScrollX - blob.scrollX) * follow;
     blob.scrollY += (targetScrollY - blob.scrollY) * follow;
