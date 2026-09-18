@@ -1,0 +1,81 @@
+LAVA AUDIT — V0.40 → V0.48
+
+Purpose: isolate all documented lava-engine changes before reintroducing them selectively on top of the known-good V0.40 engine.
+
+SECTION A — VERBATIM README EXCERPTS
+
+=== V0.40 ===
+- Lava direct manipulation: dragged bubbles retain their release momentum for roughly 2 seconds, then blend back progressively into autonomous motion over the following ~3 seconds.
+- Lava interaction isolation: while a bubble is being dragged, global scroll/pointer impulses are suppressed for the other blobs.
+- Lava touch warping: stronger touch deformation and per-blob scroll response gains/delays/directional offsets. Blobs now react less uniformly and with more individual timing/shape variation.
+
+=== V0.41 ===
+- Bubble drag physics: release velocity now uses a short weighted motion history, so slow/fast gestures produce proportionally slow/fast release momentum.
+- Bubble drag warping: manual liquid deformation now decays over the same hold/blend period as manual release momentum.
+- Bubble drag rotation: manual dragging and force changes no longer rotate the deformation axis; shape mutates via phase/deformation instead.
+- FULL LAVA scroll: wheel/touch scroll sensitivity reduced in immersive lava while keeping normal page interaction more responsive.
+
+=== V0.42 ===
+- Mobile lava viewport: coarse-pointer canvas now overscans both horizontally and vertically to reduce right / bottom clipping.
+- Lava warping: increased ambient morph, stronger interaction deformation and restored visible liquid warping during autonomous movement, scroll/touch interaction and drag / release.
+- Drag release: removed the explicit safety cap on release velocity so fast gestures preserve more of the user-imparted motion.
+
+=== V0.43 ===
+- Lava mobile viewport: increased coarse-pointer canvas overscan on all sides, including an iOS-specific rule, to address right/bottom clipping.
+- Lava scroll sensitivity: reduced on the normal hub as well as FULL LAVA.
+- Lava autonomous warping: increased wobble, morph floor and deformation amplitude; contour smoothing reduced from three passes to two to make the liquid shape more visible without introducing sharp edges.
+- Lava drag warping: increased by roughly 50% and given a stronger post-release deformation decay.
+- Lava drag momentum: no artificial release-speed cap.
+- Blank-space pointer clicks: first five clicks repel blobs from the click point, next five attract blobs, then the mode alternates every five clicks.
+
+=== V0.44 ===
+- Lava scroll: hub scroll sensitivity reduced further while interaction warping remains strong.
+- Lava autonomous shape: stronger independent ambient morphing and movement-energy deformation, with slower contour-phase motion so blobs feel less round / static.
+- Lava drag: while held, a blob maintains at least ~50% extra deformation; release momentum remains uncapped.
+- Blank-click attract/repel: 5-click repulsive / 5-click attractive cycle retained, but blank clicks now change trajectory only and no longer inject abrupt phase / morph jumps.
+- Lava rotation behaviour: interaction-driven angular phase changes were removed; shape amplitudes mutate without intentionally rotating the contour.
+- Mobile lava orientation settling: canvas resize now also rechecks visualViewport after rotation with debounced settling passes.
+
+=== V0.45 ===
+- Lava root cause found: the autonomous phase increments were accidentally lost during the drag-physics refactor. They are restored in V0.45; this was the main reason deformation amplitude changed but the contour looked frozen.
+- Lava autonomous morph: phase / phase2 / ambient warp advance continuously again, with a stronger living deformation floor.
+- Lava drag: while held, the selected blob stays at least ~50% more deformed and grows toward +20%; the shape continues morphing for the entire hold rather than freezing.
+- Lava release: the +20% grab scale decays after release while proportional release momentum remains uncapped.
+- Lava blank-click attraction/repulsion: still alternates 5 repel / 5 attract; blank clicks change trajectory only and do not inject an instantaneous morphology change.
+- Lava hub scroll sensitivity: reduced again for both wheel/trackpad and touch while preserving deformation response.
+
+=== V0.46 ===
+- Lava autonomous morphing: restored stronger V0.26-style contour coefficients, wider radial deformation limits and per-blob independent phase speeds so each blob changes shape continuously instead of holding a potato-like outline.
+- Lava drag morphing: grabbed blobs now grow only about 5%, but liquid deformation is substantially stronger and keeps evolving for the full hold duration. Release momentum behaviour remains proportional to the gesture.
+- Blank-click attract/repel behaviour remains trajectory-only; it does not directly rotate or snap the blob contour.
+
+=== V0.47 ===
+- Lava autonomous morph: autonomous phase speeds raised to the same order of magnitude as the previously successful held-drag morph, so shapes keep changing visibly without user input.
+- Lava held morph: grabbing a bubble now uses the current autonomous deformation as the baseline and increases both deformation and morph speed by ~50%; grab size remains +5%.
+
+=== V0.48 ===
+- Lava morphology: phase and phase2 now start close together and evolve at similar rates. The base contour uses mostly even harmonics (2/4/6) with only a small asymmetric component, reducing persistent pear/potato silhouettes while preserving liquid motion.
+- Lava autonomous movement: base travel speed reduced by about 10% while autonomous morphology remains strong.
+- Lava interaction: autonomous deformation is now the baseline; grabbing a blob raises that same liquid behaviour by about 50% while preserving the existing +5% size growth.
+
+SECTION B — TECHNICAL EVOLUTION / WHAT CHANGED IN PRACTICE
+
+V0.40 baseline: direct bubble dragging already existed. Release momentum was retained for ~2 s, then blended back over ~3 s. While dragging, scroll/pointer impulses on other blobs were suppressed. Touch scroll response had per-blob gain/delay/directional offsets so blobs did not react in lockstep.
+V0.41: release physics became gesture-sensitive using a weighted short motion history. Manual warping inherited the same decay envelope as momentum. Interaction-driven rotation of the deformation axis was removed. FULL LAVA scroll sensitivity was reduced.
+V0.42: mobile canvas overscan was added horizontally and vertically. Ambient morph / interaction deformation were increased. The artificial cap on release velocity was removed.
+V0.43: overscan was enlarged again; hub scroll sensitivity was also reduced. Autonomous wobble/morph/deformation were strengthened and contour smoothing reduced. Drag warping was boosted ~50%. The 5-click repel / 5-click attract background pointer cycle was introduced.
+V0.44: autonomous morphing was retuned around independent blob behaviour and movement energy. Held drag was required to keep ~50% extra deformation. Background clicks were changed to trajectory-only so they no longer injected abrupt shape/phase jumps. Interaction-driven angular phase changes were removed. Extra orientation-settling canvas resizes were added.
+V0.45: a regression was identified: continuous autonomous phase increments had been lost during the drag refactor, so high deformation amplitude existed numerically but the contour looked frozen. phase / phase2 progression was restored. Grab size was +20%, with shape continuing to morph while held and scale decaying after release. Hub scroll sensitivity was reduced again.
+V0.46: stronger V0.26-style contour coefficients and wider radial limits were restored, plus independent per-blob phase speeds. Grab scale was reduced from +20% to ~+5%, while held deformation became stronger and remained active throughout the hold.
+V0.47: autonomous morph phase speeds were raised toward the same order as the successful held-drag behaviour. Held drag used the current autonomous shape as baseline, then added ~50% deformation and morph speed. +5% grab scale retained.
+V0.48: phase and phase2 were initialized close together and evolved at similar rates; the base contour shifted toward mostly even harmonics (2/4/6) with only a small asymmetric component, specifically to reduce pear/potato silhouettes. Base travel speed was reduced ~10%. Autonomous deformation became the baseline, with grab interaction adding ~50%.
+
+SECTION C — CONTROLLED REINTRODUCTION ORDER
+
+1) Keep V0.40 canvas/viewport behaviour untouched.
+2) Reintroduce V0.41 weighted release velocity + warp decay only.
+3) Reintroduce V0.43 5+5 attract/repel as trajectory-only, using the V0.44 correction that removed abrupt morphology changes.
+4) Reintroduce V0.45 restored autonomous phase progression.
+5) Reintroduce V0.46/V0.47 stronger held deformation and +5% grab scale.
+6) Only after all device tests pass, experiment with V0.48 even-harmonic morphology / slower travel.
+7) Do NOT reintroduce V0.42→V0.44 mobile canvas overscan/orientation-settling changes until responsive/compositor behaviour has been separately tested.

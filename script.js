@@ -115,6 +115,7 @@
       siteShell.style.removeProperty("zoom");
       siteStage.style.removeProperty("height");
       siteStage.style.removeProperty("--desktop-stage-width");
+      document.documentElement.style.removeProperty("--desktop-stage-width");
       return;
     }
 
@@ -129,6 +130,7 @@
 
     siteShell.style.removeProperty("zoom");
     siteStage.style.setProperty("--desktop-stage-width", `${targetWidth}px`);
+    document.documentElement.style.setProperty("--desktop-stage-width", `${targetWidth}px`);
     document.documentElement.style.setProperty("--desktop-stage-scale", String(scale));
 
     requestAnimationFrame(() => {
@@ -522,12 +524,12 @@
   }
 
   // ---------------------------------------------------------------
-  // MOBILE PORTRAIT FINAL CLAIM — V0.55.1.8
+  // UNIVERSAL FINAL CLAIM — V0.55.2
   //
-  // Uses the exact user-supplied SVG path geometry. The base artwork is
-  // black + white; live duplicate SVG paths are softly masked by each lava
-  // blob so the existing per-family reactive palette is preserved without
-  // changing lava.js.
+  // Uses the exact portrait-Hero SVG geometry in every responsive mode.
+  // The base artwork keeps the Hero orange + ink colours; live duplicate SVG
+  // paths are softly masked by each lava blob so the colour-shift interaction
+  // remains tied to the actual field underneath without changing lava.js.
   // ---------------------------------------------------------------
   const portraitMottoSvg = document.getElementById("motto-portrait-svg");
   const portraitMottoDefs = document.getElementById("motto-portrait-defs");
@@ -535,6 +537,7 @@
 
   if (portraitMottoSvg && portraitMottoDefs && portraitMottoRoot && window.BeerBelgioLava?.getBlobs) {
     const SVG_NS = "http://www.w3.org/2000/svg";
+    const PORTRAIT_VIEWBOX_X = -56;
     const PORTRAIT_VIEWBOX_W = 740;
     const PORTRAIT_VIEWBOX_H = 150;
 
@@ -594,13 +597,13 @@
         mask.id = maskId;
         mask.setAttribute("maskUnits", "userSpaceOnUse");
         mask.setAttribute("maskContentUnits", "userSpaceOnUse");
-        mask.setAttribute("x", "0");
+        mask.setAttribute("x", String(PORTRAIT_VIEWBOX_X));
         mask.setAttribute("y", "0");
         mask.setAttribute("width", String(PORTRAIT_VIEWBOX_W));
         mask.setAttribute("height", String(PORTRAIT_VIEWBOX_H));
 
         const maskRect = svgEl("rect");
-        maskRect.setAttribute("x", "0");
+        maskRect.setAttribute("x", String(PORTRAIT_VIEWBOX_X));
         maskRect.setAttribute("y", "0");
         maskRect.setAttribute("width", String(PORTRAIT_VIEWBOX_W));
         maskRect.setAttribute("height", String(PORTRAIT_VIEWBOX_H));
@@ -642,7 +645,7 @@
             layer.funUse.setAttribute("fill", palette.fun);
             layer.restUse.setAttribute("fill", palette.rest);
 
-            const cx = (blob.x - rect.left) * sx;
+            const cx = PORTRAIT_VIEWBOX_X + (blob.x - rect.left) * sx;
             const cy = (blob.y - rect.top) * sy;
             const rx = Math.max(0.01, blob.r * sx * (0.92 + 0.045 * Math.sin(blob.phase + time * 0.00018)));
             const ry = Math.max(0.01, blob.r * sy * (0.92 + 0.045 * Math.sin(blob.phase2 - time * 0.00014)));

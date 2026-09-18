@@ -1,21 +1,26 @@
-V0.55.1.15 STAGING / FINAL PRE-V1
+V0.55.2 STAGING / FINAL CLAIM UNIFICATION TEST
 
 BASELINE
-- Rebuilt from the user-approved V0.55.1.13 site/UI baseline.
-- Reapplies only the approved V0.55.1.14 +30% autonomous LAVA morphing.
-- Desktop resize, portrait Hero typography, portrait sticky final claim, landscape geometry, privacy UI and sonoDGTL layout remain on their approved baseline.
+- Starts from user-approved V0.55.1.15.
+- +30% autonomous LAVA morphing remains approved and unchanged.
+- Desktop resize, portrait resize, Hero typography, privacy UI and sonoDGTL remain on the approved baseline.
 
-PORTRAIT MOBILE
-- No portrait CSS/layout changes from the approved V0.55.1.13 baseline are carried in from V0.55.1.14.
-- Main CSS/JS/LAVA cache keys are bumped coherently to V0.55.1.15 so browsers cannot mix stale staging assets during resize/orientation tests.
+V0.55.2 TEST
+- Final claim now uses the exact portrait-Hero SVG geometry and colours in desktop, touch portrait and touch landscape.
+- Visible SVG artwork is fitted to the full card width in every mode.
+- Reactive blob colour masks remain active in every mode.
+- Final claim is moved outside the transformed desktop shell so sticky coordinates are viewport-true.
+- In all three modes, the claim sticks with its visual centre at mid-screen and the page continues through a 144svh lava-only play tail.
 
-PRE-V1 HOUSEKEEPING
-- robots/googlebot noindex/nofollow/noarchive meta directives removed from HUB, /lava/, sonoDGTL EN and sonoDGTL IT.
-- README.md is now the only README; obsolete README.txt removed.
-- README reframed as repository presentation with a short changelog.
-- Remaining textual YouTube privacy-link arrow replaced by the local SVG arrow asset.
-- Runtime asset query strings updated to V0.55.1.15.
+CACHE COHERENCE
+- Every local runtime CSS / JS / SVG / PNG reference in the HTML uses one build-wide ?v=0552 token.
+- This prevents a browser from mixing assets from different staging builds after refresh, tab restoration or orientation changes.
+- Orientation changes themselves use live media queries; no alternate cached layout bundle is involved.
 
-IMPORTANT
-This is still labelled STAGING, but search-engine blocking directives have now been removed by request. If this build is uploaded publicly, indexing may begin before the formal V1.0 tag/release.
-The GitHub repository description must still be changed manually to: My Digital Hub
+PRE-V1 STATE
+- Search-engine noindex directives remain removed.
+- README.md is the only README.
+- robots.txt and sitemap.xml remain intentionally deferred.
+- Repository description still needs to be changed manually on GitHub to: My Digital Hub
+
+If this final-claim behaviour is approved, the next package is V1.0 RELEASE after repository/code cleanup and a final GitHub audit.

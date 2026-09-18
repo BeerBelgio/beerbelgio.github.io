@@ -46,8 +46,8 @@ This repository contains the personal HUB only. Other BeerBelgio experiments and
 
 ## Changelog
 
-- **V1.0 — next release** — first stable public release of the complete HUB, responsive layouts, sonoDGTL pages, privacy information, social metadata and final LAVA behaviour.
-- **V0.55.x** — pre-release stabilization: proportional desktop resize, mobile portrait play-tail, privacy UI, social preview and final LAVA tuning.
+- **V1.0 — next release** — first stable public release of the complete HUB, responsive layouts, unified reactive final claim, sonoDGTL pages, privacy information, social metadata and final LAVA behaviour.
+- **V0.55.x** — pre-release stabilization: proportional desktop resize, responsive final-claim play-tail, privacy UI, social preview and final LAVA tuning.
 - **V0.54** — interaction baseline for LAVA: drag / throw momentum, selected-blob warping and 5+5 blank-space interaction.
 - **V0.42** — responsive HUB baseline.
 - **V0.1** — first functional HUB prototype.
