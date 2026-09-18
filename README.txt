@@ -1,3 +1,25 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.6 STAGING
+
+STATUS
+V0.55.1.5 is superseded for desktop-resize testing. This build keeps its corrected single-centre geometry and restores the sizing strategy that was closest to the intended behaviour in V0.55.1.1/1.2.
+
+V0.55.1.6 CHANGES
+- Desktop only: the approved HUB width is again based on 45% of the physical desktop screen, rather than 45% of the current browser window.
+- The HUB therefore stays at its normal desktop size while it fits.
+- When the browser becomes narrower than that size + 18px per-side gutters, the entire fixed 760px composition scales down uniformly to fit.
+- Centring remains the corrected V0.55.1.5 model: the stage is centred; the shell starts at the stage's left edge and scales from top-left. No second centring offset exists.
+- This specifically combines the useful sizing behaviour of V0.55.1.1/1.2 with the corrected geometry of V0.55.1.5.
+- FULL LAVA ? copy / spacing unchanged from V0.55.1.5.
+- Mobile portrait/landscape unchanged.
+- lava.js remains byte-for-byte the frozen V0.54.4 baseline.
+- sonoDGTL unchanged.
+
+TEST TARGET
+- Full-width desktop: exact approved size.
+- Narrow from full width toward half-screen: HUB should keep the same visual size and become progressively closer to the window edges, rather than shrinking with every pixel of window width.
+- Once the window is too narrow to contain it: HUB should then shrink uniformly, with equal left/right gutters.
+- No text/card reflow.
+
 BEERBELGIO.GITHUB.IO — V0.55.1.5 PUBLIC STAGING
 
 STATUS

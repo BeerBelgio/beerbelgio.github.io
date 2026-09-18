@@ -1,16 +1,2 @@
-V0.55.1.5 STAGING
-Desktop resize geometry only: remove the shell's second centring system and scale from the top-left corner of the already-centred stage. Intended to eliminate the drift/goofy resize visible below roughly half-screen width. Mobile, FULL LAVA copy, sonoDGTL and frozen V0.54.4 lava physics are unchanged.
-
-V0.55.1.3 PUBLIC STAGING
-
-Base: V0.55.1.2. Rejected V0.55.2 scroll-polarity experiment remains excluded.
-Desktop resize: fine-pointer desktops now retain the complete historical desktop rule set below the old 720px breakpoint; the canonical 760px composition scales as one centred unit instead of falling back to mobile/base geometry.
-FULL LAVA: circular help control is now “?”; instructions are a single flowing paragraph with bold interaction words instead of a command list.
-Mobile portrait: unchanged V0.55.1 midpoint-sticky final motto + 144svh lava play tail.
-Mobile landscape: unchanged V0.54.4 normal ending.
-Frozen lava engine: V0.54.4 byte-for-byte.
-Search indexing remains disabled.
-
-V0.55.1.4 STAGING
-Test only: (1) continuous, symmetric desktop resize from full width to very narrow windows; (2) Full Lava ? copy line spacing. Mobile behavior and lava physics are intentionally unchanged.
-
+V0.55.1.6 STAGING
+Desktop resize only: preserve the approved screen-relative HUB size until the browser can no longer contain it, then scale the canonical 760px composition uniformly with equal 18px gutters. Keeps V0.55.1.5 single-centre geometry. Mobile, FULL LAVA copy, sonoDGTL and frozen V0.54.4 lava physics are unchanged.
