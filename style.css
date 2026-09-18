@@ -3396,3 +3396,26 @@ body.privacy-open { overflow: hidden; }
 }
 .privacy-close::before { transform: rotate(45deg); }
 .privacy-close::after  { transform: rotate(-45deg); }
+
+/* =========================================================
+   V0.55.1.13 — PRIVACY CLOSE CONTROL POLISH
+   Promoted and unchanged: portrait Hero typography, LAVA physics,
+   desktop resize, privacy placement, social metadata and licensing.
+   ========================================================= */
+
+/* Absolute 50/50 positioning avoids native-button/grid metric differences
+   and keeps the drawn close mark in the mathematical centre of the circle. */
+.privacy-close::before,
+.privacy-close::after {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  grid-area: auto !important;
+  transform-origin: 50% 50% !important;
+}
+.privacy-close::before {
+  transform: translate(-50%, -50%) rotate(45deg) !important;
+}
+.privacy-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg) !important;
+}

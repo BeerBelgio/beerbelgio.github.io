@@ -1,3 +1,26 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.13 STAGING / PRE-V1
+
+STATUS
+V0.55.1.12 is promoted except for two privacy presentation details. V0.55.1.13 changes only the close-control centring and the sonoDGTL portrait footer PRIVACY alignment. All promoted Hero typography, LAVA behaviour, responsive geometry, social metadata, privacy copy and licensing remain unchanged. Search indexing remains disabled until explicit V1.0 promotion.
+
+V0.55.1.13 CHANGES
+- HUB + sonoDGTL privacy close mark: the two CSS strokes are positioned at absolute 50% / 50% inside the circular button, independent of font or grid metrics.
+- sonoDGTL portrait footer: PRIVACY remains a separate line with no separator, now left-aligned with the other footer copy.
+- No privacy control added to /lava/ in this build.
+
+FROZEN / UNCHANGED
+- V0.55.1.11 portrait Hero typography.
+- V0.55.1.11 LAVA repulsion and no-scroll-rotation behaviour.
+- V0.55.1.7+ desktop resize solution.
+- HUB privacy placement: portrait above Hero, desktop left margin, touch landscape right margin.
+- sonoDGTL content/cards.
+- /lava/ page.
+- V1 social metadata staging, privacy copy, licensing clarification and OG image.
+
+NEXT GATE
+- User approval of V0.55.1.13 privacy-close centring and sonoDGTL portrait footer alignment.
+- Then final V1.0 release switch: remove noindex directives, update staging/repo wording, and perform final validation.
+
 BEERBELGIO.GITHUB.IO — V0.55.1.12 STAGING / PRE-V1
 
 STATUS

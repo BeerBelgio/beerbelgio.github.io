@@ -511,3 +511,31 @@ body.privacy-open { overflow: hidden; }
 }
 .privacy-close::before { transform: rotate(45deg); }
 .privacy-close::after  { transform: rotate(-45deg); }
+
+/* =========================================================
+   V0.55.1.13 — PRIVACY CLOSE + PORTRAIT FOOTER POLISH
+   ========================================================= */
+
+.privacy-close::before,
+.privacy-close::after {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  grid-area: auto !important;
+  transform-origin: 50% 50% !important;
+}
+.privacy-close::before {
+  transform: translate(-50%, -50%) rotate(45deg) !important;
+}
+.privacy-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg) !important;
+}
+
+/* In portrait PRIVACY remains its own line, but follows the left alignment
+   of the other footer copy instead of being centred. */
+@media (pointer: coarse) and (orientation: portrait) {
+  .sd-privacy-link {
+    align-self: flex-start !important;
+    justify-self: start !important;
+  }
+}

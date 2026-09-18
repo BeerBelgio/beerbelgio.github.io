@@ -1,2 +1,2 @@
-V0.55.1.12 STAGING / PRE-V1
-V0.55.1.11 portrait Hero typography and LAVA behaviour are promoted and unchanged. This build polishes privacy presentation only: invisible modal scrollbars, repository SVG arrows for external privacy links, geometrically centred close X, touch-landscape HUB privacy control on the right, and an independent centred PRIVACY element in the sonoDGTL footer (own line in portrait). HUB og:title / twitter:title are now “Matteo Belgiovine — Digital Hub”. noindex remains active pending explicit V1.0 promotion.
+V0.55.1.13 STAGING / PRE-V1
+V0.55.1.11 portrait Hero typography and LAVA behaviour remain promoted and unchanged. V0.55.1.13 changes only two privacy presentation details: the privacy-panel close X is mathematically centred with absolute 50%/50% CSS positioning, and sonoDGTL portrait PRIVACY is left-aligned on its own line. noindex remains active pending explicit V1.0 promotion.
