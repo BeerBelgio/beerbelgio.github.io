@@ -1,2 +1,2 @@
-V0.55.1.8 STAGING
-V0.55.1.7 desktop resize is preserved. Desktop Hero claim is reduced to 118%; desktop final motto fitting is corrected for the transformed 760px stage and aligned to card width. Mobile portrait final motto now uses the supplied claim-portrait-end.svg geometry at card-filling scale while preserving midpoint stickiness, the 144svh tail and blob-driven reactive colours. Mobile landscape, FULL LAVA, sonoDGTL and frozen V0.54.4 lava physics are unchanged.
+V0.55.1.9 RELEASE CANDIDATE
+V0.55.1.8 promoted functionality is preserved. Mobile portrait Hero identity typography is enlarged; FULL LAVA help action labels are uppercase/larger in both entry modes; third-party icon provenance and repository hygiene are tightened. noindex remains active pending explicit V1.0 promotion. Desktop resize, final-claim behaviour, frozen lava.js and sonoDGTL are unchanged.

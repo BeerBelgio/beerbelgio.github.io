@@ -1291,7 +1291,12 @@ body.lava-mode .lava-info {
 }
 
 .lava-info-copy strong {
+  display: inline-block;
+  font-size: 1.22em;
+  line-height: 1;
   font-weight: 900;
+  letter-spacing: .045em;
+  text-transform: uppercase;
 }
 
 .lava-info-close {
@@ -2767,9 +2772,9 @@ html.desktop-proportional .floating-motto { width: 100% !important; margin-botto
   .identity-block { gap: 13px !important; padding-top: 15px !important; }
   .identity-block h2,
   .identity-block p { padding-inline: 14px !important; }
-  .identity-block h2 { font-size: 25px !important; }
-  .identity-tagline { font-size: 11px !important; line-height: 1.15 !important; font-weight: 500 !important; white-space: nowrap !important; }
-  .identity-meta { font-size: 10.4px !important; line-height: 1.16 !important; }
+  .identity-block h2 { font-size: 30px !important; }
+  .identity-tagline { font-size: 12px !important; line-height: 1.15 !important; font-weight: 500 !important; white-space: nowrap !important; }
+  .identity-meta { font-size: 11.4px !important; line-height: 1.16 !important; }
 
   .quick-actions {
     display: flex !important;

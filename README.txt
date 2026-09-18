@@ -1,3 +1,26 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.9 RELEASE CANDIDATE
+
+FINAL UI POLISH + PRE-V1 AUDIT
+- Based directly on promoted V0.55.1.8. Desktop proportional resize architecture remains untouched.
+- Mobile portrait Hero identity cards only: typography is increased for readability/hierarchy (titles 25→30px, taglines 11→12px, meta lists 10.4→11.4px). Geometry, order and mobile sticky/final-claim behaviour are unchanged.
+- FULL LAVA help, both from the HUB and /lava/: MOVE, SCROLL, GRAB & DRAG and 5+5 are now uppercase, 1.22em and heavier/letter-spaced so the four actions read as labels. Popup interaction behaviour is unchanged.
+- Third-party notices now record Simple Icons provenance for the six verified platform icon paths while preserving the existing trademark disclaimer.
+- Repository hygiene: .DS_Store removed from the package; .nojekyll is deliberately non-empty so its presence is easier to verify after upload.
+- No V1 indexing switch has been made yet: noindex/nofollow/noarchive remain in place until this release candidate is explicitly promoted.
+
+FROZEN / UNCHANGED
+- lava.js: frozen V0.54.4 physics/interaction baseline, byte-for-byte unchanged. SHA-256: 5c0624ff4117a896bc56235b75dcd0fb5b7cd275c92eb854616b11c103d71eff
+- V0.55.1.7 desktop resize system: unchanged.
+- V0.55.1.8 desktop Hero/final-claim fixes and mobile portrait final SVG/reactive-colour engine: unchanged.
+- Mobile portrait sticky midpoint and 144svh tail: unchanged.
+- Mobile landscape ending: unchanged.
+- sonoDGTL: unchanged.
+
+V1 LAUNCH SWITCHES STILL INTENTIONAL
+- Remove staging robots noindex/nofollow/noarchive only when V1.0 is declared.
+- Verify .nojekyll exists in the GitHub repository after upload (macOS/Finder may hide dotfiles).
+- Change the GitHub repository description from “My Digital Hub - public staging” at launch.
+
 BEERBELGIO.GITHUB.IO — V0.55.1.8 STAGING
 
 CLAIM GEOMETRY + MOBILE PORTRAIT FINAL ART
