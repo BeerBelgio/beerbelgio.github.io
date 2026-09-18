@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#973320">
   <title>Lava — BeerBelgio</title>
-  <link rel="icon" href="../assets/favicon.svg?v=05522" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/fonts/m-plus-rounded-1c/font.css?v=05522">
+  <link rel="icon" href="../assets/favicon.svg?v=1000" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/fonts/m-plus-rounded-1c/font.css?v=1000">
   <style>
     * { box-sizing: border-box; }
     html, body {
@@ -126,12 +126,45 @@
       cursor: pointer;
     }
   </style>
+
+  <script>
+    (() => {
+      const BUILD_TOKEN = "1000";
+      let checking = false;
+      async function ensureCurrentBuild() {
+        if (checking) return;
+        checking = true;
+        try {
+          const response = await fetch(`/version.json?t=${Date.now()}`, { cache: "no-store" });
+          if (!response.ok) return;
+          const latest = await response.json();
+          if (latest && latest.token && latest.token !== BUILD_TOKEN) {
+            const url = new URL(window.location.href);
+            if (url.searchParams.get("_build") !== latest.token) {
+              url.searchParams.set("_build", latest.token);
+              window.location.replace(url.toString());
+            }
+          }
+        } catch (_) {
+          /* Offline or transient network failure: keep the current coherent build. */
+        } finally {
+          checking = false;
+        }
+      }
+      window.addEventListener("pageshow", ensureCurrentBuild);
+      window.addEventListener("orientationchange", ensureCurrentBuild);
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) ensureCurrentBuild();
+      });
+    })();
+  </script>
+
 </head>
 <body>
   <canvas id="lava-canvas" aria-label="Interactive BeerBelgio lava"></canvas>
 
   <div class="hud">
-    <a href="../"><img src="../assets/icon-arrow-left.svg?v=05522" alt=""> HUB</a>
+    <a href="../"><img src="../assets/icon-arrow-left.svg?v=1000" alt=""> HUB</a>
     <button class="lava-info" id="lava-info" type="button" aria-label="Full Lava controls" aria-expanded="false" aria-controls="lava-info-panel">?</button>
   </div>
 
@@ -143,7 +176,7 @@
     </section>
   </div>
 
-  <script src="../lava.js?v=05522"></script>
+  <script src="../lava.js?v=1000"></script>
   <script>
     (() => {
       const info = document.getElementById("lava-info");

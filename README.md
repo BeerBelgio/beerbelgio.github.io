@@ -2,7 +2,7 @@
 
 **beerbelgio.github.io** is the personal digital hub of Matteo Belgiovine: musician and creator behind **BeerBelgio**, and digital / marketing consultant behind **sonoDGTL**.
 
-It is intentionally **not a traditional portfolio**. It is one small, independent place that introduces who I am, connects the two sides of my work, points to the channels where the actual work lives, and leaves some room to play.
+It is intentionally **not a traditional portfolio**. It is a small, independent place that introduces who I am, connects the two sides of my work, points to the channels where the actual work lives, and leaves some room to play.
 
 > **Fun is a serious thing.**
 
@@ -42,13 +42,14 @@ This repository contains the personal HUB only. Other BeerBelgio experiments and
 - `/lava/` — standalone FULL LAVA entry.
 - `/assets/` — local artwork, icons, fonts and social-preview assets.
 - `lava.js` — custom canvas / LAVA engine.
+- `version.json` — public build marker used to keep browser sessions on one coherent asset generation.
 - `LICENSE.md`, `COPYRIGHT.md`, `THIRD_PARTY_NOTICES.md` — licensing, ownership and attribution.
 
 ## Changelog
 
-- **V1.0 — next release** — first stable public release of the complete HUB, responsive layouts, universal reactive final claim, sonoDGTL pages, privacy information, social metadata and final LAVA behaviour.
-- **V0.55.x** — pre-release stabilization: proportional desktop resize, universal midpoint-sticky final-claim play-tail and spacing, privacy UI, social preview and final LAVA tuning.
-- **V0.54** — interaction baseline for LAVA: drag / throw momentum, selected-blob warping and 5+5 blank-space interaction.
+- **V1.0 — 18 September 2026** — first stable public release: complete HUB, desktop / portrait / landscape layouts, reactive midpoint-sticky final claim, sonoDGTL EN / IT pages, privacy information, social metadata and final LAVA behaviour.
+- **V0.55.x** — release stabilization: proportional desktop resize, final-claim play-tail, privacy UI, social preview, cache coherence and final LAVA tuning.
+- **V0.54** — LAVA interaction baseline: drag / throw momentum, selected-blob warping and 5+5 blank-space interaction.
 - **V0.42** — responsive HUB baseline.
 - **V0.1** — first functional HUB prototype.
 

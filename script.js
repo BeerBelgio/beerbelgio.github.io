@@ -524,7 +524,7 @@
   }
 
   // ---------------------------------------------------------------
-  // UNIVERSAL FINAL CLAIM — V0.55.2.2
+  // UNIVERSAL FINAL CLAIM — V1.0
   //
   // Reuses the exact V0.55.1.15 / claim-portrait-end.svg construction.
   // The base artwork is black + white; live duplicate SVG paths are softly
