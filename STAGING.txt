@@ -1,7 +1,15 @@
-V0.55.1 PUBLIC STAGING
+BEERBELGIO.GITHUB.IO — V0.55.2 PUBLIC STAGING
 
-Frozen lava baseline: V0.54.4.
-Desktop: V0.54.4 sizing/alignment restored; narrow-window desktop CSS is locked to the same proportional composition.
-Mobile portrait: midpoint-sticky final motto with 144svh lava play tail.
-Mobile landscape: V0.54.4 normal ending.
-Search indexing remains disabled.
+BASELINE
+- V0.55.1 layout/UI retained.
+- V0.54.4-derived lava interaction stack retained.
+
+TEST IN THIS BUILD
+- Paired scroll counterflow: for each of the five colours, one blob follows page-scroll perturbation and its twin receives the inverse scroll perturbation.
+
+INTENTIONALLY UNCHANGED
+- HUB responsive/mobile layout
+- sonoDGTL
+- canvas sizing / overscan / visualViewport / orientation handling
+- drag, release, held morph and 5+5 behaviour
+- narrow desktop resize issue (separate diagnostic/fix)

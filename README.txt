@@ -229,3 +229,10 @@ STAGING RULES
 - /sonodgtl/ = English primary version.
 - /sonodgtl/it/ = Italian alternative version.
 - /lava/ = standalone lava route.
+
+V0.55.2 — LAVA PAIRED SCROLL COUNTERFLOW TEST
+- Baseline: V0.55.1 UI/layout and the frozen V0.54.4 interaction stack.
+- Lava-only experiment: each colour keeps its two existing blobs, but one copy follows scroll perturbation with normal polarity and the same-colour twin uses the inverse polarity.
+- The counterflow applies only to the scroll-derived force/warp input. Autonomous movement, drag/release physics, held +50% morph boost, 5+5 blank-click behaviour, canvas sizing, viewport/orientation logic and all HUB/sonoDGTL layout files are unchanged.
+- Purpose: reduce the tendency of repeated scrolling to herd the entire field into one area while preserving the existing visual language and colour pairing.
+- Desktop narrow-window layout remains a known separate issue and is intentionally NOT changed in this lava experiment.
