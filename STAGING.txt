@@ -1,8 +1,9 @@
-V0.55.1.1 PUBLIC STAGING
+V0.55.1.2 PUBLIC STAGING
 
-Base: approved V0.55.1. Rejected V0.55.2 scroll-polarity experiment is not included.
-Desktop: one canonical 760px composition; approved size stays stable while the window is narrowed, then scales uniformly only when needed to fit.
-Mobile portrait: V0.55.1 midpoint-sticky final motto + 144svh lava play tail.
-Mobile landscape: V0.54.4 normal ending.
-Frozen lava baseline: V0.54.4.
+Base: V0.55.1.1. Rejected V0.55.2 scroll-polarity experiment remains excluded.
+Desktop: canonical 760px composition; stable approved size while it fits, then centre-anchored transform scaling with symmetric gutters.
+FULL LAVA: new circular info control + HUB-style instructions popup, also available at /lava/.
+Mobile portrait: unchanged V0.55.1 midpoint-sticky final motto + 144svh lava play tail.
+Mobile landscape: unchanged V0.54.4 normal ending.
+Frozen lava engine: V0.54.4 byte-for-byte.
 Search indexing remains disabled.

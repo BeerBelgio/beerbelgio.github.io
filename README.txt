@@ -1,3 +1,28 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.2 PUBLIC STAGING
+
+STATUS
+Starts from V0.55.1.1. Mobile portrait/landscape and the frozen V0.54.4 lava engine remain unchanged. This build addresses the remaining desktop-resize centering drift and adds an information card to FULL LAVA.
+
+V0.55.1.2 CHANGES
+- Desktop resize no longer uses CSS zoom. The canonical 760px desktop layout is paint-scaled with transform only when the browser window actually needs it to fit.
+- The approved full-size desktop width is still anchored to 45% of the physical desktop screen, so narrowing the window does not continuously shrink the cards while that size still fits.
+- When scaling is required, the 760px shell is anchored by its own horizontal centre (`left: 50%`, fixed -380px layout offset, `transform-origin: top center`). This removes the left/right drift seen with CSS zoom.
+- Fit calculations now use `document.documentElement.clientWidth`, excluding the vertical scrollbar from the available-width calculation so the two desktop gutters stay symmetrical.
+- Stage height is reserved as fixed-layout scrollHeight × visual scale; text wrapping and internal card geometry remain the canonical desktop composition.
+- FULL LAVA now has a minimal circular info button. It opens a cream HUB-style control card explaining pointer move, scroll, grab/drag/release, stationary hold warping and the 5+5 blank-click cycle.
+- The same info control is available on the standalone `/lava/` route.
+- The info UI is made of buttons / `.card` elements, so it does not count toward the lava 5+5 click cycle and does not start blob dragging.
+- `lava.js` remains byte-for-byte the frozen V0.54.4 baseline. No bubble physics, canvas, scroll, drag, momentum, warping or 5+5 logic is changed.
+- Mobile portrait midpoint-sticky motto + 144svh play tail remain unchanged from V0.55.1.
+- Mobile landscape remains unchanged from V0.54.4/V0.55.1.
+- sonoDGTL unchanged.
+
+TEST TARGET
+- Desktop full width: appearance must remain the approved V0.55.1 size.
+- Narrow desktop window: the complete composition must stay horizontally centred with visually equal left/right space; once it must shrink, it must scale uniformly without reflow.
+- Mobile portrait / landscape: must be indistinguishable from V0.55.1.1.
+- FULL LAVA: info button should open/close the control card without altering bubble behavior or consuming a 5+5 click.
+
 BEERBELGIO.GITHUB.IO — V0.55.1.1 PUBLIC STAGING
 
 STATUS

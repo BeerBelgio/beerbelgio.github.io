@@ -2,6 +2,9 @@
   const body = document.body;
   const lavaToggle = document.getElementById("lava-toggle");
   const lavaBack = document.getElementById("lava-back");
+  const lavaInfo = document.getElementById("lava-info");
+  const lavaInfoPanel = document.getElementById("lava-info-panel");
+  const lavaInfoClose = document.getElementById("lava-info-close");
   const siteStage = document.getElementById("site-stage");
   const siteShell = document.getElementById("site-shell");
 
@@ -65,29 +68,38 @@
   }
   addEventListener("orientationchange", scrollToHeroAfterRotation, { passive: true });
 
+  function setLavaInfo(open) {
+    if (!lavaInfoPanel || !lavaInfo) return;
+    lavaInfoPanel.hidden = !open;
+    lavaInfo.setAttribute("aria-expanded", String(open));
+  }
+
   function setLavaMode(active) {
     body.classList.toggle("lava-mode", active);
     if (lavaToggle) {
       lavaToggle.setAttribute("aria-pressed", String(active));
     }
+    if (!active) setLavaInfo(false);
   }
 
   if (lavaToggle) lavaToggle.addEventListener("click", () => setLavaMode(true));
   if (lavaBack) lavaBack.addEventListener("click", () => setLavaMode(false));
+  if (lavaInfo) lavaInfo.addEventListener("click", () => setLavaInfo(lavaInfoPanel?.hidden !== false));
+  if (lavaInfoClose) lavaInfoClose.addEventListener("click", () => setLavaInfo(false));
+  addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && lavaInfoPanel && !lavaInfoPanel.hidden) {
+      setLavaInfo(false);
+    }
+  });
 
   // ---------------------------------------------------------------
   // DESKTOP PROPORTIONAL STAGE
   //
-  // IMPORTANT: desktop detection must NOT depend on the page's CSS viewport,
-  // because Chrome zoom changes that viewport. A fine pointer + desktop-class
-  // screen keeps this active at 25%, 100%, 200%, etc.
-  //
-  // The internal 760px design is kept canonical at every desktop window width.
-  // Its APPROVED display width is derived from the physical desktop screen (45%),
-  // so narrowing the browser does not continuously shrink/recompose the site.
-  // Only when the window can no longer contain that width do we scale uniformly
-  // just enough to fit, preserving all line breaks and card proportions.
-  // The lava remains a separate full-viewport canvas.
+  // Keep one canonical 760px desktop layout and scale only its painted output.
+  // The approved full-size width is still 45% of the physical desktop screen;
+  // narrowing the browser therefore does not shrink the site until it actually
+  // needs to fit. When fitting is required, the shell is scaled around its OWN
+  // horizontal centre, removing the left/right drift produced by CSS zoom.
   // ---------------------------------------------------------------
   const DESIGN_WIDTH = 760;
   const DESKTOP_REFERENCE_RATIO = 0.45;
@@ -102,6 +114,7 @@
 
     if (!isDesktopExperience()) {
       document.documentElement.classList.remove("desktop-proportional");
+      document.documentElement.style.removeProperty("--desktop-stage-scale");
       siteShell.style.removeProperty("zoom");
       siteStage.style.removeProperty("height");
       siteStage.style.removeProperty("--desktop-stage-width");
@@ -112,22 +125,31 @@
 
     const referenceScreenWidth = Math.max(1, screen.width || innerWidth);
     const preferredWidth = referenceScreenWidth * DESKTOP_REFERENCE_RATIO;
-    const availableWidth = Math.max(1, innerWidth - DESKTOP_MIN_GUTTER * 2);
+    // clientWidth follows the real CSS layout area and excludes the vertical
+    // scrollbar, so the two gutters remain genuinely symmetrical.
+    const layoutViewportWidth = Math.max(1, document.documentElement.clientWidth || innerWidth);
+    const availableWidth = Math.max(1, layoutViewportWidth - DESKTOP_MIN_GUTTER * 2);
     const targetWidth = Math.min(preferredWidth, availableWidth);
     const scale = targetWidth / DESIGN_WIDTH;
 
+    siteShell.style.removeProperty("zoom");
     siteStage.style.setProperty("--desktop-stage-width", `${targetWidth}px`);
-    siteShell.style.zoom = String(scale);
+    document.documentElement.style.setProperty("--desktop-stage-scale", String(scale));
 
     requestAnimationFrame(() => {
-      // The stage owns the document flow; shell itself is absolutely positioned.
-      const visualHeight = siteShell.getBoundingClientRect().height;
-      siteStage.style.height = `${Math.max(1, visualHeight)}px`;
+      // transform does not participate in document flow. The stage reserves the
+      // scaled height while the shell keeps the fixed 760px internal geometry.
+      const layoutHeight = siteShell.scrollHeight;
+      siteStage.style.height = `${Math.max(1, layoutHeight * scale)}px`;
     });
   }
 
   updateDesktopStage();
   addEventListener("resize", updateDesktopStage, { passive: true });
+  addEventListener("load", updateDesktopStage, { passive: true });
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(updateDesktopStage).catch(() => {});
+  }
   if (window.visualViewport) {
     visualViewport.addEventListener("resize", updateDesktopStage, { passive: true });
   }
