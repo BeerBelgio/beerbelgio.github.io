@@ -1,3 +1,12 @@
+BEERBELGIO.GITHUB.IO — V0.55.1.7 STAGING
+
+DESKTOP RESIZE ROOT-CAUSE FIX
+- Based directly on V0.55.1.6. Mobile, FULL LAVA help, sonoDGTL and frozen V0.54.4 lava physics are unchanged.
+- Measured the actual desktop geometry: the 760px shell was scaling correctly, but its CSS Grid implicit column was expanding to the min-content width of its children (about 867px at the 1440px reference viewport). Cards therefore became wider than the shell/stage and drifted to the right during resize.
+- The desktop shell now declares grid-template-columns: minmax(0, 1fr), forcing the single grid track to stay exactly inside the canonical 760px design canvas.
+- Desktop target width is again a continuous 45% of documentElement.clientWidth. There is no fixed 18px-gutter phase: left and right margins now shrink proportionally with the browser window.
+- Resulting invariant: stage width = transformed shell width = card width at every desktop viewport size.
+
 BEERBELGIO.GITHUB.IO — V0.55.1.6 STAGING
 
 STATUS

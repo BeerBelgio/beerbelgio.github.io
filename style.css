@@ -2657,6 +2657,7 @@ html.desktop-proportional .site-shell {
   top: 0 !important;
   left: 0 !important;
   width: 760px !important;
+  grid-template-columns: minmax(0, 1fr) !important;
   max-width: none !important;
   margin: 0 !important;
   padding-top: 24px !important;

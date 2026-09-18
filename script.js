@@ -95,15 +95,12 @@
   // ---------------------------------------------------------------
   // DESKTOP PROPORTIONAL STAGE
   //
-  // Keep one canonical 760px desktop composition. Its approved visual width
-  // is 45% of the physical desktop screen, not 45% of the shrinking browser
-  // window. The HUB therefore keeps its normal desktop size while it still
-  // fits. Only when the browser becomes narrower than that composition plus
-  // equal gutters do we scale the whole shell down uniformly.
+  // Keep one canonical 760px desktop composition and scale that single
+  // design canvas to 45% of the CURRENT layout viewport. The outer stage is
+  // centred by normal document flow; the shell itself never reflows.
   // ---------------------------------------------------------------
   const DESIGN_WIDTH = 760;
   const DESKTOP_REFERENCE_RATIO = 0.45;
-  const DESKTOP_MIN_GUTTER = 18;
 
   function isDesktopExperience() {
     return matchMedia("(pointer: fine)").matches && screen.width >= 900;
@@ -123,15 +120,11 @@
 
     document.documentElement.classList.add("desktop-proportional");
 
-    // Use the physical desktop screen only to establish the approved desktop
-    // size. Use clientWidth for the fit threshold because it excludes the
-    // vertical scrollbar. Once the preferred width no longer fits, leave the
-    // same gutter on both sides and shrink only the single global scale.
-    const referenceScreenWidth = Math.max(1, screen.width || innerWidth);
-    const preferredWidth = referenceScreenWidth * DESKTOP_REFERENCE_RATIO;
+    // clientWidth excludes the vertical scrollbar. Scaling from that value
+    // keeps both gutters proportional at every desktop window width instead
+    // of pinning one side once a fixed minimum gutter is reached.
     const layoutViewportWidth = Math.max(1, document.documentElement.clientWidth || innerWidth);
-    const availableWidth = Math.max(1, layoutViewportWidth - DESKTOP_MIN_GUTTER * 2);
-    const targetWidth = Math.min(preferredWidth, availableWidth);
+    const targetWidth = layoutViewportWidth * DESKTOP_REFERENCE_RATIO;
     const scale = targetWidth / DESIGN_WIDTH;
 
     siteShell.style.removeProperty("zoom");
