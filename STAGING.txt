@@ -1,8 +1,21 @@
-V0.55.1.14 STAGING / PRE-V1
+V0.55.1.15 STAGING / FINAL PRE-V1
 
-Changes in this build:
-- LAVA autonomous morphology only: ambient contour deformation is increased by 30% so blobs visibly change shape more even without user interaction. Repulsion, scroll behaviour, drag/release, selected-blob boost and 5+5 logic are unchanged.
-- README is rewritten as repository documentation rather than a development diary. README.md is now the primary presentation document; README.txt is retained only as a short compatibility pointer for the pre-V1 transition.
+BASELINE
+- Rebuilt from the user-approved V0.55.1.13 site/UI baseline.
+- Reapplies only the approved V0.55.1.14 +30% autonomous LAVA morphing.
+- Desktop resize, portrait Hero typography, portrait sticky final claim, landscape geometry, privacy UI and sonoDGTL layout remain on their approved baseline.
 
-Everything promoted in V0.55.1.13 remains otherwise unchanged.
-Search indexing remains disabled until explicit V1.0 promotion.
+PORTRAIT MOBILE
+- No portrait CSS/layout changes from the approved V0.55.1.13 baseline are carried in from V0.55.1.14.
+- Main CSS/JS/LAVA cache keys are bumped coherently to V0.55.1.15 so browsers cannot mix stale staging assets during resize/orientation tests.
+
+PRE-V1 HOUSEKEEPING
+- robots/googlebot noindex/nofollow/noarchive meta directives removed from HUB, /lava/, sonoDGTL EN and sonoDGTL IT.
+- README.md is now the only README; obsolete README.txt removed.
+- README reframed as repository presentation with a short changelog.
+- Remaining textual YouTube privacy-link arrow replaced by the local SVG arrow asset.
+- Runtime asset query strings updated to V0.55.1.15.
+
+IMPORTANT
+This is still labelled STAGING, but search-engine blocking directives have now been removed by request. If this build is uploaded publicly, indexing may begin before the formal V1.0 tag/release.
+The GitHub repository description must still be changed manually to: My Digital Hub

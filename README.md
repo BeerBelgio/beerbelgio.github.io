@@ -1,16 +1,16 @@
 # Matteo Belgiovine — Digital Hub
 
-**beerbelgio.github.io** is the personal digital hub of Matteo Belgiovine: musician and creator behind **BeerBelgio**, and digital/marketing consultant behind **sonoDGTL**.
+**beerbelgio.github.io** is the personal digital hub of Matteo Belgiovine: musician and creator behind **BeerBelgio**, and digital / marketing consultant behind **sonoDGTL**.
 
-It is intentionally **not a traditional portfolio**. The idea is simpler: one small, independent place that introduces who I am, connects the two sides of my work, points to the channels where the actual work lives, and leaves some room to play.
+It is intentionally **not a traditional portfolio**. It is one small, independent place that introduces who I am, connects the two sides of my work, points to the channels where the actual work lives, and leaves some room to play.
 
 > **Fun is a serious thing.**
 
 ## Why this exists
 
-The project started as a replacement for a conventional link-in-bio page. Instead of relying on a third-party service, I wanted a space I could fully own, shape and keep deliberately small.
+The project started as a replacement for a conventional link-in-bio page. Instead of relying on a third-party service, I wanted a space I could own, shape and keep deliberately small.
 
-That basic HUB gradually became a useful playground for interaction design: responsive layouts, custom SVG graphics, small interface experiments and the **LAVA** background — a canvas-based field of autonomous, draggable blobs that reacts to pointer movement, scrolling and direct interaction.
+That simple HUB gradually became a playground for interaction design: responsive layouts, custom SVG graphics, small interface experiments and the **LAVA** background — a canvas-based field of autonomous, draggable blobs that reacts to pointer movement, scrolling and direct interaction.
 
 The result is still a HUB first. The playful layer is there because the site should feel like mine, not because it needs to behave like a showcase.
 
@@ -19,20 +19,21 @@ The result is still a HUB first. The playful layer is there because the site sho
 - **HUB** — introduction, BeerBelgio / sonoDGTL gateways, quick links and contact.
 - **BeerBelgio** — music and creative identity.
 - **sonoDGTL** — dedicated EN / IT professional page.
-- **FULL LAVA** — distraction mode. Move, scroll, grab, throw and disturb the field.
+- **FULL LAVA** — distraction mode: move, scroll, grab, throw and disturb the field.
 - **Privacy / site info** — concise information about hosting, external services and data handling.
 
-The site is built with **vanilla HTML, CSS and JavaScript**, hosted on **GitHub Pages**, with no framework or build system. Fonts and interface assets are served locally; external media is loaded only when needed.
+The site is built with **vanilla HTML, CSS and JavaScript** and hosted on **GitHub Pages**, with no framework or build system. Fonts and interface assets are served locally; external media is loaded only when needed.
 
 This repository contains the personal HUB only. Other BeerBelgio experiments and tool projects are kept separate.
 
 ## Project principles
 
 - Small, fast and self-contained.
-- Desktop and mobile are treated as distinct layouts, not just scaled copies where that would hurt the experience.
+- Desktop, portrait mobile and landscape mobile each keep a deliberate geometry.
 - Interaction should feel physical but remain optional.
-- No proprietary analytics, advertising pixels or profiling code.
-- Source code and creative material remain reusable under the repository's non-commercial licensing terms.
+- No first-party analytics, advertising pixels or profiling code.
+- The LAVA field is playful background behaviour, not a dependency for using the site.
+- Code, creative material and third-party assets follow the terms described in the repository licensing files.
 
 ## Repository map
 
@@ -40,22 +41,22 @@ This repository contains the personal HUB only. Other BeerBelgio experiments and
 - `/sonodgtl/` — sonoDGTL EN / IT pages.
 - `/lava/` — standalone FULL LAVA entry.
 - `/assets/` — local artwork, icons, fonts and social-preview assets.
-- `lava.js` — custom canvas/LAVA engine.
-- `LICENSE.md`, `COPYRIGHT.md`, `THIRD_PARTY_NOTICES.md` — licensing and attribution.
+- `lava.js` — custom canvas / LAVA engine.
+- `LICENSE.md`, `COPYRIGHT.md`, `THIRD_PARTY_NOTICES.md` — licensing, ownership and attribution.
 
 ## Changelog
 
-- **V1.0 (upcoming)** — first stable public release: complete HUB, responsive desktop/mobile system, sonoDGTL pages, privacy information, social metadata and final LAVA behaviour.
-- **V0.55.x** — pre-release stabilization: proportional desktop resize, portrait final-claim behaviour, privacy UI, social preview and final LAVA tuning.
-- **V0.54** — interaction baseline for LAVA: drag/throw momentum, selected-blob warping and 5+5 blank-space interaction.
+- **V1.0 — next release** — first stable public release of the complete HUB, responsive layouts, sonoDGTL pages, privacy information, social metadata and final LAVA behaviour.
+- **V0.55.x** — pre-release stabilization: proportional desktop resize, mobile portrait play-tail, privacy UI, social preview and final LAVA tuning.
+- **V0.54** — interaction baseline for LAVA: drag / throw momentum, selected-blob warping and 5+5 blank-space interaction.
 - **V0.42** — responsive HUB baseline.
 - **V0.1** — first functional HUB prototype.
 
 ## Licence
 
-Original website code and creative material may be reused **non-commercially with attribution**, subject to the terms in [`LICENSE.md`](LICENSE.md). Third-party material retains its own terms; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+The repository uses a mixed licensing structure. Original website code, original creative material and third-party assets are covered by the terms described in [`LICENSE.md`](LICENSE.md), [`COPYRIGHT.md`](COPYRIGHT.md) and [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
-Commercial use requires a separate agreement with Matteo Belgiovine.
+Commercial reuse of Matteo Belgiovine / BeerBelgio original material requires a separate agreement where the applicable licence does not already permit it.
 
 ---
 
