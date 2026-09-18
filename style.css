@@ -3422,7 +3422,7 @@ body.privacy-open { overflow: hidden; }
 
 
 /* =========================================================
-   V0.55.2.1 — UNIVERSAL FINAL CLAIM / PROMOTED CLAIM-END ENGINE
+   V0.55.2.2 — UNIVERSAL FINAL CLAIM / SPACING REFINEMENT
 
    Reuses the exact V0.55.1.15 portrait final-claim construction based on
    claim-portrait-end.svg. The claim remains outside the transformed desktop
@@ -3485,7 +3485,7 @@ body.privacy-open { overflow: hidden; }
    pulls the visual claim upward by half its own height when sticky. */
 html.desktop-proportional .floating-motto {
   width: var(--desktop-stage-width, 45vw) !important;
-  margin-top: clamp(120px, 10vw, 190px) !important;
+  margin-top: clamp(60px, 5vw, 95px) !important;
 }
 
 @media (pointer: coarse) and (orientation: portrait) {
@@ -3499,6 +3499,6 @@ html.desktop-proportional .floating-motto {
 @media (pointer: coarse) and (orientation: landscape) {
   .floating-motto {
     width: 80vw !important;
-    margin-top: clamp(120px, 18vw, 190px) !important;
+    margin-top: clamp(60px, 9vw, 95px) !important;
   }
 }

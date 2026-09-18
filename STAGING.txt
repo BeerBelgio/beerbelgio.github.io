@@ -1,20 +1,22 @@
-V0.55.2.1 STAGING / FINAL CLAIM REPAIR
+V0.55.2.2 STAGING / FINAL CLAIM SPACING REFINEMENT
 
 BASELINE
 - V0.55.1.15 remains the approved full-site baseline.
 - +30% autonomous LAVA morphing remains approved and unchanged.
-- V0.55.2 universal midpoint sticky/tail concept is retained.
+- V0.55.2.1 universal reactive final claim is approved.
+- Final claim artwork, reactive mask/palette behaviour and midpoint sticky/tail behaviour remain unchanged.
 
-V0.55.2.1 REPAIR
-- Final claim reuses the exact V0.55.1.15 claim-portrait-end.svg path geometry and black/white base colours.
-- The exact promoted reactive mask/palette engine now runs on desktop, portrait and landscape.
-- Desktop final claim receives a larger base gap from the CONTACT card.
-- Landscape final claim receives a larger base gap so translateY(-50%) cannot pull it over CONTACT.
-- Portrait claim geometry remains the previously approved construction.
+V0.55.2.2 CHANGE
+- Desktop CONTACT -> final claim base spacing is exactly halved from V0.55.2.1:
+  clamp(120px, 10vw, 190px) -> clamp(60px, 5vw, 95px).
+- Mobile landscape CONTACT -> final claim base spacing is exactly halved from V0.55.2.1:
+  clamp(120px, 18vw, 190px) -> clamp(60px, 9vw, 95px).
+- Portrait spacing is unchanged.
+- No LAVA physics, claim geometry, reactive colour behaviour, resize logic, Privacy UI or sonoDGTL layout behaviour is changed.
 
 CACHE COHERENCE
-- Every local runtime reference in every HTML file uses one build-wide ?v=05521 token.
-- Orientation changes use live media queries; there is no alternate portrait/landscape asset bundle.
+- Every local runtime reference in every HTML file uses one build-wide ?v=05522 token.
+- A newly loaded HTML document therefore requests one coherent asset generation; portrait/landscape changes use live media queries and do not swap to a separate asset bundle.
 
 PRE-V1 STATE
 - Search-engine noindex directives remain removed.
@@ -22,4 +24,4 @@ PRE-V1 STATE
 - robots.txt and sitemap.xml remain intentionally deferred.
 - Repository description still needs to be changed manually on GitHub to: My Digital Hub
 
-If this repaired universal final claim is approved, the next package can be V1.0 RELEASE after final cleanup and GitHub audit.
+If the reduced desktop/landscape spacing is approved, this is the final staging candidate before V1.0 RELEASE cleanup and GitHub audit.
