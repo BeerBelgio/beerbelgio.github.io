@@ -539,3 +539,149 @@ body.privacy-open { overflow: hidden; }
     justify-self: start !important;
   }
 }
+
+
+/* =========================================================
+   V1.0.1 — LOCALIZED EMAIL FALLBACK
+   Mailto remains the first action; if no local handler takes over, visitors
+   can copy recipient, subject and message into their webmail.
+   ========================================================= */
+.email-fallback[hidden] { display: none !important; }
+.email-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(28, 23, 19, .62);
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.email-fallback::-webkit-scrollbar,
+.email-fallback-card::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+.email-fallback-card {
+  position: relative;
+  width: min(640px, calc(100vw - 40px));
+  max-height: min(84svh, 760px);
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 30px 30px 28px;
+  border-radius: 28px;
+  background: var(--cream);
+  color: var(--ink);
+}
+.email-fallback-card h2 {
+  margin: 0 48px 7px 0;
+  font-size: 34px;
+  line-height: .95;
+  letter-spacing: -.035em;
+}
+.email-fallback-card > p {
+  margin: 0 48px 22px 0;
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+.email-fallback-close {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--cream);
+  cursor: pointer;
+}
+.email-fallback-close::before,
+.email-fallback-close::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 15px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transform-origin: 50% 50%;
+}
+.email-fallback-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.email-fallback-close::after  { transform: translate(-50%, -50%) rotate(-45deg); }
+.email-field {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 0;
+  border-top: 2px solid var(--ink);
+}
+.email-field > span {
+  font-size: 10.5px;
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: .045em;
+}
+.email-field code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: var(--ui-font), sans-serif;
+  font-size: 13px;
+  line-height: 1.38;
+  font-weight: 500;
+}
+.email-field button {
+  min-height: 36px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cream);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+.email-field-body { align-items: start; }
+body.email-fallback-open { overflow: hidden; }
+
+@media (pointer: coarse) {
+  .email-fallback-card {
+    width: min(88vw, 640px);
+    max-height: min(84svh, 720px);
+    padding: 25px 22px 24px;
+    border-radius: 24px;
+  }
+  .email-fallback-card h2 { font-size: 30px; }
+  .email-fallback-card > p { font-size: 13px; }
+  .email-field {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    padding: 14px 0 16px;
+  }
+  .email-field > span {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+  }
+  .email-field code {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: 12.5px;
+  }
+  .email-field button {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 32px;
+    padding-inline: 11px;
+  }
+}
