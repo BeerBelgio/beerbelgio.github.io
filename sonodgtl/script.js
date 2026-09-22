@@ -116,4 +116,43 @@
       closeEmailFallback();
     }
   });
+
+  // ---------------------------------------------------------------
+  // PORTRAIT HERO TITLE FIT — only intervene when the rendered nowrap
+  // title is actually wider than the Hero content box. This avoids OS /
+  // WebView-specific font metrics from pushing the whole Hero past its card
+  // while leaving already-correct iOS / wider portrait rendering untouched.
+  // ---------------------------------------------------------------
+  const heroTitle = document.querySelector(".sd-hero h1");
+  let heroFitFrame = 0;
+
+  function fitPortraitHeroTitle() {
+    if (!heroTitle) return;
+    cancelAnimationFrame(heroFitFrame);
+    heroTitle.style.removeProperty("font-size");
+
+    if (!matchMedia("(pointer: coarse) and (orientation: portrait)").matches) return;
+
+    heroFitFrame = requestAnimationFrame(() => {
+      const available = heroTitle.clientWidth;
+      const required = heroTitle.scrollWidth;
+      if (!available || !required || required <= available + 0.5) return;
+
+      const baseSize = parseFloat(getComputedStyle(heroTitle).fontSize);
+      if (!Number.isFinite(baseSize) || baseSize <= 0) return;
+
+      // Tiny safety factor prevents a one-pixel re-overflow from fractional
+      // font metrics / device-pixel rounding in Android WebViews.
+      const fitted = Math.max(26, baseSize * (available / required) * 0.992);
+      heroTitle.style.fontSize = `${fitted.toFixed(2)}px`;
+    });
+  }
+
+  fitPortraitHeroTitle();
+  addEventListener("resize", fitPortraitHeroTitle, { passive: true });
+  addEventListener("orientationchange", fitPortraitHeroTitle, { passive: true });
+  addEventListener("pageshow", fitPortraitHeroTitle, { passive: true });
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(fitPortraitHeroTitle).catch(() => {});
+  }
 })();

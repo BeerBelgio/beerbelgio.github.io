@@ -685,3 +685,27 @@ body.email-fallback-open { overflow: hidden; }
     padding-inline: 11px;
   }
 }
+
+
+/* =========================================================
+   V1.0.1 RC2 — NARROW PORTRAIT HERO CONTAINMENT
+   The Hero used an implicit Grid column. On narrow Android/WebView portrait
+   viewports, the nowrap title could contribute a wider min-content size and
+   make the whole Hero track wider than the card, so every Hero child was
+   clipped at the right edge. Force one shrinkable column; the JS title fitter
+   below only reduces the title when its real rendered width still overflows.
+   No other sonoDGTL card geometry is changed.
+   ========================================================= */
+@media (pointer: coarse) and (orientation: portrait) {
+  .sd-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sd-hero > *,
+  .sd-hero-top,
+  .sd-hero-top > *,
+  .sd-hero h1,
+  .sd-hero-copy {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
