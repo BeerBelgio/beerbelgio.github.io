@@ -1,24 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="utf-8">
-  <meta name="copyright" content="© 2026 Matteo Belgiovine. Non-commercial reuse with attribution; commercial use requires separate agreement.">
+  <meta name="copyright" content="© 2026 Matteo Belgiovine. Riuso non commerciale consentito con attribuzione; uso commerciale soggetto ad accordo separato.">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#973320">
 
   <title>FUN IS A SERIOUS THING</title>
-  <meta name="description" content="Music, digital strategy and useful ideas from unexpected angles. Fun is a serious thing.">
+  <meta name="description" content="Musica, strategia digitale e idee utili da angolazioni inaspettate. Fun is a serious thing.">
 
-  <link rel="canonical" href="https://beerbelgio.github.io/">
+  <link rel="canonical" href="https://beerbelgio.github.io/it/">
   <link rel="alternate" hreflang="en" href="https://beerbelgio.github.io/">
   <link rel="alternate" hreflang="it" href="https://beerbelgio.github.io/it/">
   <link rel="alternate" hreflang="x-default" href="https://beerbelgio.github.io/">
 
   <meta property="og:title" content="Matteo Belgiovine — Digital Hub">
   <meta property="og:site_name" content="Matteo Belgiovine">
-  <meta property="og:description" content="Music, digital strategy and useful ideas from unexpected angles. Fun is a serious thing.">
+  <meta property="og:description" content="Musica, strategia digitale e idee utili da angolazioni inaspettate. Fun is a serious thing.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://beerbelgio.github.io/">
+  <meta property="og:url" content="https://beerbelgio.github.io/it/">
   <meta property="og:image" content="https://beerbelgio.github.io/assets/og-image.png">
   <meta property="og:image:secure_url" content="https://beerbelgio.github.io/assets/og-image.png">
   <meta property="og:image:type" content="image/png">
@@ -28,13 +28,13 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Matteo Belgiovine — Digital Hub">
-  <meta name="twitter:description" content="Music, digital strategy and useful ideas from unexpected angles. Fun is a serious thing.">
+  <meta name="twitter:description" content="Musica, strategia digitale e idee utili da angolazioni inaspettate. Fun is a serious thing.">
   <meta name="twitter:image" content="https://beerbelgio.github.io/assets/og-image.png">
   <meta name="twitter:image:alt" content="BeerBelgio — Matteo Belgiovine">
 
-  <link rel="icon" href="assets/favicon.svg?v=1100" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/fonts/m-plus-rounded-1c/font.css?v=1100">
-  <link rel="stylesheet" href="style.css?v=1100">
+  <link rel="icon" href="/assets/favicon.svg?v=1100" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/fonts/m-plus-rounded-1c/font.css?v=1100">
+  <link rel="stylesheet" href="/style.css?v=1100">
 
   <script>
     (() => {
@@ -73,38 +73,38 @@
 <body>
   <canvas id="lava-canvas" aria-hidden="true"></canvas>
 
-  <button class="lava-back" id="lava-back" type="button" aria-label="Exit full lava mode">
-    BACK
+  <button class="lava-back" id="lava-back" type="button" aria-label="Esci dalla modalità Full Lava">
+    INDIETRO
   </button>
 
-  <button class="lava-info" id="lava-info" type="button" aria-label="Full Lava controls" aria-expanded="false" aria-controls="lava-info-panel">
+  <button class="lava-info" id="lava-info" type="button" aria-label="Comandi Full Lava" aria-expanded="false" aria-controls="lava-info-panel">
     ?
   </button>
 
   <div class="lava-info-panel card" id="lava-info-panel" hidden role="dialog" aria-modal="true" aria-labelledby="lava-info-title">
     <section class="lava-info-card">
-      <button class="lava-info-close" id="lava-info-close" type="button" aria-label="Close Full Lava controls">×</button>
+      <button class="lava-info-close" id="lava-info-close" type="button" aria-label="Chiudi i comandi Full Lava">×</button>
       <h2 id="lava-info-title">FULL LAVA</h2>
-      <p class="lava-info-copy"><span><strong>MOVE</strong> the pointer through the field to create a perturbation.</span><span><strong>SCROLL</strong> around to push the whole field and affect the blobs.</span><span><strong>GRAB &amp; DRAG</strong> a blob, move it and release it — throw it, play with it.</span><span><strong>5+5</strong> clicks on empty space will repel the blobs, then attract them. Drive ’em crazy.</span></p>
+      <p class="lava-info-copy"><span><strong>MUOVI</strong> il puntatore nel campo per creare una perturbazione.</span><span><strong>SCORRI</strong> per spingere l’intero campo e influenzare le bolle.</span><span><strong>AFFERRA &amp; TRASCINA</strong> una bolla, spostala e rilasciala — lanciala, giocaci.</span><span><strong>5+5</strong> click sullo spazio vuoto respingono le bolle, poi le attraggono. Falle impazzire.</span></p>
     </section>
   </div>
 
   <div class="privacy-overlay card" id="privacy-panel" hidden role="dialog" aria-modal="true" aria-labelledby="privacy-title">
     <section class="privacy-card">
-      <button class="privacy-close" type="button" data-privacy-close aria-label="Close privacy information">×</button>
+      <button class="privacy-close" type="button" data-privacy-close aria-label="Chiudi le informazioni privacy">×</button>
       <h2 id="privacy-title">PRIVACY</h2>
-      <p class="privacy-intro">This site is intentionally light on tracking.</p>
+      <p class="privacy-intro">Questo sito è volutamente leggero sul tracciamento.</p>
       <div class="privacy-copy">
-        <section><h3>THIS SITE</h3><p>No first-party analytics, advertising pixels, profiling or marketing trackers are used by this website.</p></section>
-        <section><h3>HOSTING</h3><p>The site is hosted with GitHub Pages. GitHub states that visitors’ IP addresses are logged and stored for security purposes. <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub Privacy Statement <img class="privacy-link-arrow" src="assets/icon-arrow-up-right.svg?v=1100" alt="" aria-hidden="true"></a></p></section>
-        <section><h3>YOUTUBE</h3><p>Embedded videos are loaded only after you choose to play them and use YouTube’s Privacy-Enhanced Mode (<code>youtube-nocookie.com</code>). Once activated, Google / YouTube may process data under their own policies. <a href="https://support.google.com/youtube/answer/171780?hl=en" target="_blank" rel="noopener noreferrer">About Privacy-Enhanced Mode <img class="privacy-link-arrow" src="assets/icon-arrow-up-right.svg?v=1100" alt="" aria-hidden="true"></a></p></section>
-        <section><h3>EXTERNAL LINKS</h3><p>Music, social and professional links open third-party services. Their own privacy terms apply once you leave this site.</p></section>
-        <section><h3>CONTACT DATA</h3><p>“Write me” first tries to open your email app through a <code>mailto:</code> link; if no handler takes over, the site shows TO, SUBJECT and MESSAGE as separate fields you can copy into your webmail. This website does not submit or store the message itself. If you email Matteo, the data you voluntarily provide are used to reply to your request and manage the related correspondence. The legal basis is taking steps at your request before a possible collaboration where applicable (GDPR Art. 6(1)(b)); otherwise, the legitimate interest in answering and managing correspondence (Art. 6(1)(f)). Providing contact data is voluntary.</p></section>
-        <section><h3>EMAIL PROVIDER</h3><p>Email is received through Gmail / Google. Google may process that correspondence under its own privacy terms and applicable international-transfer safeguards. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy <img class="privacy-link-arrow" src="assets/icon-arrow-up-right.svg?v=1100" alt="" aria-hidden="true"></a></p></section>
-        <section><h3>RETENTION &amp; RIGHTS</h3><p>Correspondence is kept only as long as reasonably needed for the request, any resulting relationship and applicable legal or accounting obligations. No automated decision-making or profiling is carried out by Matteo through this site. Where the GDPR applies, you may request access, correction, deletion, restriction, objection or portability where applicable, and you may lodge a complaint with the competent supervisory authority.</p></section>
-        <section><h3>CONTROLLER / CONTACT</h3><p>Matteo Belgiovine — Turin, Italy<br><a href="mailto:matteo.sonodgtl@gmail.com">matteo.sonodgtl@gmail.com</a></p></section>
+        <section><h3>QUESTO SITO</h3><p>Il sito non utilizza analytics di prima parte, pixel pubblicitari, profilazione o tracker di marketing.</p></section>
+        <section><h3>HOSTING</h3><p>Il sito è ospitato tramite GitHub Pages. GitHub dichiara che gli indirizzi IP dei visitatori vengono registrati e conservati per finalità di sicurezza. <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">Privacy Statement di GitHub <img class="privacy-link-arrow" src="/assets/icon-arrow-up-right.svg?v=1100" alt="" aria-hidden="true"></a></p></section>
+        <section><h3>YOUTUBE</h3><p>I video incorporati vengono caricati solo dopo che scegli di riprodurli e utilizzano la modalità Privacy-Enhanced di YouTube (<code>youtube-nocookie.com</code>). Dopo l’attivazione, Google / YouTube possono trattare dati secondo le proprie informative. <a href="https://support.google.com/youtube/answer/171780?hl=it" target="_blank" rel="noopener noreferrer">Informazioni sulla modalità Privacy-Enhanced <img class="privacy-link-arrow" src="/assets/icon-arrow-up-right.svg?v=1100" alt="" aria-hidden="true"></a></p></section>
+        <section><h3>LINK ESTERNI</h3><p>I link musicali, social e professionali aprono servizi di terze parti. Una volta lasciato questo sito si applicano le rispettive informative privacy.</p></section>
+        <section><h3>DATI DI CONTATTO</h3><p>“Scrivimi” prova ad aprire l’app email tramite un link <code>mailto:</code>; se non viene gestito, il sito mostra i campi destinatario, oggetto e messaggio da copiare nella propria webmail. Questo sito non invia né memorizza direttamente il messaggio. Se scrivi a Matteo, i dati forniti volontariamente vengono utilizzati per rispondere alla richiesta e gestire la relativa corrispondenza. La base giuridica è l’esecuzione di misure precontrattuali richieste dall’interessato, quando applicabile (art. 6(1)(b) GDPR); negli altri casi, il legittimo interesse a rispondere e gestire la corrispondenza (art. 6(1)(f)). Il conferimento dei dati di contatto è volontario.</p></section>
+        <section><h3>FORNITORE EMAIL</h3><p>Le email vengono ricevute tramite Gmail / Google. Google può trattare la corrispondenza secondo la propria informativa privacy e le garanzie applicabili ai trasferimenti internazionali. <a href="https://policies.google.com/privacy?hl=it" target="_blank" rel="noopener noreferrer">Privacy Policy di Google <img class="privacy-link-arrow" src="/assets/icon-arrow-up-right.svg?v=1100" alt="" aria-hidden="true"></a></p></section>
+        <section><h3>CONSERVAZIONE E DIRITTI</h3><p>La corrispondenza viene conservata solo per il tempo ragionevolmente necessario alla richiesta, all’eventuale rapporto conseguente e agli obblighi legali o contabili applicabili. Matteo non effettua tramite questo sito processi decisionali automatizzati o profilazione. Nei casi previsti dal GDPR puoi chiedere accesso, rettifica, cancellazione, limitazione, opposizione o portabilità, quando applicabili, e presentare reclamo all’autorità di controllo competente.</p></section>
+        <section><h3>TITOLARE / CONTATTO</h3><p>Matteo Belgiovine — Torino, Italia<br><a href="mailto:matteo.sonodgtl@gmail.com">matteo.sonodgtl@gmail.com</a></p></section>
       </div>
-      <p class="privacy-updated">Last updated: 25 September 2026.</p>
+      <p class="privacy-updated">Ultimo aggiornamento: 25 settembre 2026.</p>
     </section>
   </div>
 
@@ -112,48 +112,48 @@
   <main class="site-shell" id="site-shell">
 
     <section class="hero card" aria-labelledby="hero-title">
-      <div class="hero-controls" aria-label="Page controls">
-        <a class="language-launch" href="it/" hreflang="it" lang="it" aria-label="Switch to Italian version">
-          <span class="language-launch-mark" aria-hidden="true">ITA</span>
+      <div class="hero-controls" aria-label="Controlli pagina">
+        <a class="language-launch" href="../" hreflang="en" lang="en" aria-label="Passa alla versione inglese">
+          <span class="language-launch-mark" aria-hidden="true">EN</span>
         </a>
-        <button class="privacy-launch" type="button" data-privacy-open aria-label="Open privacy information" aria-expanded="false" aria-controls="privacy-panel">
+        <button class="privacy-launch" type="button" data-privacy-open aria-label="Apri le informazioni privacy" aria-expanded="false" aria-controls="privacy-panel">
           <span class="privacy-launch-mark" aria-hidden="true">?</span>
           <span class="privacy-launch-label">PRIVACY</span>
         </button>
       </div>
       <div class="hero-meta">
         <span>MATTEO BELGIOVINE</span>
-        <span class="hero-location"><span class="location-city">TORINO<span class="location-comma">,</span></span><span class="location-country">ITALY</span></span>
+        <span class="hero-location"><span class="location-city">TORINO<span class="location-comma">,</span></span><span class="location-country">ITALIA</span></span>
       </div>
 
       <h1 id="hero-title" class="hero-claim-art-wrap">
         <picture class="hero-claim-picture">
-          <source media="(pointer: coarse) and (orientation: portrait)" srcset="assets/claim-portrait.svg?v=1100">
-          <img class="hero-claim-art" src="assets/claim.svg?v=1100" alt="FUN IS A SERIOUS THING.">
+          <source media="(pointer: coarse) and (orientation: portrait)" srcset="/assets/claim-portrait.svg?v=1100">
+          <img class="hero-claim-art" src="/assets/claim.svg?v=1100" alt="FUN IS A SERIOUS THING.">
         </picture>
       </h1>
 
       <div class="identity-stack">
-        <a class="identity-card-link" href="#beerbelgio-links" aria-label="Go to BeerBelgio links">
+        <a class="identity-card-link" href="#beerbelgio-links" aria-label="Vai ai link BeerBelgio">
           <article class="identity-block">
             <h2>BeerBelgio</h2>
-            <p class="identity-tagline">GLITCH DESIGNER FOR<br>MISBEHAVING SOUNDS</p>
+            <p class="identity-tagline">GLITCH DESIGNER PER<br>SUONI INDISCIPLINATI</p>
             <p class="identity-meta identity-list">
-              <span>MUSIC</span>
-              <span>DIGITAL CURIOSITY</span>
-              <span>VISUAL EXPERIMENTS</span>
+              <span>MUSICA</span>
+              <span>CURIOSITÀ DIGITALE</span>
+              <span>ESPERIMENTI VISIVI</span>
             </p>
           </article>
         </a>
 
-        <a class="identity-card-link" href="sonodgtl/" aria-label="Open sonoDGTL">
+        <a class="identity-card-link" href="/sonodgtl/it/" aria-label="Apri sonoDGTL">
           <article class="identity-block">
             <h2>sonoDGTL</h2>
-            <p class="identity-tagline">DIGITAL STRATEGIES FOR<br>REAL-WORLD PROJECTS</p>
+            <p class="identity-tagline">STRATEGIE DIGITALI PER<br>PROGETTI REALI</p>
             <p class="identity-meta identity-list">
               <span>MARKETING</span>
-              <span>BRAND DEVELOPMENT</span>
-              <span>DIGITAL WORKFLOWS</span>
+              <span>SVILUPPO DEL BRAND</span>
+              <span>WORKFLOW DIGITALI</span>
             </p>
           </article>
         </a>
@@ -161,15 +161,15 @@
     </section>
 
     <div class="quick-actions">
-      <nav class="platforms" aria-label="Main platforms">
-        <a href="https://www.instagram.com/beerbelgio" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="platform-icon" src="assets/icon-instagram.svg?v=1100" alt=""></a>
-        <a href="https://open.spotify.com/intl-it/artist/6f2uqxxXSBY0WYe5qpEMO0?si=txOc3IltQOeGPD7Iq0KtQw" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><img class="platform-icon" src="assets/icon-spotify.svg?v=1100" alt=""></a>
-        <a href="https://www.youtube.com/@beerbelgio" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img class="platform-icon" src="assets/icon-youtube.svg?v=1100" alt=""></a>
-        <a href="https://beerbelgio.bandcamp.com/" target="_blank" rel="noopener noreferrer" aria-label="Bandcamp"><img class="platform-icon" src="assets/icon-bandcamp.svg?v=1100" alt=""></a>
-        <a href="https://soundcloud.com/beerbelgio" target="_blank" rel="noopener noreferrer" aria-label="SoundCloud"><img class="platform-icon" src="assets/icon-soundcloud.svg?v=1100" alt=""></a>
-        <a href="https://www.linkedin.com/in/matteo-belgiovine-421177164/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="platform-icon" src="assets/icon-linkedin.svg?v=1100" alt=""></a>
-        <a href="https://github.com/BeerBelgio" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><img class="platform-icon" src="assets/icon-github.svg?v=1100" alt=""></a>
-        <button class="platform-share" id="share-site" type="button" aria-label="Share this site" title="Share this site"><img class="platform-icon" src="assets/icon-share.svg?v=1100" alt=""></button>
+      <nav class="platforms" aria-label="Piattaforme principali">
+        <a href="https://www.instagram.com/beerbelgio" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="platform-icon" src="/assets/icon-instagram.svg?v=1100" alt=""></a>
+        <a href="https://open.spotify.com/intl-it/artist/6f2uqxxXSBY0WYe5qpEMO0?si=txOc3IltQOeGPD7Iq0KtQw" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><img class="platform-icon" src="/assets/icon-spotify.svg?v=1100" alt=""></a>
+        <a href="https://www.youtube.com/@beerbelgio" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img class="platform-icon" src="/assets/icon-youtube.svg?v=1100" alt=""></a>
+        <a href="https://beerbelgio.bandcamp.com/" target="_blank" rel="noopener noreferrer" aria-label="Bandcamp"><img class="platform-icon" src="/assets/icon-bandcamp.svg?v=1100" alt=""></a>
+        <a href="https://soundcloud.com/beerbelgio" target="_blank" rel="noopener noreferrer" aria-label="SoundCloud"><img class="platform-icon" src="/assets/icon-soundcloud.svg?v=1100" alt=""></a>
+        <a href="https://www.linkedin.com/in/matteo-belgiovine-421177164/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img class="platform-icon" src="/assets/icon-linkedin.svg?v=1100" alt=""></a>
+        <a href="https://github.com/BeerBelgio" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><img class="platform-icon" src="/assets/icon-github.svg?v=1100" alt=""></a>
+        <button class="platform-share" id="share-site" type="button" aria-label="Condividi questo sito" title="Condividi questo sito"><img class="platform-icon" src="/assets/icon-share.svg?v=1100" alt=""></button>
       </nav>
 
       <button class="lava-toggle" id="lava-toggle" type="button" aria-pressed="false">
@@ -184,13 +184,13 @@
         type="button"
         data-youtube-id="8kaRScePKms"
         data-youtube-list="OLAK5uy_lhZT4kA-28vSo5-pz2SOYputOBcnqwUYM"
-        aria-label="Play Sounds Like Something on YouTube">
-        <span class="play"><img src="assets/icon-play.svg?v=1100" alt=""></span>
+        aria-label="Riproduci Sounds Like Something su YouTube">
+        <span class="play"><img src="/assets/icon-play.svg?v=1100" alt=""></span>
       </button>
 
       <div class="cta-row">
-        <a href="https://open.spotify.com/intl-it/artist/6f2uqxxXSBY0WYe5qpEMO0?si=WlXgoVD5QQej0EATIzLRXA&nd=1&dlsi=f950cc11a46f4bed" target="_blank" rel="noopener noreferrer">SPOTIFY <img class="inline-arrow" src="assets/icon-arrow-up-right-cream.svg?v=1100" alt=""></a>
-        <a href="https://www.youtube.com/@beerbelgio" target="_blank" rel="noopener noreferrer">YOUTUBE <img class="inline-arrow" src="assets/icon-arrow-up-right-cream.svg?v=1100" alt=""></a>
+        <a href="https://open.spotify.com/intl-it/artist/6f2uqxxXSBY0WYe5qpEMO0?si=WlXgoVD5QQej0EATIzLRXA&nd=1&dlsi=f950cc11a46f4bed" target="_blank" rel="noopener noreferrer">SPOTIFY <img class="inline-arrow" src="/assets/icon-arrow-up-right-cream.svg?v=1100" alt=""></a>
+        <a href="https://www.youtube.com/@beerbelgio" target="_blank" rel="noopener noreferrer">YOUTUBE <img class="inline-arrow" src="/assets/icon-arrow-up-right-cream.svg?v=1100" alt=""></a>
       </div>
     </section>
 
@@ -199,56 +199,56 @@
 
       <a href="https://open.spotify.com/playlist/3QhvNxwQDvrc0cgMJLkmTY?si=cVRykptQRAOEK6fK8lfCNQ" target="_blank" rel="noopener noreferrer">
         <span>
-          Music I've Made
-          <small>SPOTIFY PLAYLIST</small>
+          La mia musica
+          <small>PLAYLIST SPOTIFY</small>
         </span>
-        <span class="arrow"><img src="assets/icon-arrow-up-right.svg?v=1100" alt=""></span>
+        <span class="arrow"><img src="/assets/icon-arrow-up-right.svg?v=1100" alt=""></span>
       </a>
 
       <a href="https://t.me/beerbelgio_soundjournal" target="_blank" rel="noopener noreferrer">
         <span>
           Sound Journal
-          <small>TELEGRAM BROADCAST</small>
+          <small>CANALE TELEGRAM</small>
         </span>
-        <span class="arrow"><img src="assets/icon-arrow-up-right.svg?v=1100" alt=""></span>
+        <span class="arrow"><img src="/assets/icon-arrow-up-right.svg?v=1100" alt=""></span>
       </a>
 
       <a href="https://ko-fi.com/beerbelgio" target="_blank" rel="noopener noreferrer">
         <span>
           BeerMe!
-          <small>SUPPORT MY WORK</small>
+          <small>SUPPORTA IL MIO LAVORO</small>
         </span>
-        <span class="arrow"><img src="assets/icon-arrow-up-right.svg?v=1100" alt=""></span>
+        <span class="arrow"><img src="/assets/icon-arrow-up-right.svg?v=1100" alt=""></span>
       </a>
     </section>
 
     <section class="links-card card sonodgtl-card" id="sonodgtl-link">
       <h2 class="brand-heading">sonoDGTL</h2>
 
-      <a href="sonodgtl/">
+      <a href="/sonodgtl/it/">
         <span>
-          Digital Strategies for<br class="mobile-only-break">Real-World Projects
-          <small>OPEN THE WEBSITE<span class="sonodgtl-cta-separator"> — </span><br class="mobile-only-break">LET’S WORK TOGETHER!</small>
+          Strategie digitali per<br class="mobile-only-break">progetti reali
+          <small>APRI IL SITO<span class="sonodgtl-cta-separator"> — </span><br class="mobile-only-break">LAVORIAMO INSIEME!</small>
         </span>
-        <span class="arrow"><img src="assets/icon-arrow-up-right.svg?v=1100" alt=""></span>
+        <span class="arrow"><img src="/assets/icon-arrow-up-right.svg?v=1100" alt=""></span>
       </a>
     </section>
 
     <section class="contact contact-a card" id="contact">
       <h2>
-        <span class="contact-line contact-line-one"><span>WORKING ON</span> <span>SOMETHING</span></span>
-        <span class="contact-line contact-line-two"><span>WEIRD</span> <span>AND COOL?</span></span>
+        <span class="contact-line contact-line-one"><span>LAVORI A</span> <span>QUALCOSA</span></span>
+        <span class="contact-line contact-line-two"><span>DI STRANO</span> <span>E FIGO?</span></span>
       </h2>
 
       <div class="contact-lower">
         <a class="write-button" id="hub-write-me"
-           href="mailto:matteo.sonodgtl@gmail.com?subject=Something%20weird%20and%20cool&body=Hi%20Matteo%2C%0A%0AWHO%20I%20AM%3A%0A%0AMY%20LINKS%3A%0A%0AWHAT%20I%27M%20WORKING%20ON%3A%0A%0AWHY%20AM%20I%20WRITING%20TO%20YOU%3A%0A">
-          WRITE ME <img class="inline-arrow" src="assets/icon-arrow-up-right.svg?v=1100" alt="">
+           href="mailto:matteo.sonodgtl@gmail.com?subject=Qualcosa%20di%20strano%20e%20figo&body=Ciao%20Matteo%2C%0A%0ACHI%20SONO%3A%0A%0AI%20MIEI%20LINK%3A%0A%0AA%20COSA%20STO%20LAVORANDO%3A%0A%0APERCH%C3%89%20TI%20STO%20SCRIVENDO%3A%0A">
+          SCRIVIMI <img class="inline-arrow" src="/assets/icon-arrow-up-right.svg?v=1100" alt="">
         </a>
       </div>
 
       <img class="contact-smile contact-smile-full"
-           src="assets/smile-eyes.svg?v=1100"
+           src="/assets/smile-eyes.svg?v=1100"
            alt=""
            aria-hidden="true">
     </section>
@@ -320,25 +320,25 @@
 
   <div class="email-fallback" id="email-fallback" hidden>
     <div class="email-fallback-card" role="dialog" aria-modal="true" aria-labelledby="email-fallback-title">
-      <button class="email-fallback-close" id="email-fallback-close" type="button" aria-label="Close email details">×</button>
-      <h2 id="email-fallback-title">NO MAIL APP?</h2>
-      <p>Use these three fields in your webmail.</p>
-      <div class="email-field"><span>TO</span><code id="email-fallback-to">matteo.sonodgtl@gmail.com</code><button type="button" data-copy-target="email-fallback-to">COPY</button></div>
-      <div class="email-field"><span>SUBJECT</span><code id="email-fallback-subject">Something weird and cool</code><button type="button" data-copy-target="email-fallback-subject">COPY</button></div>
-      <div class="email-field email-field-body"><span>MESSAGE</span><code id="email-fallback-body">Hi Matteo,
+      <button class="email-fallback-close" id="email-fallback-close" type="button" aria-label="Chiudi i dettagli email">×</button>
+      <h2 id="email-fallback-title">L’EMAIL NON SI APRE?</h2>
+      <p>Usa questi tre campi nella tua webmail.</p>
+      <div class="email-field"><span>DESTINATARIO</span><code id="email-fallback-to">matteo.sonodgtl@gmail.com</code><button type="button" data-copy-target="email-fallback-to">COPIA</button></div>
+      <div class="email-field"><span>OGGETTO</span><code id="email-fallback-subject">Qualcosa di strano e figo</code><button type="button" data-copy-target="email-fallback-subject">COPIA</button></div>
+      <div class="email-field email-field-body"><span>MESSAGGIO</span><code id="email-fallback-body">Ciao Matteo,
 
-WHO I AM:
+CHI SONO:
 
-MY LINKS:
+I MIEI LINK:
 
-WHAT I'M WORKING ON:
+A COSA STO LAVORANDO:
 
-WHY AM I WRITING TO YOU:</code><button type="button" data-copy-target="email-fallback-body">COPY</button></div>
+PERCHÉ TI STO SCRIVENDO:</code><button type="button" data-copy-target="email-fallback-body">COPIA</button></div>
     </div>
   </div>
 
-  <script src="lava.js?v=1100"></script>
-  <script src="script.js?v=1100"></script>
-  <script src="privacy.js?v=1100"></script>
+  <script src="/lava.js?v=1100"></script>
+  <script src="/script.js?v=1100"></script>
+  <script src="/privacy.js?v=1100"></script>
 </body>
 </html>

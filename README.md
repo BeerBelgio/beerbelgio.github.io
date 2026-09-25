@@ -16,7 +16,7 @@ The result is still a HUB first. The playful layer is there because the site sho
 
 ## What is inside
 
-- **HUB** — introduction, BeerBelgio / sonoDGTL gateways, quick links and contact.
+- **HUB** — bilingual EN / IT introduction, BeerBelgio / sonoDGTL gateways, quick links and contact.
 - **BeerBelgio** — music and creative identity.
 - **sonoDGTL** — dedicated EN / IT professional page.
 - **FULL LAVA** — distraction mode: move, scroll, grab, throw and disturb the field.
@@ -37,7 +37,8 @@ This repository contains the personal HUB only. Other BeerBelgio experiments and
 
 ## Repository map
 
-- `/index.html` — main HUB.
+- `/index.html` — main HUB (EN).
+- `/it/` — Italian HUB.
 - `/sonodgtl/` — sonoDGTL EN / IT pages.
 - `/lava/` — standalone FULL LAVA entry.
 - `/assets/` — local artwork, icons, fonts and social-preview assets.
@@ -47,7 +48,7 @@ This repository contains the personal HUB only. Other BeerBelgio experiments and
 
 ## Changelog
 
-- **V1.0.1 (release candidate 2) — 22 September 2026** — localized sonoDGTL email fallback plus narrow mobile-portrait Hero containment for Android/WebView-sized viewports.
+- **V1.1.0 (release candidate 1) — 25 September 2026** — bilingual EN / IT HUB with dedicated language switch; includes localized sonoDGTL email fallback and the Android narrow-portrait Hero containment fix.
 - **V1.0 — 18 September 2026** — first stable public release: complete HUB, desktop / portrait / landscape layouts, reactive midpoint-sticky final claim, sonoDGTL EN / IT pages, privacy information, social metadata and final LAVA behaviour.
 - **V0.55.x** — release stabilization: proportional desktop resize, final-claim play-tail, privacy UI, social preview, cache coherence and final LAVA tuning.
 - **V0.54** — LAVA interaction baseline: drag / throw momentum, selected-blob warping and 5+5 blank-space interaction.

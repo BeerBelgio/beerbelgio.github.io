@@ -7,8 +7,9 @@
   const lavaInfoClose = document.getElementById("lava-info-close");
   const siteStage = document.getElementById("site-stage");
   const siteShell = document.getElementById("site-shell");
+  const isItalian = document.documentElement.lang.toLowerCase().startsWith("it");
 
-  // Always land on the Hero. In touch portrait the document keeps a 100px
+  // Always land on the Hero. In touch portrait the document keeps a 110px
   // pre-roll above the Hero for iPhone top-edge breathing room, but that pre-roll
   // is not the initial reading position: the Hero itself is treated as page zero.
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
@@ -200,8 +201,10 @@
     shareSite.addEventListener("click", async () => {
       const shareData = {
         title: "Matteo Belgiovine",
-        text: "Music, digital strategy and useful ideas from unexpected angles.",
-        url: "https://beerbelgio.github.io/"
+        text: isItalian
+          ? "Musica, strategia digitale e idee utili da angolazioni inaspettate."
+          : "Music, digital strategy and useful ideas from unexpected angles.",
+        url: isItalian ? "https://beerbelgio.github.io/it/" : "https://beerbelgio.github.io/"
       };
       try {
         if (navigator.share) {
@@ -221,9 +224,9 @@
           document.execCommand("copy");
           input.remove();
         }
-        showShareToast("LINK COPIED");
+        showShareToast(isItalian ? "LINK COPIATO" : "LINK COPIED");
       } catch (error) {
-        if (error?.name !== "AbortError") showShareToast("COPY THE URL ABOVE");
+        if (error?.name !== "AbortError") showShareToast(isItalian ? "COPIA L’URL QUI SOPRA" : "COPY THE URL ABOVE");
       }
     });
   }
@@ -270,11 +273,11 @@
       }
       if (button) {
         const old = button.textContent;
-        button.textContent = "COPIED";
+        button.textContent = isItalian ? "COPIATO" : "COPIED";
         setTimeout(() => { button.textContent = old; }, 900);
       }
     } catch {
-      showShareToast("COPY FAILED — SELECT THE TEXT MANUALLY");
+      showShareToast(isItalian ? "COPIA NON RIUSCITA — SELEZIONA IL TESTO" : "COPY FAILED — SELECT THE TEXT MANUALLY");
     }
   }
 
