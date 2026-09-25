@@ -3,6 +3,23 @@
   const shell = document.getElementById("sd-shell");
   const DESIGN_WIDTH = 1120;
   const BREAKPOINT = 980;
+  const LANGUAGE_STORAGE_KEY = "beerbelgio-language";
+  const pageLanguage = document.documentElement.lang === "it" ? "it" : "en";
+
+  // Keep the explicit language choice shared with the main HUB. sonoDGTL still
+  // uses its dedicated EN / IT URLs, so changing language here performs a
+  // normal page navigation; moving back to the HUB keeps the same language.
+  try { localStorage.setItem(LANGUAGE_STORAGE_KEY, pageLanguage); } catch (_) {}
+  document.querySelectorAll("[data-language-choice]").forEach((link) => {
+    link.addEventListener("click", () => {
+      const choice = link.dataset.languageChoice;
+      if (choice === "it" || choice === "en") {
+        try { localStorage.setItem(LANGUAGE_STORAGE_KEY, choice); } catch (_) {}
+      }
+    });
+  });
+  const hubLink = document.querySelector("[data-hub-link]");
+  if (hubLink) hubLink.href = pageLanguage === "it" ? "/it/" : "/";
 
   function isFineDesktop() {
     return navigator.maxTouchPoints === 0
@@ -37,7 +54,7 @@
   const writeButton = document.getElementById("sd-write-me");
   const emailFallback = document.getElementById("email-fallback");
   const emailFallbackClose = document.getElementById("email-fallback-close");
-  const lang = document.documentElement.lang === "it" ? "it" : "en";
+  const lang = pageLanguage;
   let emailFallbackTimer = 0;
 
   function closeEmailFallback() {

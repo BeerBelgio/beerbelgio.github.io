@@ -48,7 +48,7 @@ This repository contains the personal HUB only. Other BeerBelgio experiments and
 
 ## Changelog
 
-- **V1.1.0 (release candidate 1) — 25 September 2026** — bilingual EN / IT HUB with dedicated language switch; includes localized sonoDGTL email fallback and the Android narrow-portrait Hero containment fix.
+- **V1.1.0 — 25 September 2026** — bilingual EN / IT HUB with persistent language preference, in-place HUB language switching, localized sonoDGTL email fallback and the Android narrow-portrait Hero containment fix.
 - **V1.0 — 18 September 2026** — first stable public release: complete HUB, desktop / portrait / landscape layouts, reactive midpoint-sticky final claim, sonoDGTL EN / IT pages, privacy information, social metadata and final LAVA behaviour.
 - **V0.55.x** — release stabilization: proportional desktop resize, final-claim play-tail, privacy UI, social preview, cache coherence and final LAVA tuning.
 - **V0.54** — LAVA interaction baseline: drag / throw momentum, selected-blob warping and 5+5 blank-space interaction.
