@@ -128,8 +128,8 @@ a { color: inherit; }
 .sd-principle blockquote span + span { margin-top: .30em; }
 .sd-principle em { font-style: italic; font-size: inherit; font-weight: inherit; }
 
-.sd-capabilities { grid-column: span 6; }
-.sd-profile { grid-column: span 6; background: var(--green); color: #f4ead9; }
+.sd-capabilities { grid-column: span 12; }
+.sd-profile { grid-column: span 12; background: var(--green); color: #f4ead9; }
 .sd-cap-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; border-top: 2px solid var(--ink); }
 .sd-cap-item { padding: 17px 0 16px; border-bottom: 2px solid var(--ink); }
 .sd-cap-item p { font-size: 16.5px; font-weight: 500; opacity: .96; }
@@ -294,8 +294,8 @@ a { color: inherit; }
   .sd-card p { font-size: 13.5px; line-height: 1.32; }
   .sd-principle { grid-column: span 12; padding: 16px; }
   .sd-principle blockquote { font-size: clamp(23px, 3.6vw, 36px); line-height: 1.10; }
-  .sd-capabilities { grid-column: span 6; }
-  .sd-profile { grid-column: span 6; }
+  .sd-capabilities { grid-column: span 12; }
+  .sd-profile { grid-column: span 12; }
   .sd-cap-list { gap: 0 14px; }
   .sd-cap-item { padding: 9px 0; }
   .sd-cap-item p { font-size: 13.5px; }
