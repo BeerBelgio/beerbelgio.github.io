@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.3.0 — pending approval
+## 1.3.0 — 2026-10-20
 - Added INDEX HTML and B4~M4L to the BeerBelgio link card (EN/IT), using local copies of their original SVG wordmarks.
 - Added the central sitemap index and the HUB-specific sitemap; indexed project sitemaps remain managed by their own repositories.
 - Added a root robots.txt pointing to the central sitemap index.
