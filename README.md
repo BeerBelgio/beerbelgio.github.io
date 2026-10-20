@@ -17,7 +17,7 @@ The result is still a HUB first. The playful layer is there because the site sho
 ## What is inside
 
 - **HUB** — bilingual EN / IT introduction, BeerBelgio / sonoDGTL gateways, quick links and contact.
-- **BeerBelgio** — music and creative identity.
+- **BeerBelgio** — music, creative identity, INDEX HTML and B4~M4L project gateways.
 - **sonoDGTL** — dedicated EN / IT professional page.
 - **FULL LAVA** — distraction mode: move, scroll, grab, throw and disturb the field.
 - **Privacy / site info** — concise information about hosting, external services and data handling.
@@ -44,17 +44,14 @@ This repository contains the personal HUB only. Other BeerBelgio experiments and
 - `/assets/` — local artwork, icons, fonts and social-preview assets.
 - `lava.js` — custom canvas / LAVA engine.
 - `version.json` — public build marker used to keep browser sessions on one coherent asset generation.
+- `sitemap.xml` — central sitemap index for the HUB, INDEX HTML and B4~M4L.
+- `sitemap-hub.xml` — HUB and sonoDGTL pages; each project maintains its own SEO metadata and sitemap.
+- `robots.txt` — site-wide crawling directives and central sitemap discovery.
 - `LICENSE.md`, `COPYRIGHT.md`, `THIRD_PARTY_NOTICES.md` — licensing, ownership and attribution.
 
-## Changelog
+## Version history
 
-- **V1.2.0 — 12 October 2026** — expanded sonoDGTL positioning with AI-assisted development, workflow design, product testing / evaluation and prototyping.
-- **V1.1.0 — 25 September 2026** — bilingual EN / IT HUB with persistent language preference, in-place HUB language switching, localized sonoDGTL email fallback and the Android narrow-portrait Hero containment fix.
-- **V1.0 — 18 September 2026** — first stable public release: complete HUB, desktop / portrait / landscape layouts, reactive midpoint-sticky final claim, sonoDGTL EN / IT pages, privacy information, social metadata and final LAVA behaviour.
-- **V0.55.x** — release stabilization: proportional desktop resize, final-claim play-tail, privacy UI, social preview, cache coherence and final LAVA tuning.
-- **V0.54** — LAVA interaction baseline: drag / throw momentum, selected-blob warping and 5+5 blank-space interaction.
-- **V0.42** — responsive HUB baseline.
-- **V0.1** — first functional HUB prototype.
+Current releases and source snapshots: [GitHub Releases](https://github.com/BeerBelgio/beerbelgio.github.io/releases). Detailed version history: [CHANGELOG.md](CHANGELOG.md).
 
 ## Licence
 

@@ -3590,3 +3590,25 @@ body.lava-mode .hero-controls { display: none !important; }
   }
   .language-launch-mark { font-size: 10.5px; }
 }
+
+/* BeerBelgio project gateways: local to the links card; no stage changes. */
+.beerbelgio-card > a.beerbelgio-project-link > .beerbelgio-project-content {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.beerbelgio-project-wordmark {
+  display: block;
+  width: min(100%, 270px);
+  max-height: 56px;
+  height: auto;
+  object-fit: contain;
+  object-position: left center;
+}
+.beerbelgio-card > a.beerbelgio-project-link small {
+  display: block;
+  margin-top: 5px !important;
+}
+@media (pointer: coarse) and (orientation: portrait) {
+  .beerbelgio-project-wordmark { width: min(100%, 230px); }
+}
