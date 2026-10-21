@@ -282,7 +282,7 @@ body.lava-mode .lava-toggle {
   min-height: 46px;
   padding: 11px 14px;
   border-radius: 999px;
-  background: var(--orange);
+  background: #a23826; /* CTA shade: contrast with cream above 4.5:1 */
   color: var(--cream);
   text-decoration: none;
   font-size: 11px;
@@ -3498,8 +3498,8 @@ html.desktop-proportional .floating-motto {
 
 /* =========================================================
    V1.1.0 — HUB LANGUAGE SWITCH
-   One shared control stack: language first, Privacy second.
-   The Privacy label therefore remains clear below its own control.
+   One shared control group: stacked on desktop/landscape, split in portrait.
+   The Privacy label remains below its own control.
    ========================================================= */
 .hero-controls {
   position: absolute;
@@ -3552,10 +3552,13 @@ body.lava-mode .hero-controls { display: none !important; }
   .site-shell { padding-top: 110px !important; }
   .hero-controls {
     left: 0;
-    right: auto;
+    right: 0;
     top: -104px;
-    width: 58px;
-    gap: 5px;
+    width: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0;
   }
   .hero-controls .privacy-launch {
     width: 58px !important;
@@ -3599,9 +3602,9 @@ body.lava-mode .hero-controls { display: none !important; }
 }
 .beerbelgio-project-wordmark {
   display: block;
-  width: min(100%, 270px);
-  max-height: 56px;
-  height: auto;
+  width: auto;
+  max-width: 100%;
+  height: 38px;
   object-fit: contain;
   object-position: left center;
 }
@@ -3610,5 +3613,5 @@ body.lava-mode .hero-controls { display: none !important; }
   margin-top: 5px !important;
 }
 @media (pointer: coarse) and (orientation: portrait) {
-  .beerbelgio-project-wordmark { width: min(100%, 230px); }
+  .beerbelgio-project-wordmark { height: clamp(23px, 7.9vw, 34px); }
 }
