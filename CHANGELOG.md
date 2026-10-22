@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0 — 2026-10-22
+- Added a standalone Projects card between BeerBelgio and sonoDGTL, grouping INDEX HTML and B4~M4L with their original local SVG wordmarks and approved descriptions.
+- Restored the original orange background and cream text on Spotify / YouTube Featured buttons as an intentional graphic choice.
+- Preserved existing links, LAVA physics, SEO files and bilingual navigation.
+
 ## 1.3.1 — 2026-10-21
 - Positioned language and Privacy controls left/right above the HERO in mobile portrait, within the HERO card margins.
 - Normalized the visual height and left alignment of INDEX HTML and B4~M4L wordmarks, trimming only the local SVG viewBoxes.

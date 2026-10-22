@@ -17,7 +17,8 @@ The result is still a HUB first. The playful layer is there because the site sho
 ## What is inside
 
 - **HUB** — bilingual EN / IT introduction, BeerBelgio / sonoDGTL gateways, quick links and contact.
-- **BeerBelgio** — music, creative identity, INDEX HTML and B4~M4L project gateways.
+- **BeerBelgio** — music, creative identity and related links.
+- **Projects** — INDEX HTML and B4~M4L gateways, each linking to its own independent site.
 - **sonoDGTL** — dedicated EN / IT professional page.
 - **FULL LAVA** — distraction mode: move, scroll, grab, throw and disturb the field.
 - **Privacy / site info** — concise information about hosting, external services and data handling.

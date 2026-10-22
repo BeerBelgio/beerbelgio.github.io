@@ -282,7 +282,7 @@ body.lava-mode .lava-toggle {
   min-height: 46px;
   padding: 11px 14px;
   border-radius: 999px;
-  background: #a23826; /* CTA shade: contrast with cream above 4.5:1 */
+  background: var(--orange); /* Brand orange restored; cream text retained intentionally. */
   color: var(--cream);
   text-decoration: none;
   font-size: 11px;
@@ -3595,7 +3595,7 @@ body.lava-mode .hero-controls { display: none !important; }
 }
 
 /* BeerBelgio project gateways: local to the links card; no stage changes. */
-.beerbelgio-card > a.beerbelgio-project-link > .beerbelgio-project-content {
+.projects-card > a.beerbelgio-project-link > .beerbelgio-project-content {
   display: block;
   flex: 1 1 auto;
   min-width: 0;
@@ -3608,7 +3608,7 @@ body.lava-mode .hero-controls { display: none !important; }
   object-fit: contain;
   object-position: left center;
 }
-.beerbelgio-card > a.beerbelgio-project-link small {
+.projects-card > a.beerbelgio-project-link small {
   display: block;
   margin-top: 5px !important;
 }
