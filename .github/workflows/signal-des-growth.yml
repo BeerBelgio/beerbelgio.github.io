@@ -1,0 +1,41 @@
+name: Signal DES Growth
+# TEMPLATE ONLY: copy this file to each public source repository
+# at .github/workflows/signal-des-growth.yml AFTER a repository secret
+# named DES_GROWTH_SIGNAL_TOKEN is configured. Never commit the token.
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published, edited, deleted]
+  deployment_status:
+  workflow_dispatch:
+
+# No GITHUB_TOKEN API permissions are needed in this public repository.
+permissions: {}
+
+concurrency:
+  group: des-growth-signal-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    # Deployment events are relevant only if a github-pages deployment succeeded.
+    if: >-
+      github.event_name != 'deployment_status' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'github-pages')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Notify private Digital EcoSystem without sending project data
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.DES_GROWTH_SIGNAL_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]]; then
+            echo "::error title=Missing private DES signal token::Configure DES_GROWTH_SIGNAL_TOKEN before enabling relay."
+            exit 1
+          fi
+          gh api --method POST "repos/BeerBelgio/Digital-EcoSystem/actions/workflows/collect-development-garden-metrics.yml/dispatches" --field ref=main >/dev/null
+          echo "DES notified; only the private collector evaluates actual metrics."
